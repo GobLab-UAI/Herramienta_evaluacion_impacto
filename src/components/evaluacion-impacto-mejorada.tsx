@@ -14,8 +14,7 @@ import { Progress } from "@/components/ui/progress"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { CheckCircle, HelpCircle, Download, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react'
-import jsPDF from 'jspdf' 
-
+import jsPDF from 'jspdf'
 
 type QuestionType = 'text' | 'select' | 'multiselect' | 'yesno' | 'yesnoNA'
 
@@ -671,7 +670,7 @@ const recommendations: Recommendation[] = [
     questionId: "q12",
     recommendations: [
       {
-        text: "Los derechos de las personas pudieran verse en ciertos contextos impactados pot la implementación de la IA, por tanto el sistrema elegido   debería ser adecuado y proporcional para lograr un objetivo legítimo determinado; Debe realizarse una  evaluación del contexto para gestionar estas posibles tensiones. ",
+        text: "Los derechos de las personas pudieran verse en ciertos contextos impactados pot la implementación de la IA, por tanto el sistema elegido   debería ser adecuado y proporcional para lograr un objetivo legítimo determinado; Debe realizarse una  evaluación del contexto para gestionar estas posibles tensiones. ",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true,
         resource: {
           text: "Evaluacion de impacto en DDHH",
@@ -1215,6 +1214,13 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   useEffect(() => {
     if (!userEmail) {
       router.push('/')
+    } else {
+      // Cargar respuestas guardadas cuando el componente se monta
+      const savedData = localStorage.getItem(`evaluationData_${userEmail}`)
+      if (savedData) {
+        const { answers: savedAnswers } = JSON.parse(savedData)
+        setAnswers(savedAnswers)
+      }
     }
   }, [userEmail, router])
 
@@ -1225,16 +1231,19 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   }, [answers])
 
   const handleAnswer = (questionId: string, value: Answer) => {
-    const newAnswers = { ...answers, [questionId]: value }
-    setAnswers(newAnswers)
-    if (userEmail) {
-      const dataToSave = {
-        answers: newAnswers,
-        timestamp: new Date().getTime()
+    setAnswers(prevAnswers => {
+      const newAnswers = { ...prevAnswers, [questionId]: value }
+      if (userEmail) {
+        const dataToSave = {
+          answers: newAnswers,
+          timestamp: new Date().getTime()
+        }
+        localStorage.setItem(`evaluationData_${userEmail}`, JSON.stringify(dataToSave))
       }
-      localStorage.setItem(`evaluationData_${userEmail}`, JSON.stringify(dataToSave))
-    }
+      return newAnswers
+    })
   }
+
 
   const generateRecommendations = (questionId: string, answer: Answer): Array<{ text: string; resource?: { text: string; url: string } }> => {
     const questionRecommendations = recommendations.find(r => r.questionId === questionId);
@@ -1278,17 +1287,26 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   }
 
   const saveEvaluation = () => {
-    localStorage.setItem('evaluationAnswers', JSON.stringify(answers))
-    alert('Evaluación guardada correctamente')
+    if (userEmail) {
+      const dataToSave = {
+        answers,
+        timestamp: new Date().getTime()
+      }
+      localStorage.setItem(`evaluationData_${userEmail}`, JSON.stringify(dataToSave))
+      alert('Evaluación guardada correctamente')
+    }
   }
 
   const loadEvaluation = () => {
-    const savedAnswers = localStorage.getItem('evaluationAnswers')
-    if (savedAnswers) {
-      setAnswers(JSON.parse(savedAnswers))
-      alert('Evaluación cargada correctamente')
-    } else {
-      alert('No se encontró ninguna evaluación guardada')
+    if (userEmail) {
+      const savedData = localStorage.getItem(`evaluationData_${userEmail}`)
+      if (savedData) {
+        const { answers: savedAnswers } = JSON.parse(savedData)
+        setAnswers(savedAnswers)
+        alert('Evaluación cargada correctamente')
+      } else {
+        alert('No se encontró ninguna evaluación guardada')
+      }
     }
   }
 
@@ -1305,7 +1323,10 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
         )
       case 'select':
         return (
-          <Select onValueChange={(value) => handleAnswer(question.id, value)}>
+          <Select 
+            value={answers[question.id] as string} 
+            onValueChange={(value) => handleAnswer(question.id, value)}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Seleccione una opción" />
             </SelectTrigger>
@@ -1341,9 +1362,20 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
         )
       case 'yesno':
       case 'yesnoNA':
+        const answerValue = answers[question.id]
+        let radioValue = 'na'
+        if (answerValue === true) radioValue = 'yes'
+        else if (answerValue === false) radioValue = 'no'
+        
         return (
           <RadioGroup
-            onValueChange={(value) => handleAnswer(question.id, value === 'yes')}
+            value={radioValue}
+            onValueChange={(value) => {
+              let newValue: boolean | null = null
+              if (value === 'yes') newValue = true
+              else if (value === 'no') newValue = false
+              handleAnswer(question.id, newValue)
+            }}
             className="flex space-x-4 mt-2 text-sm font-normal"
           >
             <div className="flex items-center space-x-2">
@@ -1493,9 +1525,6 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
               <CardHeader>
                 <CardTitle className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                   <span>{currentDimension}</span>
-                  {/*<span className="text-sm font-normal">
-                    Puntuación: {Math.round(getDimensionScore(currentDimension))}%
-                  </span>*/}
                 </CardTitle>
                 <CardDescription>Responda las siguientes preguntas</CardDescription>
               </CardHeader>
@@ -1550,7 +1579,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
               <span>Recomendaciones por Etapa del Proyecto</span>
               <Button onClick={exportResults} variant="outline">
                 <Download className="w-4 h-4 mr-2" />
-                Exportar PDF  {/* Changed from "Exportar" to "Exportar PDF" */}
+                Exportar PDF
               </Button>
             </CardTitle>
           </CardHeader>
