@@ -13,6 +13,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Progress } from "@/components/ui/progress"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+
 import { CheckCircle, HelpCircle, Download, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react'
 import jsPDF from 'jspdf'
 
@@ -151,7 +152,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Proporcionalidad", 
     stage: "Conceptualización y diseño",
-    info: " "
+    info: "Puedes revisar casos similares en algorítmicospublicos.cl "
   },
   { 
     id: "q11", 
@@ -164,11 +165,11 @@ const questions: Question[] = [
   },
   { 
     id: "q12", 
-    text: "¿La aplicación del sistema tiene algún impacto en derechos humanos?", 
+    text: "¿La aplicación del sistema tiene algún impacto en derechos humanos según la constitución?", 
     type: "yesno",
     dimension: "Proporcionalidad", 
     stage: "Conceptualización y diseño",
-    info: "Por ejemplo, impácto en la privacidad, libertad de expresión o debido proceso"
+    info: "Por ejemplo, impácto en Derecho a la educación, salud, propiedad, la privacidad, libertad de expresión o debido proceso,medio ambiente o los que se establecen en el articulo 19 de la constitución"
   },
   { 
     id: "q13", 
@@ -200,11 +201,11 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Licencia Social", 
     stage: "Conceptualización y diseño",
-    info: " "
+    info: "Tales como correo electrónico, formulario de sugerencias, consultas publicas antes de la implementación"
   },
   { 
     id: "q17", 
-    text: "¿Se han diseñado mecanismos de participación ciudadana para la difusión del sistema? ", 
+    text: "¿Se han diseñado mecanismos para la difusión del sistema? ", 
     type: "yesno",
     dimension: "Licencia Social", 
     stage: "Conceptualización y diseño",
@@ -229,7 +230,7 @@ const questions: Question[] = [
   },
   { 
     id: "q20", 
-    text: "¿El equipo de desarrollo interno estará compuesto por un grupo diverso de personas en términos de raza, género y orientación, entre otros criterios sociodemográficos?", 
+    text: "¿El equipo de desarrollo interno estará compuesto por un grupo diverso de personas en términos de raza, género, profesiones, edades  y otros criterios sociodemográficos?", 
     type: "yesno",
     dimension: "Gobernanza", 
     stage: "Uso y monitoreo",
@@ -265,7 +266,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Conceptualización y diseño",
-    info: " "
+    info: "Dato personal: cualquier información vinculada o referida a una persona natural identificada o identificable. Se considerará identificable toda persona cuya identidad pueda determinarse, directa o indirectamente, en particular mediante uno o más identificadores, tales como el nombre, el número de cédula de identidad, el análisis de elementos propios de la identidad física, fisiológica, genética, psíquica, económica, cultural o social de dicha persona. Para determinar si una persona es identificable deberán considerarse todos los medios y factores objetivos que razonablemente se podrían usar para dicha identificación en el momento del tratamiento"
   },
   { 
     id: "q25", 
@@ -273,7 +274,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: " "
+    info: "Datos personales sensibles: tendrán esta condición aquellos datos personales que se refieren a las características físicas o morales de las personas o a hechos o circunstancias de su vida privada o intimidad, que revelen el origen étnico o racial, la afiliación política, sindical o gremial, situación socioeconómica, las convicciones ideológicas o filosóficas, las creencias religiosas, los datos relativos a la salud, al perfil biológico humano, los datos biométricos, y la información relativa a la vida sexual, a la orientación sexual y a la identidad de género de una persona natural."
   },
   { 
     id: "q26", 
@@ -362,7 +363,7 @@ const questions: Question[] = [
   },
   {
     id: "q36",
-    text: "¿Su organización depende de prestar servicios mediante redes y sistemas informáticos, y la afectación, interceptación, interrupción o destrucción de sus servicios tendría un impacto significativo en la seguridad y el orden público, en la provisión continua y regular de servicios esenciales, en el efectivo cumplimiento de las funciones del Estado o, en general, de los servicios que éste debe proveer o garantizar?", 
+    text: "¿Su organización presta  servicios mediante redes y sistemas informáticos, y su afectación, interceptación, interrupción o destrucción tendría un impacto significativo en la seguridad y el orden público, en la provisión continua y regular de sus servicios, en el efectivo cumplimiento de las funciones del Estado o, en general, de los servicios que éste debe proveer o garantizar?", 
     type: "yesno",
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
@@ -393,11 +394,20 @@ const questions: Question[] = [
     info: " "
   },
   {
+    id: "q39.1",
+    text: "¿Ha evaluado los riesgos específicos de ciberseguridad que pueda afectar el funcionamiento del sistema algorítmico implementado?",
+    type: "yesno", 
+    dimension: "Ciberseguridad", 
+    stage: "Recolección y procesamiento de datos",
+    info: " "
+  },
+  {
     id: "q40",
-    text: "¿Utiliza el sistema datos que representen algunas de estas  caracteristicas? : la raza o etnia, la nacionalidad, la situación socioeconómica, el idioma, la ideología u opinión política, la religión o creencia, la sindicación o participación en organizaciones gremiales o la falta de ellas, el sexo, la maternidad, la lactancia materna, el amamantamiento, la orientación sexual, la identidad y expresión de género, el estado civil, la edad, la filiación, la apariencia personal y la enfermedad o discapacidad. ", 
+    text: "¿Utiliza el sistema datos que representen algunas de estas características, tales como,  raza o etnia, la nacionalidad, la situación socioeconómica, la ideología u opinión política, la orientación sexual, información sobre enfermedades o discapacidad?", 
     type: "yesno",
     dimension: "Equidad", 
     stage: "Recolección y procesamiento de datos",
+    info: "La ley chilena prohíbe la discriminación arbitraria, esto toda distinción, exclusión o restricción que carezca de justificación razonable, efectuada por agentes del Estado o particulares, en particular cuando se funden en motivos tales como la raza o etnia, la nacionalidad, la situación socioeconómica, el idioma, la ideología u opinión política, la religión o creencia, la sindicación o participación en organizaciones gremiales o la falta de ellas, el sexo, género, la maternidad, la lactancia materna, el amamantamiento, la orientación sexual, la identidad y expresión de género, el estado civil, la edad, la filiación, la apariencia personal y la enfermedad o discapacidad."
   },
   {
     id: "q41",
@@ -450,7 +460,7 @@ const questions: Question[] = [
   },
   {
     id: "q48",
-    text: "Existe una  imposibilidad técnica real, conforme con el estado del arte, y derivada, por ejemplo, de sistemas de decisiones automatizadas o semiautomatizadas basados en sistemas de aprendizaje automático (cajas negras), de entregar información respecto del funcionamiento y resultados del algoritmo?", 
+    text: "¿Existe una imposibilidad técnica real, conforme con el estado del arte, y derivada, por ejemplo, de sistemas de decisiones automatizadas o semiautomatizadas basados en sistemas de aprendizaje automático (cajas negras), de entregar información respecto del funcionamiento y resultados del algoritmo?", 
     type: "yesno",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
@@ -490,7 +500,8 @@ const questions: Question[] = [
       { value: "Soporte de interacción", label: "Soporte de interacción" },
       { value: "Optimización", label: "Optimización" },
       { value: "Razonamiento con estructuras de conocimiento", label: "Razonamiento con estructuras de conocimiento" }
-    ]
+    ],
+    info: "Para entender las clasificaciones, visite la guía permitido innovar en el siguiente enlace: https://www.lab.gob.cl/permitido-innovar"
   },
   {
     id: "q53",
@@ -972,6 +983,15 @@ const recommendations: Recommendation[] = [
     ]
   },
   {
+    questionId: "q39.1",
+    recommendations: [
+      {
+        text: "Los sistemas algorítmicos y de IA presentan riesgos específicos de ciberseguridad que debieran abordarse, más allá de los controles tradicionales. Recomendamos revisar está tipología de riesgos y verificar que el análisis, la política y los planes de acción incorporen mecanismos de prevención de estas acciones de acuerdo al proyecto específico.",
+        condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
+      },
+    ]
+  },
+  {
     questionId: "q40",
     recommendations: [
       {
@@ -1310,6 +1330,8 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
     }
   }
 
+  const isLastDimension = currentDimension === dimensions[dimensions.length - 1]
+  
   const renderQuestionInput = (question: Question) => {
     switch (question.type) {
       case 'text':
@@ -1363,9 +1385,10 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
       case 'yesno':
       case 'yesnoNA':
         const answerValue = answers[question.id]
-        let radioValue = 'na'
+        let radioValue = ''
         if (answerValue === true) radioValue = 'yes'
         else if (answerValue === false) radioValue = 'no'
+        else if (answerValue === null && question.type === 'yesnoNA') radioValue = 'na'
         
         return (
           <RadioGroup
@@ -1374,6 +1397,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
               let newValue: boolean | null = null
               if (value === 'yes') newValue = true
               else if (value === 'no') newValue = false
+              else if (value === 'na' && question.type === 'yesnoNA') newValue = null
               handleAnswer(question.id, newValue)
             }}
             className="flex space-x-4 mt-2 text-sm font-normal"
@@ -1526,6 +1550,18 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                 <CardTitle className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                   <span>{currentDimension}</span>
                 </CardTitle>
+                <div className="bg-blue-50 border-l-4 border-blue-500 p-4">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <HelpCircle className="h-5 w-5 text-blue-500" />
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm text-blue-700">
+                      Cada pregunta incluye un ícono de ayuda con información adicional
+                    </p>
+                  </div>
+                </div>
+              </div>
                 <CardDescription>Responda las siguientes preguntas</CardDescription>
               </CardHeader>
               <CardContent>
@@ -1560,10 +1596,17 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                   Anterior
                 </Button>
                 <div className="flex gap-2">
-                  <Button onClick={() => setShowResults(true)} variant="outline">
+                  <Button 
+                    onClick={() => setShowResults(true)} 
+                    variant={isLastDimension ? "default" : "outline"}
+                    className={isLastDimension ? "bg-blue-500 hover:bg-blue-600 text-white" : ""}
+                  >
                     Ver Resultados
                   </Button>
-                  <Button onClick={handleNextDimension} disabled={currentDimension === dimensions[dimensions.length - 1]}>
+                  <Button 
+                    onClick={handleNextDimension} 
+                    disabled={isLastDimension}
+                  >
                     Siguiente
                     <ChevronRight className="w-4 h-4 ml-2" />
                   </Button>
