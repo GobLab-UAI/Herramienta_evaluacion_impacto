@@ -65,3 +65,21 @@
     --ring: 224.3 76.3% 48%;
   }
 }
+
+@media print {
+  .page-break {
+    page-break-after: always;
+  }
+  
+  tr {
+    page-break-inside: avoid;
+  }
+  
+  thead {
+    display: table-header-group;
+  }
+  
+  tfoot {
+    display: table-footer-group;
+  }
+}

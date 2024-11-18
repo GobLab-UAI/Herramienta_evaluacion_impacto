@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -8,16 +8,20 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Progress } from "@/components/ui/progress"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
 import { CheckCircle, HelpCircle, Download, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react'
-import jsPDF from 'jspdf'
+//import jsPDF from 'jspdf'
+//import * as XLSX from 'xlsx'
+import html2pdf from 'html2pdf.js'
 
-type QuestionType = 'text' | 'select' | 'multiselect' | 'yesno' | 'yesnoNA'
+type QuestionType = 'text' | 'textArea' | 'select' | 'multiselect' | 'yesno' | 'yesnoNA'
 
 type Option = {
   value: string
@@ -68,7 +72,7 @@ const questions: Question[] = [
   { 
     id: "q2", 
     text: "Descripción del proyecto", 
-    type: "text",
+    type: "textArea",
     dimension: "General", 
     stage: "Conceptualización y diseño",
     info: "Describa brevemente el proyecto que está evaluando."
@@ -88,11 +92,11 @@ const questions: Question[] = [
   },
   { 
     id: "q4", 
-    text: "Indique las principales razones para la automatización de este proceso de toma de decisiones", 
+    text: "Razones para la automatización de este proceso.", 
     type: "multiselect",
     dimension: "General", 
     stage: "Conceptualización y diseño",
-    info: "",
+    info: "Indique las principales razones para la automatización de este proceso de toma de decisiones",
     options: [
       { value: "Utilizar enfoques innovadores", label: "Utilizar enfoques innovadores" },
       { value: "El sistema realiza tareas que los humanos no podrían realizar en un periodo de tiempo razonable", label: "El sistema realiza tareas que los humanos no podrían realizar en un periodo de tiempo razonable" },
@@ -1229,7 +1233,9 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   const [progress, setProgress] = useState(0)
   const [currentDimension, setCurrentDimension] = useState(dimensions[0])
   const [userEmail] = useState<string | null>(initialEmail ?? null)
+  const [selectedRecommendations, setSelectedRecommendations] = useState<Record<string, boolean>>({})
   const router = useRouter()
+  const tableRef = useRef<HTMLTableElement>(null)
 
   useEffect(() => {
     if (!userEmail) {
@@ -1280,10 +1286,116 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
       .map(rec => ({ text: rec.text, resource: rec.resource }));
   };
 
+  const formatAnswer = (answer: Answer): string => {
+    if (typeof answer === 'boolean') {
+      return answer ? 'Sí' : 'No'
+    } else if (answer === null) {
+      return 'No aplica'
+    } else if (Array.isArray(answer)) {
+      return answer.join(', ')
+    }
+    return String(answer)
+  }
+
+  const getGeneralInfo = () => {
+    const generalQuestions = questions.filter(q => q.dimension === 'General').slice(0, 4)
+    return generalQuestions.map(q => ({
+      question: q.text,
+      answer: formatAnswer(answers[q.id] || '')
+    }))
+  }
+
+  const getGroupedRecommendations = () => {
+    const allRecommendations = questions.flatMap((question) => {
+      const answer = answers[question.id]
+      if (answer === undefined) return []
+
+      const questionRecommendations = recommendations.find(r => r.questionId === question.id)
+      if (!questionRecommendations) return []
+
+      const dimensionIndex = dimensions.indexOf(question.dimension) + 1
+      const questionIndex = questions.filter(q => q.dimension === question.dimension).indexOf(question) + 1
+      const questionNumber = `${dimensionIndex}.${questionIndex}`
+
+      return questionRecommendations.recommendations
+        .filter(rec => {
+          if (Array.isArray(answer)) {
+            return answer.some(ans => rec.condition(ans))
+          }
+          return rec.condition(answer)
+        })
+        .map(rec => ({
+          text: rec.text,
+          resource: rec.resource,
+          question: question.text,
+          questionNumber: questionNumber,
+          answer: formatAnswer(answer),
+          stage: question.stage
+        }))
+    })
+
+    const groupedRecommendations = allRecommendations.reduce((acc, curr) => {
+      const existingRec = acc.find(r => r.text === curr.text && r.resource?.url === curr.resource?.url)
+      if (existingRec) {
+        existingRec.questions.push({ text: curr.question, number: curr.questionNumber, answer: curr.answer })
+      } else {
+        acc.push({
+          text: curr.text,
+          resource: curr.resource,
+          questions: [{ text: curr.question, number: curr.questionNumber, answer: curr.answer }],
+          stage: curr.stage
+        })
+      }
+      return acc
+    }, [] as Array<{
+      text: string,
+      resource?: { text: string, url: string },
+      questions: Array<{ text: string, number: string, answer: string }>,
+      stage: string
+    }>)
+
+    // Group by stage
+    const groupedByStage = groupedRecommendations.reduce((acc, curr) => {
+      if (!acc[curr.stage]) {
+        acc[curr.stage] = []
+      }
+      acc[curr.stage].push(curr)
+      return acc
+    }, {} as Record<string, typeof groupedRecommendations>)
+
+    return groupedByStage
+  }
+
+  const handleCheckboxChange = (stageIndex: string) => {
+    setSelectedRecommendations(prev => ({
+      ...prev,
+      [stageIndex]: !prev[stageIndex]
+    }))
+  }
+
   const getRecommendations = () => {
-    return Object.entries(answers).flatMap(([questionId, answer]) => 
-      generateRecommendations(questionId, answer).map(rec => ({ questionId, ...rec }))
-    )
+    return questions.flatMap(question => {
+      const answer = answers[question.id]
+      if (answer === undefined) return []
+
+      const questionRecommendations = recommendations.find(r => r.questionId === question.id)
+      if (!questionRecommendations) return []
+
+      const applicableRecommendations = questionRecommendations.recommendations
+        .filter(rec => {
+          if (Array.isArray(answer)) {
+            return answer.some(ans => rec.condition(ans))
+          }
+          return rec.condition(answer)
+        })
+        .map(rec => ({ text: rec.text, resource: rec.resource }))
+
+      return [{
+        question: question.text,
+        answer: formatAnswer(answer),
+        recommendations: applicableRecommendations
+      }]
+    })
   }
 
   const groupRecommendationsByStage = (recs: Array<{ questionId: string; text: string; resource?: { text: string; url: string } }>) => {
@@ -1343,6 +1455,16 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
             onChange={(e) => handleAnswer(question.id, e.target.value)}
           />
         )
+        case 'textArea':
+          return (
+            <Textarea
+            id={question.id}
+            value={answers[question.id] as string || ''}
+            onChange={(e) => handleAnswer(question.id, e.target.value)}
+            className="min-h-[100px] text-base leading-relaxed"
+            placeholder="Ingrese su respuesta aquí..."
+          />
+          )
       case 'select':
         return (
           <Select 
@@ -1440,62 +1562,47 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   if (!userEmail) {
     return <div>Loading...</div>
   }
+  
+  const exportToPDF = () => {
+    if (tableRef.current) {
+      const element = tableRef.current;
+      const opt = {
+        margin: 10,
+        filename: 'evaluacion_impacto_algoritmico.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+        autoPaging: true,
+        fontFaces: [
+          { family: 'Arial', style: 'normal' },
+          { family: 'Arial', style: 'bold' }
+        ]
+      };
 
-  const exportResults = () => {
-    const results = dimensions.map(dim => ({
-      dimension: dim,
-      score: getDimensionScore(dim),
-      recommendations: getRecommendations()
-        .filter(rec => questions.find(q => q.id === rec.questionId)?.dimension === dim)
-    }))
+      // Contenido con encabezado
+      const headerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 10px 0; border-bottom: 1px solid #ddd;">
+        <img src="/images/Logo_herramientas_algoritmos.png" alt="Logo Izquierdo" style="height: 40px; margin-left: 10px;" />
+        <div style="flex-grow: 1; text-align: center; font-size: 14px; font-weight: bold;">
+          Evaluación de Impacto Algorítmico
+        </div>
+        <img src="/images/Goblab.png" alt="Logo Derecho" style="height: 40px; margin-right: 10px;" />
+      </div>
+    `;
 
-    const pdf = new jsPDF()
-    let yOffset = 20
+    // Agregar encabezado en cada página
+    const pdfContent = `
+      <div>
+        ${headerHTML}
+        <div id="pdf-content" style="margin-top: 40px;">${element.innerHTML}</div>
+      </div>
+    `;
 
-    // Add title
-    pdf.setFontSize(18)
-    pdf.text('Evaluación de Impacto Algorítmico - Resultados', 10, yOffset)
-    yOffset += 10
-
-    results.forEach((result) => {
-      if (yOffset > 280) {
-        pdf.addPage()
-        yOffset = 10
-      }
-
-      // Add dimension title and score
-      pdf.setFontSize(14)
-      pdf.text(`${result.dimension} - Puntuación: ${Math.round(result.score)}%`, 10, yOffset)
-      yOffset += 10
-
-      // Add recommendations
-      pdf.setFontSize(12)
-      result.recommendations.forEach(rec => {
-        if (yOffset > 280) {
-          pdf.addPage()
-          yOffset = 10
-        }
-
-        const lines = pdf.splitTextToSize(rec.text, 180)
-        pdf.text(lines, 10, yOffset)
-        yOffset += 5 * lines.length
-
-        if (rec.resource) {
-          pdf.setTextColor(0, 0, 255)
-          pdf.text(`Recurso extra: ${rec.resource.text}`, 15, yOffset)
-          pdf.link(15, yOffset - 5, 180, 5, { url: rec.resource.url })
-          pdf.setTextColor(0, 0, 0)
-          yOffset += 5
-        }
-
-        yOffset += 5
-      })
-
-      yOffset += 10
-    })
-
-    pdf.save('evaluacion_impacto_algoritmico.pdf')
-  }
+  
+      html2pdf().set(opt).from(pdfContent).save();
+    }
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -1618,37 +1725,91 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-              <span>Recomendaciones por Etapa del Proyecto</span>
-              <Button onClick={exportResults} variant="outline">
+            <CardTitle className="flex justify-between items-center">
+              <span>Resultados de la Evaluación de Impacto Algorítmico</span>
+              <Button onClick={exportToPDF} className="bg-green-500 hover:bg-green-600 text-white">
                 <Download className="w-4 h-4 mr-2" />
-                Exportar PDF
+                Exportar a PDF
               </Button>
             </CardTitle>
           </CardHeader>
+
           <CardContent>
-            <ScrollArea className="h-[600px]">
-              {Object.entries(groupRecommendationsByStage(getRecommendations())).map(([stage, recs]) => (
-                <div key={stage} className="mb-6">
-                  <h3 className="text-lg font-semibold mb-2">{stage}</h3>
-                  <ul className="list-disc pl-5">
-                    {recs.map((rec, index) => (
-                      <li key={index} className="mb-2">
-                        <p>{rec.text}</p>
-                        {rec.resource && (
-                          <p className="mt-1 text-sm">
-                            <a href={rec.resource.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center">
-                              {rec.resource.text}
-                              <ExternalLink className="w-4 h-4 ml-1" />
-                            </a>
-                          </p>
-                        )}
-                      </li>
+          <div ref={tableRef}>
+
+            <Card className="mb-6"> 
+              <CardHeader>
+                <CardTitle>Información General</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableBody>
+                    {getGeneralInfo().map((info, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">{info.question}</TableCell>
+                        <TableCell>{info.answer}</TableCell>
+                      </TableRow>
                     ))}
-                  </ul>
-                </div>
-              ))}
-            </ScrollArea>
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+
+
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[50px] text-center align-middle py-3">Revisada?</TableHead>                  
+                  <TableHead className="text-center align-middle py-3">Preguntas Relacionadas</TableHead>
+                  <TableHead className="text-center align-middle py-3">Recomendación</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {Object.entries(getGroupedRecommendations()).map(([stage, recommendations]) => (
+                  <React.Fragment key={stage}>
+                    <TableRow className="page-break">
+                      <TableCell colSpan={3} className="bg-muted font-semibold text-center align-middle py-3">
+                        {stage}
+                      </TableCell>
+                    </TableRow>
+                    {recommendations.map((item, index) => (
+                      <TableRow key={`${stage}-${index}`}>
+                        <TableCell>
+                        <Checkbox
+                          checked={selectedRecommendations[`${stage}-${index}`] || false}
+                          onCheckedChange={() => handleCheckboxChange(`${stage}-${index}`)}
+                          aria-label={`Seleccionar recomendación ${index + 1} de ${stage}`}
+                        />
+                        </TableCell>
+                        <TableCell>
+                            <ul className="list-disc pl-5">
+                              {item.questions.map((q, qIndex) => (
+                                <li key={qIndex} className="mb-2">
+                                  <p><strong>Pregunta {q.number}:</strong> {q.text}</p>
+                                  <p><strong>Respuesta:</strong> {q.answer}</p>
+                                </li>
+                              ))}
+                            </ul>
+                          </TableCell>
+                        <TableCell>
+                          <p>{item.text}</p>
+                          {item.resource && (
+                            <p className="mt-1 text-sm">
+                              <a href={item.resource.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center">
+                                {item.resource.text}
+                                <ExternalLink className="w-4 h-4 ml-1" />
+                              </a>
+                            </p>
+                          )}
+                        </TableCell>
+                        
+                      </TableRow>
+                    ))}
+                  </React.Fragment>
+                ))}
+              </TableBody>
+            </Table>
+            </div>
             <Button onClick={() => setShowResults(false)} className="mt-4">Volver a la Evaluación</Button>
           </CardContent>
         </Card>
