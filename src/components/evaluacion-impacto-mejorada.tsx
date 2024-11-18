@@ -10,7 +10,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Progress } from "@/components/ui/progress"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -19,7 +18,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { CheckCircle, HelpCircle, Download, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react'
 //import jsPDF from 'jspdf'
 //import * as XLSX from 'xlsx'
-import html2pdf from 'html2pdf.js'
+//import html2pdf from 'html2pdf.js'
 
 type QuestionType = 'text' | 'textArea' | 'select' | 'multiselect' | 'yesno' | 'yesnoNA'
 
@@ -1270,22 +1269,6 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
     })
   }
 
-
-  const generateRecommendations = (questionId: string, answer: Answer): Array<{ text: string; resource?: { text: string; url: string } }> => {
-    const questionRecommendations = recommendations.find(r => r.questionId === questionId);
-    if (!questionRecommendations) return [];
-  
-    return questionRecommendations.recommendations
-      .filter(rec => {
-        if (Array.isArray(answer)) {
-          // Si 'answer' es un arreglo, puedes aplicar la condición a cada elemento si es necesario
-          return answer.some(ans => rec.condition(ans)); // Cambia la lógica según lo que necesites
-        }
-        return rec.condition(answer); // Si no es un arreglo, aplica la condición normalmente
-      })
-      .map(rec => ({ text: rec.text, resource: rec.resource }));
-  };
-
   const formatAnswer = (answer: Answer): string => {
     if (typeof answer === 'boolean') {
       return answer ? 'Sí' : 'No'
@@ -1373,49 +1356,10 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
     }))
   }
 
-  const getRecommendations = () => {
-    return questions.flatMap(question => {
-      const answer = answers[question.id]
-      if (answer === undefined) return []
-
-      const questionRecommendations = recommendations.find(r => r.questionId === question.id)
-      if (!questionRecommendations) return []
-
-      const applicableRecommendations = questionRecommendations.recommendations
-        .filter(rec => {
-          if (Array.isArray(answer)) {
-            return answer.some(ans => rec.condition(ans))
-          }
-          return rec.condition(answer)
-        })
-        .map(rec => ({ text: rec.text, resource: rec.resource }))
-
-      return [{
-        question: question.text,
-        answer: formatAnswer(answer),
-        recommendations: applicableRecommendations
-      }]
-    })
-  }
-
-  const groupRecommendationsByStage = (recs: Array<{ questionId: string; text: string; resource?: { text: string; url: string } }>) => {
-    const stages = ['Conceptualización y diseño', 'Uso y monitoreo', 'Recolección y procesamiento de datos']
-    return stages.reduce((acc, stage) => {
-      acc[stage] = recs.filter(rec => 
-        questions.find(q => q.id === rec.questionId)?.stage === stage
-      )
-      return acc
-    }, {} as Record<string, typeof recs>)
-  }
+  
 
   const isDimensionComplete = (dim: string) => {
     return questions.filter(q => q.dimension === dim).every(q => answers[q.id] !== undefined)
-  }
-
-  const getDimensionScore = (dim: string) => {
-    const dimQuestions = questions.filter(q => q.dimension === dim)
-    const answeredQuestions = dimQuestions.filter(q => answers[q.id] !== undefined).length
-    return (answeredQuestions / dimQuestions.length) * 100
   }
 
   const saveEvaluation = () => {
@@ -1565,6 +1509,9 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   
   const exportToPDF = () => {
     if (tableRef.current) {
+      /* eslint-disable @typescript-eslint/no-require-imports */
+      const html2pdf = require('html2pdf.js');
+      /* eslint-enable @typescript-eslint/no-require-imports */
       const element = tableRef.current;
       const opt = {
         margin: 10,
