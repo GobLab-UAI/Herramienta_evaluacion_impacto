@@ -79,15 +79,15 @@ export function LandingPage() {
                   <p className="break-words overflow-wrap">
                     La evaluación de impacto algorítmico es una herramienta desarrollada para dimensionar los
                     riesgos asociados al uso de sistemas algorítmicos de ciencia de datos e inteligencia artificial
-                    (IA) en el sector público. La ficha está diseñada únicamente como un soporte para quienes buscan
-                    entregar mayor información a sus usuarios o al público sobre el desarrollo de sus modelos, con el
-                    fin de fomentar la explicabilidad de las decisiones que utilizan IA o ciencia de datos.
+                    (IA) en el sector público. La evaluación está diseñada únicamente como un soporte para quienes buscan
+                    dimensionar las consideraciones sobre el desarrollo de sus modelos, con el
+                    fin de fomentar el cumplimiento de las regulaciones para los modelos  que utilizan IA o ciencia de datos.
                   </p>
                   <p className="break-words overflow-wrap">
                     La Universidad Adolfo Ibáñez (UAI) no ofrece garantías sobre el funcionamiento o el desempeño de
-                    los sistemas de ciencia de datos e IA que utilicen esta ficha. La Universidad no es responsable de
+                    los sistemas de ciencia de datos e IA que utilicen esta herramienta. La Universidad no es responsable de
                     ningún tipo de daño directo, indirecto, incidental, especial o consecuente, ni de pérdidas de
-                    beneficios que puedan surgir directa o indirectamente de la aplicación de la ficha.
+                    beneficios que puedan surgir directa o indirectamente de la aplicación de la herramienta.
                   </p>
                   <p className="break-words overflow-wrap">
                     El empleo de las herramientas desarrolladas por la Universidad no implica ni constituye un sello
