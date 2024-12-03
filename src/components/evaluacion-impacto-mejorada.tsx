@@ -313,7 +313,7 @@ const questions: Question[] = [
   },
   { 
     id: "q30", 
-    text: "¿Se anonimizan o seudonimizan los datos?", 
+    text: "¿Se anonimizan o seudonimizan los datos para el entrenamiento y prueba del sistema de IA?", 
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
@@ -321,7 +321,7 @@ const questions: Question[] = [
   },
   { 
     id: "q31", 
-    text: "Se implementará el sistema para algunos de estos usos o casos:  a) Evaluación sistemática y exhaustiva de aspectos personales de los titulares de datos, basadas en tratamiento o decisiones automatizadas, como la elaboración de perfiles, y que produzcan en ellos efectos jurídicos significativos. b) Tratamiento masivo de datos o gran escala. c) Tratamiento que implique observación o monitoreo sistemático de una zona de acceso público. d) Tratamiento de datos sensibles y especialmente protegidos, en las hipótesis de excepción del consentimiento.", 
+    text: "Se implementará el sistema para algunos de estos usos o casos:  \na) Evaluación sistemática y exhaustiva de aspectos personales de los titulares de datos, basadas en tratamiento o decisiones automatizadas, como la elaboración de perfiles, y que produzcan en ellos efectos jurídicos significativos. \nb) Tratamiento masivo de datos o gran escala. \nc) Tratamiento que implique observación o monitoreo sistemático de una zona de acceso público. \nd) Tratamiento de datos sensibles y especialmente protegidos, en las hipótesis de excepción del consentimiento.", 
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
@@ -342,7 +342,7 @@ const questions: Question[] = [
   },
   { 
     id: "q33",
-    text: "Se enmarca la decisión automatizada en alguna de estas hipótesis: a) Es necesaria para la celebración o ejecución de un contrato entre el titular y el responsable; b) Existe consentimiento previo y expreso del titular en la forma prescrita en el artículo 12 de la presente ley, o c) La decisión automatizada la dispone la ley. ", 
+    text: "¿El sistema implica toma de decisiones automatizadas, incluida la elaboración de perfiles, que afecten signifcativamente a los titulares de datos, esto es, por ejemplo, en la negación de un beneficio, la asistencia sanitaria, evaluación de beneficios, acceso a servicios públicos, resolución de controversias, etc? ", 
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
@@ -366,7 +366,7 @@ const questions: Question[] = [
   },
   {
     id: "q36",
-    text: "¿Su organización presta  servicios mediante redes y sistemas informáticos, y su afectación, interceptación, interrupción o destrucción tendría un impacto significativo en la seguridad y el orden público, en la provisión continua y regular de sus servicios, en el efectivo cumplimiento de las funciones del Estado o, en general, de los servicios que éste debe proveer o garantizar?", 
+    text: "¿Su organización presta servicios mediante redes y sistemas informáticos, y su afectación, interceptación, interrupción o destrucción tendría un impacto significativo en la seguridad y el orden público, en la provisión continua y regular de sus servicios, en el efectivo cumplimiento de las funciones del Estado o, en general, de los servicios que éste debe proveer o garantizar?", 
     type: "yesno",
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
@@ -375,6 +375,14 @@ const questions: Question[] = [
   {
     id: "q37",
     text: "¿Posee su organización una política de seguridad de la información o ciberseguridad?", 
+    type: "yesno",
+    dimension: "Ciberseguridad", 
+    stage: "Recolección y procesamiento de datos",
+    info: " "
+  },
+  {
+    id: "q37.1",
+    text: "El sistema está siendo desarrollado por un tercero?", 
     type: "yesno",
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
@@ -390,7 +398,7 @@ const questions: Question[] = [
   },
   {
     id: "q39",
-    text: "¿El sistema o la politica de ciberseguridad tienen menciones especiales a alos sistemas de IA que gestiona la organización?",
+    text: "¿Ha evaluado los riesgos de ciberseguridad particulares que afectan a los sistemas de IA que gestiona la organización?",
     type: "yesno", 
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
@@ -398,7 +406,7 @@ const questions: Question[] = [
   },
   {
     id: "q39.1",
-    text: "¿Ha evaluado los riesgos específicos de ciberseguridad que pueda afectar el funcionamiento del sistema algorítmico implementado?",
+    text: " ¿Ha evaluado los riesgos específicos de ciberseguridad que pueda afectar el funcionamiento del sistema algorítmico implementado?",
     type: "yesno", 
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
@@ -406,7 +414,7 @@ const questions: Question[] = [
   },
   {
     id: "q40",
-    text: "¿Utiliza el sistema datos que representen algunas de estas características, tales como,  raza o etnia, la nacionalidad, la situación socioeconómica, la ideología u opinión política, la orientación sexual, información sobre enfermedades o discapacidad?", 
+    text: "Utiliza el sistema datos que representen algunas de estas características: la raza o etnia, la nacionalidad, la situación socioeconómica, el idioma, la ideología u opinión política, la religión o creencia, la sindicación o participación en organizaciones gremiales o la falta de ellas, el estado civil, la edad, la filiación o información sobre  la enfermedades o discapacidades. ", 
     type: "yesno",
     dimension: "Equidad", 
     stage: "Recolección y procesamiento de datos",
@@ -606,7 +614,7 @@ const recommendations: Recommendation[] = [
     questionId: "q5",
     recommendations: [
       {
-        text: "Como parte de garantizar la equidad y la no discriminación, las soluciones de IA deben implementarse verificando su adaptación al contexto local, y respetando el multilingüismo y la diversidad cultural.",
+        text: "Si el proyecto implica la adaptación o ampliación de una iniciativa existente, es fundamental garantizar el principio de equidad y prevenir cualquier forma de discriminación. Para lograrlo, las soluciones basadas en algoritmos o inteligencia artificial (IA) deben diseñarse y aplicarse teniendo en cuenta el contexto local. Esto implica realizar ajustes específicos que consideren las particularidades sociales, económicas y culturales de la región. Además, es esencial respetar y promover el multilingüismo y la diversidad cultural, asegurando que las herramientas sean inclusivas y accesibles para todas las personas, independientemente de su idioma o identidad cultural. Así debe verificarse la adaptación al contexto local, puesto si un modelo entrenado en datos de un país con características demográficas y culturales específicas puede no ser efectivo o incluso ser perjudicial si se utiliza en un contexto diferente.  La falta de sensibilidad cultural o lingüística en soluciones tecnológicas puede conducir a exclusiones involuntarias. Por ejemplo, un sistema que no soporte idiomas locales o dialectos puede marginar a comunidades enteras, limitando su acceso a servicios.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       },
     ]
@@ -615,7 +623,7 @@ const recommendations: Recommendation[] = [
     questionId: "q6",
     recommendations: [
       {
-        text: "Como parte de garantizar la equidad y la no discriminación, las soluciones de IA deben implementarse verificando su adaptación al contexto local, y respetando el multilingüismo y la diversidad cultural.",
+        text: "Si el proyecto implica la adaptación o ampliación de una iniciativa existente, es fundamental garantizar el principio de equidad y prevenir cualquier forma de discriminación. Para lograrlo, las soluciones basadas en algoritmos o inteligencia artificial (IA) deben diseñarse y aplicarse teniendo en cuenta el contexto local. Esto implica realizar ajustes específicos que consideren las particularidades sociales, económicas y culturales de la región. Además, es esencial respetar y promover el multilingüismo y la diversidad cultural, asegurando que las herramientas sean inclusivas y accesibles para todas las personas, independientemente de su idioma o identidad cultural. Así debe verificarse la adaptación al contexto local, puesto si un modelo entrenado en datos de un país con características demográficas y culturales específicas puede no ser efectivo o incluso ser perjudicial si se utiliza en un contexto diferente.  La falta de sensibilidad cultural o lingüística en soluciones tecnológicas puede conducir a exclusiones involuntarias. Por ejemplo, un sistema que no soporte idiomas locales o dialectos puede marginar a comunidades enteras, limitando su acceso a servicios.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       },
     ]
@@ -624,7 +632,7 @@ const recommendations: Recommendation[] = [
     questionId: "q7",
     recommendations: [
       {
-        text: "La definición del problema de política pública que se busca resolver es un paso clave, no solo en proyectos de IA si no en ciclo mismo de política pública. Identifique claramente un problema prioritario que la entidad se vea abocada a resolver y para el cual una herramienta basada en IA represente un valor agregado. Determine cual es el estado actual de respuesta de la institución, identificar sus limitantes y áreas de oportunidad, y luego indique  de qué manera el sistema de soporte o toma de decisiones basado en IA podría mejorar la situación actual. Delimitar las razones en términos de ahorro  de tiempo y aumento de eficiencia dentro de la institución, puede ser beneficioso, sin embargo la IA puede resultar una herramienta costosas en términos de los recursos y del tiempo que exige su desarrollo. En tal sentido, es clave identificar claramente un problema prioritario que la entidad se vea abocada a resolver y para el cual una herramienta basada en IA represente un valor agregado. ",
+        text: "La definición del problema de política pública que se busca resolver es un paso crucial, no solo en proyectos de inteligencia artificial (IA), sino en el ciclo completo de diseño y ejecución de políticas públicas. Es fundamental identificar un problema prioritario al que la entidad debe responder y evaluar cómo una herramienta basada en IA puede aportar un valor agregado significativo.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false,
         resource: {
           text: "Uso responsable de IA para política pública: manual de formulación de proyectos",
@@ -638,7 +646,7 @@ const recommendations: Recommendation[] = [
     questionId: "q8",
     recommendations: [
       {
-        text: "La definición del problema de política pública que se busca resolver es un paso clave, no solo en proyectos  basados en algoritmos o  IA si no en ciclo mismo de política pública. Identifique claramente un problema prioritario que la entidad se vea abocada a resolver y para el cual una herramienta basada en IA represente un valor agregado. Determine cual es el estado actual de respuesta de la institución, identificar sus limitantes y áreas de oportunidad, y luego indique  de qué manera el sistema de soporte o toma de decisiones basado en IA podría mejorar la situación actual. Delimitar las razones en términos de ahorro  de tiempo y aumento de eficiencia dentro de la institución, puede ser beneficioso, sin embargo la IA puede resultar una herramienta costosas en términos de los recursos y del tiempo que exige su desarrollo. En tal sentido, es clave identificar claramente un problema prioritario que la entidad se vea abocada a resolver y para el cual una herramienta basada en IA represente un valor agregado. ",
+        text: "La definición del problema de política pública que se busca resolver es un paso crucial, no solo en proyectos de inteligencia artificial (IA), sino en el ciclo completo de diseño y ejecución de políticas públicas. Es fundamental identificar un problema prioritario al que la entidad debe responder y evaluar cómo una herramienta basada en IA puede aportar un valor agregado significativo.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false,
         resource: {
           text: "Uso responsable de IA para política pública: manual de formulación de proyectos",
@@ -658,7 +666,7 @@ const recommendations: Recommendation[] = [
     questionId: "q10",
     recommendations: [
       {
-        text: "Una buena  práctica recomendada es estudiar experiencias comparadas de implementación de herramientas similares en otras instituciones o en otros países. De esta forma se tendrá información sobre los retos y desafíos que se debieron afrontar, lo cual también contribuirá a determinar la factibilidad del proyecto.",
+        text: "Una práctica altamente recomendada es analizar experiencias comparables de implementación de herramientas similares en otras instituciones o países. Este enfoque proporciona valiosa información sobre los retos y desafíos enfrentados, lo que no solo permite anticipar posibles obstáculos, sino también identificar estrategias exitosas que puedan ser adaptadas al nuevo contexto. Además, este análisis contribuye de manera significativa a evaluar la factibilidad del proyecto, al ofrecer perspectivas reales sobre los recursos, tiempos y capacidades necesarias para su ejecución.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false,
         resource: {
           text: "Uso responsable de IA para política pública: manual de formulación de proyectos",
@@ -671,7 +679,7 @@ const recommendations: Recommendation[] = [
     questionId: "q11",
     recommendations: [
       {
-        text: " El sistema de IA elegido debería ser adecuado al contexto y basarse en fundamentos científicos rigurosos. En los casos en que se entienda que las decisiones tienen un impacto irreversible o difícil de revertir o que pueden implicar decisiones de vida o muerte, la decisión final debería ser adoptada por un ser humano. ",
+        text: "El sistema de IA seleccionado debe ser adecuado al contexto específico y fundamentarse en principios científicos rigurosos. En aquellos casos donde las decisiones puedan tener un impacto irreversible, sean difíciles de revertir o involucren aspectos críticos como decisiones de vida o muerte, es imprescindible que la decisión final sea adoptada, o al menos revisada, por un ser humano. Este enfoque garantiza  que ciertas decisiones o funciones críticas permanezcan bajo el control humano, incluso cuando se utilizan sistemas de IA avanzados. Este concepto está estrechamente relacionado con la necesidad de preservar la supervisión humana en situaciones donde las decisiones pueden tener un impacto significativo o irreversible en la vida de las personas.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false,
         resource: {
           text: "Recomendación sobre la ética de la inteligencia artificial | UNESCO",
@@ -684,7 +692,7 @@ const recommendations: Recommendation[] = [
     questionId: "q12",
     recommendations: [
       {
-        text: "Los derechos de las personas pudieran verse en ciertos contextos impactados pot la implementación de la IA, por tanto el sistema elegido   debería ser adecuado y proporcional para lograr un objetivo legítimo determinado; Debe realizarse una  evaluación del contexto para gestionar estas posibles tensiones. ",
+        text: "Si el uso de algoritmos o IA el proyecto, puede tener un impacto en los derechos de las personas, es fundamental garantizar que su implementación sea adecuada al contexto y proporcional al objetivo legítimo que se busca alcanzar. El sistema elegido debe ser cuidadosamente diseñado y evaluado para evitar vulneraciones o tensiones innecesarias con los derechos fundamentales. Para ello, es esencial realizar una evaluación contextual previa que permita identificar y gestionar posibles riesgos, asegurando que las soluciones tecnológicas respeten y se alineen con los derechos de las personas maximizando asi los beneficios.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true,
         resource: {
           text: "Evaluacion de impacto en DDHH",
@@ -697,7 +705,7 @@ const recommendations: Recommendation[] = [
     questionId: "q13",
     recommendations: [
       {
-        text: "Si se tratan datos personales, el consentimiento no es la base de licitud si no la ley. Deben igualmente implemementarse las salvaguardas del  8 bis inciso final: Explicabilidad, Derecho a la información y transparencia, Intervención humana, expresar su punto de vista y solicitar una revisión de la decisión. ",
+        text: "En la implementación de sistemas de IA o algoritmos destinados a responder o ejecutar un mandato legal o reglamentario que implique el tratamiento de datos personales, la base de licitud no es el consentimiento, sino la ley o normativa que sustenta dicho tratamiento. Sin embargo, esto no exime a los responsables de garantizar el cumplimiento de las salvaguardas necesarias para proteger los derechos de las personas. Deben implementarse medidas que aseguren la transparencia en las decisiones automatizadas, el acceso a los datos relevantes por parte de los interesados y el cumplimiento estricto de los requisitos establecidos en las normativas de protección de datos. La ejecución de un mandato legal no elimina las obligaciones relacionadas con la protección de la privacidad y la seguridad de los datos personales, que deben ser tratadas con el máximo rigor ético y legal.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true,
         resource: {
           text: "Ley 19628, 8 bis y 20. ",
@@ -710,7 +718,7 @@ const recommendations: Recommendation[] = [
     questionId: "q14",
     recommendations: [
       {
-        text: "Si se tratan datos personales, el consentimiento no es la base de licitud si no la ley. Deben igualmente implemementarse las salvaguardas del  8 bis inciso final: Explicabilidad, Derecho",
+        text: "Las instituciones públicas deben operar siempre dentro de un marco legal claramente definido, en cumplimiento del principio de competencias y legalidad. Esto implica no solo actuar en el ámbito de las facultades conferidas por la ley, sino también garantizar que cualquier uso de datos personales o sensibles esté respaldado por una normativa habilitante específica. Para una adecuada rendición de cuentas, es fundamental identificar no solo la normativa que autoriza el uso de datos, sino también las condiciones particulares establecidas, ya sea en la legislación orgánica de la institución o en las normativas específicas que regulen la actividad en cuestión. Este enfoque asegura que las instituciones actúen de manera transparente y responsable.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false,
         resource: {
           text: "Guía formulación ética de proyectos de ciencia de datos",
@@ -724,7 +732,7 @@ const recommendations: Recommendation[] = [
     questionId: "q15",
     recommendations: [
       {
-        text: "Las instituciones públicas deben actuar siempre bajo un marco legal acotado y definido. Es clave para la rendición de cuentas identificar no solo la normativa habilitante para el uso de datos si no sus condiciones particulares. Puede consultar una guia basada en la normativa chilena que ayude a identificar las principales normativas",
+        text: "Sin una gestión adecuada de los stakeholders (actores clave incluida las comunidades), diversos temas de intenso debate pueden surgir y amenazar la viabilidad del proyecto, pudiendo generarse resistencia y desconfianza. Como mitigación, asegurar la participación de ciudadanos que pudieran verse impactados es clave para obtener y ,mantener un intangible denominado licencia social. La Licencia social es la aceptación, por parte de las personas de la introducción y el uso de herramientas de IA en sistemas de toma de decisiones o de soporte a la decisión. Cumplir únicamente con los marcos legales no es suficiente; es necesario dar un paso adicional para obtener la aceptación social, especialmente en lo que respecta a los posibles efectos adversos que la IA pueda tener en las personas. Esto incluye preocupaciones sobre la opacidad en la toma de decisiones, la falta de intervención humana y otros factores que puedan generar desconfianza, incluso cuando la institución pública tiene las facultades legales indiscutibles para actuar sobre un problema.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       },
     ]
@@ -733,7 +741,7 @@ const recommendations: Recommendation[] = [
     questionId: "q16",
     recommendations: [
       {
-        text: "Las instituciones públicas deben actuar siempre bajo un marco legal acotado y definido. Es clave para la rendición de cuentas identificar no solo la normativa habilitante para el uso de datos si no sus condiciones particulares. Puede consultar una guia basada en la normativa chilena que ayude a identificar las principales normativas",
+        text: "Sin una gestión adecuada de los stakeholders (actores clave incluida las comunidades), diversos temas de intenso debate pueden surgir y amenazar la viabilidad del proyecto, pudiendo generarse resistencia y desconfianza. Como mitigación, asegurar la participación de ciudadanos que pudieran verse impactados es clave para obtener y ,mantener un intangible denominado licencia social. La Licencia social es la aceptación, por parte de las personas de la introducción y el uso de herramientas de IA en sistemas de toma de decisiones o de soporte a la decisión. Cumplir únicamente con los marcos legales no es suficiente; es necesario dar un paso adicional para obtener la aceptación social, especialmente en lo que respecta a los posibles efectos adversos que la IA pueda tener en las personas. Esto incluye preocupaciones sobre la opacidad en la toma de decisiones, la falta de intervención humana y otros factores que puedan generar desconfianza, incluso cuando la institución pública tiene las facultades legales indiscutibles para actuar sobre un problema.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       },
     ]
@@ -742,7 +750,7 @@ const recommendations: Recommendation[] = [
     questionId: "q17",
     recommendations: [
       {
-        text: "Las instituciones públicas deben actuar siempre bajo un marco legal acotado y definido. Es clave para la rendición de cuentas identificar no solo la normativa habilitante para el uso de datos si no sus condiciones particulares. Puede consultar una guia basada en la normativa chilena que ayude a identificar las principales normativas",
+        text: "Sin una gestión adecuada de los stakeholders (actores clave incluida las comunidades), diversos temas de intenso debate pueden surgir y amenazar la viabilidad del proyecto, pudiendo generarse resistencia y desconfianza. Como mitigación, asegurar la participación de ciudadanos que pudieran verse impactados es clave para obtener y ,mantener un intangible denominado licencia social. La Licencia social es la aceptación, por parte de las personas de la introducción y el uso de herramientas de IA en sistemas de toma de decisiones o de soporte a la decisión. Cumplir únicamente con los marcos legales no es suficiente; es necesario dar un paso adicional para obtener la aceptación social, especialmente en lo que respecta a los posibles efectos adversos que la IA pueda tener en las personas. Esto incluye preocupaciones sobre la opacidad en la toma de decisiones, la falta de intervención humana y otros factores que puedan generar desconfianza, incluso cuando la institución pública tiene las facultades legales indiscutibles para actuar sobre un problema.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       },
     ]
@@ -751,7 +759,7 @@ const recommendations: Recommendation[] = [
     questionId: "q18",
     recommendations: [
       {
-        text: "Las instituciones públicas deben actuar siempre bajo un marco legal acotado y definido. Es clave para la rendición de cuentas identificar no solo la normativa habilitante para el uso de datos si no sus condiciones particulares. Puede consultar una guia basada en la normativa chilena que ayude a identificar las principales normativas",
+        text: "Sin una gestión adecuada de los stakeholders (actores clave incluida las comunidades), diversos temas de intenso debate pueden surgir y amenazar la viabilidad del proyecto, pudiendo generarse resistencia y desconfianza. Como mitigación, asegurar la participación de ciudadanos que pudieran verse impactados es clave para obtener y ,mantener un intangible denominado licencia social. La Licencia social es la aceptación, por parte de las personas de la introducción y el uso de herramientas de IA en sistemas de toma de decisiones o de soporte a la decisión. Cumplir únicamente con los marcos legales no es suficiente; es necesario dar un paso adicional para obtener la aceptación social, especialmente en lo que respecta a los posibles efectos adversos que la IA pueda tener en las personas. Esto incluye preocupaciones sobre la opacidad en la toma de decisiones, la falta de intervención humana y otros factores que puedan generar desconfianza, incluso cuando la institución pública tiene las facultades legales indiscutibles para actuar sobre un problema.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       },
     ]
@@ -760,12 +768,12 @@ const recommendations: Recommendation[] = [
     questionId: "q19",
     recommendations: [
       {
-        text: "Considerar la posibilidad de añadir una función de responsable independiente de la ética de la IA o algún otro mecanismo para supervisar las actividades relacionadas con la evaluación del impacto ético, las auditorías y el seguimiento continuo, así como para garantizar la orientación ética de los sistemas de IA. También es útil verificar  formas de gobernanza “blanda”, por ejemplo, un mecanismos de certificación disponibles para los sistemas de IA en todo o parte a fin de garantizar rendición de cuentas sobre todo en ámbito de aplicación sensibles, como la salud, medio ambiente, infancia, servicios sociales, etc. ",
+        text: "Es recomendable considerar la incorporación de una figura de responsable independiente de ética de la IA o algún otro mecanismo especializado que supervise las actividades relacionadas con la evaluación del impacto ético, las auditorías y el seguimiento continuo de los sistemas de IA. Esta función garantizaría que los sistemas de IA operen bajo los principios éticos establecidos y que se mantenga un enfoque coherente con los valores fundamentales, como la transparencia, la equidad y la justicia. La supervisión ética también debe incluir la capacidad de intervenir en caso de detectar sesgos, fallos o impactos negativos en los derechos de las personas.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
 
       },
       {
-        text: "Considerar la posibilidad de añadir una función de responsable independiente de la ética de la IA o algún otro mecanismo para supervisar las actividades relacionadas con la evaluación del impacto ético, las auditorías y el seguimiento continuo, así como para garantizar la orientación ética de los sistemas de IA. También es útil verificar  formas de gobernanza “blanda”, por ejemplo, un mecanismos de certificación disponibles para los sistemas de IA en todo o parte a fin de garantizar rendición de cuentas sobre todo en ámbito de aplicación sensibles, como la salud, medio ambiente, infancia, servicios sociales, etc. ",
+        text: "Es recomendable considerar la incorporación de una figura de responsable independiente de ética de la IA o algún otro mecanismo especializado que supervise las actividades relacionadas con la evaluación del impacto ético, las auditorías y el seguimiento continuo de los sistemas de IA. Esta función garantizaría que los sistemas de IA operen bajo los principios éticos establecidos y que se mantenga un enfoque coherente con los valores fundamentales, como la transparencia, la equidad y la justicia. La supervisión ética también debe incluir la capacidad de intervenir en caso de detectar sesgos, fallos o impactos negativos en los derechos de las personas.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       }
     ]
@@ -774,7 +782,7 @@ const recommendations: Recommendation[] = [
     questionId: "q20",
     recommendations: [
       {
-        text: "Debe alentarse la participación y el compromiso de las mujeres en todas las etapas del ciclo de vida de los sistemas de IA, encaminado a lograr una participación equilibrada de hombres y mujeres ",
+        text: "Se debe fomentar activamente la participación y el compromiso de audiencias diversas en todas las etapas del ciclo de vida de los sistemas de IA, con el objetivo de lograr una representación equilibrada y equitativa de géneros y comunidades. Esto no solo contribuye a la inclusión y la diversidad, sino que también garantiza que los sistemas de IA sean diseñados y evaluados con una perspectiva amplia, reflejando las necesidades y realidades de todos los grupos sociales. La diversidad en los equipos de desarrollo es clave para mitigar sesgos y promover soluciones tecnológicas justas, éticas y accesibles para todas las personas.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
 
       }
@@ -784,7 +792,7 @@ const recommendations: Recommendation[] = [
     questionId: "q21",
     recommendations: [
       {
-        text: "Obligaciones de transprencia si hay uso de datos personales.",
+        text: "Es fundamental que se documente adecuadamente cada una de las decisiones tomadas durante el desarrollo de los sistemas de IA, especialmente cuando se procesan datos personales. Esta documentación debe ser clara y accesible para garantizar el cumplimiento de las obligaciones de transparencia establecidas por las normativas de protección de datos. La transparencia implica no solo informar sobre los criterios y procesos que guían las decisiones automatizadas, sino también permitir a los usuarios entender cómo se recopilan, procesan y utilizan sus datos. Además, se recomienda implementar fichas de transparencia. La ficha de transparencia es un documento que proporciona información relevante sobre la naturaleza, aspectos técnicos, funcionales y del proyecto del SDA. Desempeña un papel fundamental en la promoción de la transparencia, la rendición de cuentas y el uso ético de los algoritmos. La herramienta facilita la creación de esta ficha: ayuda a la identificación de la información relevante sobre el SDA que se debe transparentar y la presenta de manera clara, visible y comprensible tanto para los involucrados en el proceso institucional como para cualquier persona interesada.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
 
       }
@@ -794,11 +802,11 @@ const recommendations: Recommendation[] = [
     questionId: "q22",
     recommendations: [
       {
-        text: "Los proyectos de inteligencia artificial exigen la vinculación de diversos profesionales de la misma entidad pública, aunque también de otras organizaciones relacionadas. Participan  los responsables de los datos, de la infraestructura de TI y del problema o proceso en cuestión, así  como expertos en analítica de datos, del área legal y de comunicaciones",
+        text: "Los proyectos de inteligencia artificial requieren ser desarrollados no solo por profesionales técnicos capacitados,  si no además en colaboración de diversos profesionales dentro de la misma entidad pública. Es crucial la participación de los responsables de la gestión de los datos, los involucrados en el proceso de negocio donde se inserta la solución, los encargados de  infraestructura tecnológica (TI), los expertos en análisis de datos, asesores legales, y profesionales del área de comunicaciones. Esta colaboración interdisciplinaria no solo asegura una implementación efectiva de la IA, sino que también fortalece la capacidad de la institución para abordar los desafíos éticos, legales y sociales que pueden surgir a lo largo del proyecto. Es importante destacar que los sistemas de IA son inherentemente sociotécnicos, lo que significa que no solo involucran aspectos tecnológicos, sino también dinámicas sociales, organizacionales y culturales. Por lo tanto, la implementación de IA debe tener en cuenta las interacciones entre las personas, las instituciones y las tecnologías, asegurando que las soluciones no solo sean técnicamente viables, sino también socialmente responsables y adaptadas al contexto.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       },
       {
-        text: "Los proyectos de inteligencia artificial exigen la vinculación de diversos profesionales de la misma entidad pública, aunque también de otras organizaciones relacionadas. Participan  los responsables de los datos, de la infraestructura de TI y del problema o proceso en cuestión, así  como expertos en analítica de datos, del área legal y de comunicaciones",
+        text: "Los proyectos de inteligencia artificial requieren ser desarrollados no solo por profesionales técnicos capacitados,  si no además en colaboración de diversos profesionales dentro de la misma entidad pública. Es crucial la participación de los responsables de la gestión de los datos, los involucrados en el proceso de negocio donde se inserta la solución, los encargados de  infraestructura tecnológica (TI), los expertos en análisis de datos, asesores legales, y profesionales del área de comunicaciones. Esta colaboración interdisciplinaria no solo asegura una implementación efectiva de la IA, sino que también fortalece la capacidad de la institución para abordar los desafíos éticos, legales y sociales que pueden surgir a lo largo del proyecto. Es importante destacar que los sistemas de IA son inherentemente sociotécnicos, lo que significa que no solo involucran aspectos tecnológicos, sino también dinámicas sociales, organizacionales y culturales. Por lo tanto, la implementación de IA debe tener en cuenta las interacciones entre las personas, las instituciones y las tecnologías, asegurando que las soluciones no solo sean técnicamente viables, sino también socialmente responsables y adaptadas al contexto.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       }
     ]
@@ -807,11 +815,11 @@ const recommendations: Recommendation[] = [
     questionId: "q23",
     recommendations: [
       {
-        text: "Los proyectos de inteligencia artificial exigen la vinculación de diversos profesionales de la misma entidad pública, aunque también de otras organizaciones relacionadas. Participan  los responsables de los datos, de la infraestructura de TI y del problema o proceso en cuestión, así  como expertos en analítica de datos, del área legal y de comunicaciones",
+        text: "Los proyectos de inteligencia artificial requieren ser desarrollados no solo por profesionales técnicos capacitados,  si no además en colaboración de diversos profesionales dentro de la misma entidad pública. Es crucial la participación de los responsables de la gestión de los datos, los involucrados en el proceso de negocio donde se inserta la solución, los encargados de  infraestructura tecnológica (TI), los expertos en análisis de datos, asesores legales, y profesionales del área de comunicaciones. Esta colaboración interdisciplinaria no solo asegura una implementación efectiva de la IA, sino que también fortalece la capacidad de la institución para abordar los desafíos éticos, legales y sociales que pueden surgir a lo largo del proyecto. Es importante destacar que los sistemas de IA son inherentemente sociotécnicos, lo que significa que no solo involucran aspectos tecnológicos, sino también dinámicas sociales, organizacionales y culturales. Por lo tanto, la implementación de IA debe tener en cuenta las interacciones entre las personas, las instituciones y las tecnologías, asegurando que las soluciones no solo sean técnicamente viables, sino también socialmente responsables y adaptadas al contexto.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       },
       {
-        text: "Los proyectos de inteligencia artificial exigen la vinculación de diversos profesionales de la misma entidad pública, aunque también de otras organizaciones relacionadas. Participan  los responsables de los datos, de la infraestructura de TI y del problema o proceso en cuestión, así  como expertos en analítica de datos, del área legal y de comunicaciones",
+        text: "Los proyectos de inteligencia artificial requieren ser desarrollados no solo por profesionales técnicos capacitados,  si no además en colaboración de diversos profesionales dentro de la misma entidad pública. Es crucial la participación de los responsables de la gestión de los datos, los involucrados en el proceso de negocio donde se inserta la solución, los encargados de  infraestructura tecnológica (TI), los expertos en análisis de datos, asesores legales, y profesionales del área de comunicaciones. Esta colaboración interdisciplinaria no solo asegura una implementación efectiva de la IA, sino que también fortalece la capacidad de la institución para abordar los desafíos éticos, legales y sociales que pueden surgir a lo largo del proyecto. Es importante destacar que los sistemas de IA son inherentemente sociotécnicos, lo que significa que no solo involucran aspectos tecnológicos, sino también dinámicas sociales, organizacionales y culturales. Por lo tanto, la implementación de IA debe tener en cuenta las interacciones entre las personas, las instituciones y las tecnologías, asegurando que las soluciones no solo sean técnicamente viables, sino también socialmente responsables y adaptadas al contexto.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       }
     ]
@@ -821,7 +829,7 @@ const recommendations: Recommendation[] = [
     questionId: "q24",
     recommendations: [
       {
-        text: "De acuerdo a sus respuesta aplica la normativa de protección de datos. Esto significa que deben verificarse las condiciones de licitud del tratamiento, transparencia e información a usuarios y procedimientos relativos al ejercicio de derechos vinculados a la protección de datos.",
+        text: "De acuerdo a lo indicado en su respuesta, existiendo uso de datos personales aplica la normativa de protección de datos general o particular que rija la actividad. Esto implica verificar que se cumplan las condiciones de licitud del tratamiento de los datos, los deberes de transparencia proporcionando información adecuada a los usuarios sobre cómo se utilizan sus datos. Además, es fundamental establecer procedimientos claros y accesibles para el ejercicio de los derechos relacionados con la protección de datos, como el derecho de acceso, rectificación, cancelación y oposición. Estas medidas aseguran que el tratamiento de datos se realice de manera conforme a la legislación vigente, protegiendo los derechos fundamentales de los usuarios y promoviendo la confianza en los sistemas de IA.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
 
       }
@@ -831,7 +839,7 @@ const recommendations: Recommendation[] = [
     questionId: "q25",
     recommendations: [
       {
-        text: "De acuerdo a sus respuesta, el proyecto aplica la normativa de protección de datos. Esto significa que deben verificarse las condiciones de licitud",
+        text: "De acuerdo a lo indicado en su respuesta, existiendo uso de datos personales aplica la normativa de protección de datos general o particular que rija la actividad. Esto implica verificar que se cumplan las condiciones de licitud del tratamiento de los datos, los deberes de transparencia proporcionando información adecuada a los usuarios sobre cómo se utilizan sus datos. Además, es fundamental establecer procedimientos claros y accesibles para el ejercicio de los derechos relacionados con la protección de datos, como el derecho de acceso, rectificación, cancelación y oposición. Estas medidas aseguran que el tratamiento de datos se realice de manera conforme a la legislación vigente, protegiendo los derechos fundamentales de los usuarios y promoviendo la confianza en los sistemas de IA.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       }
     ]
@@ -840,7 +848,7 @@ const recommendations: Recommendation[] = [
     questionId: "q26",
     recommendations: [
       {
-        text: "Si su sistema utilizará datos personales verificar procedimiento de ejercicio de derechos ARCO",
+        text: "Si su sistema va a utilizar datos personales, es fundamental verificar y establecer un procedimiento claro para el ejercicio de los derechos ARCO (Acceso, Rectificación, Cancelación y Oposición). Esto significa implementar mecanismos accesibles y permanentemente disponibles para que los usuarios puedan ejercer estos derechos de manera efectiva. El procedimiento debe incluir detalles sobre cómo los usuarios pueden solicitar acceso a sus datos, corregir información inexacta, solicitar la eliminación de datos o expresar oposición al tratamiento de sus datos personales.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
 
       }
@@ -850,7 +858,7 @@ const recommendations: Recommendation[] = [
     questionId: "q27",
     recommendations: [
       {
-        text: "Fortalecer deberes de información y transparencia en la recogida",
+        text: "En la hipótesis de recogida de datos por sensores automatizados, fortalecer los deberes de información y transparencia se vuelve una cuestión critica. Diseñe mecanismos para disponibilizar  información clara y accesible sobre el tipo de datos que se están recopilando, el propósito de la recopilación, la base legal que justifica el tratamiento y los posibles destinatarios de los datos. Si no es posible entregar esta información en el momento de la recolección, asegure que esta información esté disponible en algún sitio web que informe sobre el proyecto o sistema implementado. Además, se deben establecer mecanismos para que los usuarios puedan ejercer sus derechos de forma sencilla, como el acceso, la rectificación o la eliminación de sus datos si fuera procedente.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
 
       }
@@ -860,7 +868,7 @@ const recommendations: Recommendation[] = [
     questionId: "q28",
     recommendations: [
       {
-        text: "Verificar condiciones legales de la cesión de datos personales:a)consentimiento o ley habilitante b) contrato escrito c) finalidad de la cesión",
+        text: "Cuando los datos personales provengan de entidades externas para enriquecer los datos de la entidad, es fundamental verificar las condiciones legales de la cesión o transferencia de éstos, asegurando que se cumplan a lo menos los siguientes requisitos: \n a) Consentimiento o ley habilitante: Confirmar que la cesión de datos se basa en el consentimiento explícito del titular o en una base legal válida que habilite el tratamiento, como una obligación legal o cualquiera de las habilitantes reconocida en la ley, inclusive el interés legítimo.\n b) Contrato escrito: Asegurarse de que exista un contrato escrito que regule la cesión de los datos personales, especificando claramente las responsabilidades y obligaciones de las partes involucradas en cuanto al tratamiento y uso de los datos.\n c) Finalidad de la cesión: Verificar que la cesión de los datos esté claramente justificada por una finalidad específica y legítima, de acuerdo con la normativa de protección de datos, y que dicha finalidad sea compatible con el propósito original para el cual se recogieron los datos.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
 
       }
@@ -870,7 +878,7 @@ const recommendations: Recommendation[] = [
     questionId: "q29",
     recommendations: [
       {
-        text: "Preparar analisis de proporcionalidad que garantice que los datos personales que se traten deben limitarse estrictamente a aquellos que resulten necesarios, adecuados y pertinentes en relación con los fines del tratamiento",
+        text: "En cumplimiento de la normativa de protección de datos, debe realizar una evaluación ex ante sobre la idoneidad de los datos a tratar, mediante un análisis de proporcionalidad que garantice que los datos personales recopilados y procesados se limiten estrictamente a aquellos que sean necesarios, adecuados y pertinentes para los fines específicos del tratamiento. Este análisis se realiza en cumplimiento del principio de minimización de datos, que exige que no se utilicen más datos de los imprescindibles para alcanzar el propósito establecido. Además, debe justificarse que la cantidad, la naturaleza y la duración del tratamiento de los datos estén alineadas con el objetivo legítimo perseguido, minimizando así los riesgos para la privacidad y los derechos de los individuos. ",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
 
       }
@@ -880,7 +888,7 @@ const recommendations: Recommendation[] = [
     questionId: "q30",
     recommendations: [
       {
-        text: "Evaluar los procedimientos de seguridad y la necesidad de contar con datos personales identificados para el tratamiento. La ley exige al responsable y al encargado del tratamiento aplicar las medidas técnicas y organizativas apropiadas para garantizar un nivel de seguridad adecuado al riesgo, que en su caso incluya, entre otros, la seudonimización y el cifrado de datos personales",
+        text: "Recomendamos evaluar la necesidad de contar con datos personales identificados para el entrenamiento y prueba. La ley exige al responsable y al encargado del tratamiento aplicar las medidas técnicas y organizativas apropiadas para garantizar un nivel de seguridad adecuado al riesgo, que en su caso incluya, entre otros, la seudonimización y el cifrado de datos personales; Recomendamos evaluar si es posible tratar los datos de forma agregada o anonimizada, limitando el uso de datos identificables solo a lo estrictamente necesario para cumplir con los fines legítimos del tratamiento. Estas medidas son esenciales para prevenir accesos no autorizados, pérdida de datos o cualquier otro riesgo que pueda comprometer la privacidad de los individuos.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
 
       }
@@ -890,7 +898,7 @@ const recommendations: Recommendation[] = [
     questionId: "q31",
     recommendations: [
       {
-        text: "Procede realizar una evaluación de impacto en protección de datos personales. ",
+        text: "De acuerdo al caso de uso señalado, procede realizar una evaluación de impacto en protección de datos personales (EIPD).  La EIPD es una metodologia para evaluar, identificar y mitigar los riesgos potenciales asociados al tratamiento de los datos, asegurando que se respeten los derechos de los individuos y se cumpla con las normativas de protección de datos vigentes. La EIPD debe analizar la naturaleza, el alcance, el contexto y los fines del tratamiento, así como las posibles consecuencias sobre la privacidad y la seguridad de los datos personales. Además, debe incluir medidas de mitigación de riesgos, como la implementación de técnicas de seudonimización, cifrado, y otras medidas de seguridad apropiadas, con el fin de garantizar que los datos sean tratados de manera legal y segura.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
 
       }
@@ -900,28 +908,21 @@ const recommendations: Recommendation[] = [
     questionId: "q32",
     recommendations: [
       {
-        text: "Implemente procesos completos para el ejercicio de todos los derechos vinculados a los datos",
+        text: "La normativa de protección de datos exige establecer procedimientos claros y accesibles para el ejercicio de los derechos relacionados con la protección de datos, como el derecho de acceso, rectificación, cancelación y oposición. Verifique la procedencia de cada uno de ellos.",
         condition: (answer: boolean | string | null) => answer === "Si, pero parcialmente" || answer === "No"
       },
       {
-        text: "Asegúrese de incluir procesos para la portabilidad e impugnación de decisiones automatizadas",
+        text: "La normativa de protección de datos exige establecer procedimientos claros y accesibles para el ejercicio de los derechos relacionados con la protección de datos, como el derecho de acceso, rectificación, cancelación y oposición. Verifique la procedencia de cada uno de ellos.",
         condition: (answer: boolean | string | null) => answer === "Si, pero parcialmente"
-      },
-      {
-        text: "Desarrolle urgentemente procesos para el ejercicio de los derechos vinculados a los datos",
-        condition: (answer: boolean | string | null) => answer === "No"
       }
     ]
   },
   {
     questionId: "q33",
     recommendations: [
+      
       {
-        text: "Aplica el derecho de opocisión al tratamiento de las decisiones automatizadas. Deben igualmente implemementarse las salvaguardas del  8 bis inciso final: Explicabilidad, Derecho a la información y transparencia, Intervención humana, expresar su punto de vista y solicitar una revisión de la decisión. ",
-        condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
-      },
-      {
-        text: "No aplica el derecho de opocisión al tratamiento de las decisiones automatizadas. Deben igualmente implemementarse las salvaguardas del  8 bis inciso final: Explicabilidad, Derecho a la información y transparencia, Intervención humana, expresar su punto de vista y solicitar una revisión de la decisión. ",
+        text: "En estos casos deben garantizarse niveles de información suficientes relacionados con la existencia de decisiones automatizadas, información significativa sobre la lógica aplicada al tratamiento, así como las consecuencias previstas de dicho tratamiento para el titular, garantizando niveles de explicación suficientes respectos de la consecuencias probables del tratamiento de datos",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       }
     ]
@@ -930,7 +931,7 @@ const recommendations: Recommendation[] = [
     questionId: "q34",
     recommendations: [
       {
-        text: "Evaluar herramientas que permitan transparentar factores o elementos que tome en cuenta el algoritmo para llegar al resultado. El sector público está sujeto a normativas de transparencia en la función publica reforzadas por mandatos de la ley de datos personales frente a la toma de decisiones automatizadas. ",
+        text: "Evaluar el uso de herramientas que permitan transparentar factores o elementos que tome en cuenta el algoritmo para llegar al resultado. El sector público está sujeto a normativas de transparencia en la función publica reforzadas por mandatos de la ley de datos personales frente a la toma de decisiones automatizadas. Una herramienta adecuada es la a ficha de transparencia es un documento que proporciona información relevante sobre la naturaleza, aspectos técnicos, funcionales y del proyecto del SDA. Desempeña un papel fundamental en la promoción de la transparencia, la rendición de cuentas y el uso ético de los algoritmos. La herramienta facilita la creación de esta ficha: ayuda a la identificación de la información relevante sobre el SDA que se debe transparentar y la presenta de manera clara, visible y comprensible tanto para los involucrados en el proceso institucional como para cualquier persona interesada.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
 
       }
@@ -968,10 +969,19 @@ const recommendations: Recommendation[] = [
     ]
   },
   {
+    questionId: "q37.1",
+    recommendations: [
+      {
+        text: "Si el sistema será desarrollado por un tercero subcontratado, es fundamental incluir cláusulas contractuales que obliguen al proveedor a cumplir con las políticas de seguridad establecidas por la entidad responsable del tratamiento de los datos. Estas cláusulas deben especificar claramente las obligaciones del tercero en cuanto a la protección de datos personales, incluyendo la implementación de medidas de seguridad adecuadas, la notificación inmediata de cualquier incidente de seguridad, y la obligación de garantizar la confidencialidad y el acceso restringido a la información. Además, se deben prever auditorías regulares y revisiones de cumplimiento para asegurar que el tercero mantenga un nivel de seguridad adecuado durante todo el ciclo de vida del proyecto.",
+        condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
+      }
+    ]
+  },
+  {
     questionId: "q38",
     recommendations: [
       {
-        text: "Si la respuesta de la 7.2 fue positiva, la organziación está en incumplimiento en este punto. ",
+        text: "La implementación de un Sistema de Gestión de Seguridad de la Información (SGSI) permite hacer un monitoreo adecuado de los riesgos de seguridad en la organización, incluido en el uso de los sistemas de IA. Dado que estos manejan grandes volúmenes de datos y pueden ser utilizados en la toma decisiones automatizadas con un impacto significativo, es esencial contar con un marco sólido que asegure la confidencialidad, integridad,  disponibilidad y resiliencia de la información, así como la protección de los derechos de los usuarios. \nUn SGSI bien estructurado ayuda a identificar y mitigar riesgos de seguridad, garantizando que los algoritmos de IA no solo sean robustos, sino también seguros frente a amenazas cibernéticas. Asimismo, un SGSI proporciona un enfoque sistemático para la gestión de incidentes de seguridad, asegurando que cualquier vulnerabilidad o brecha en la seguridad sea identificada rápidamente y abordada de manera eficaz. Esto es fundamental en proyectos de IA, donde la rapidez en la detección y respuesta a incidentes puede prevenir daños mayores y proteger tanto a las organizaciones como a los usuarios. \nPor lo tanto, integrar un SGSI en el ciclo de vida del desarrollo de proyectos de IA es una práctica recomendada para garantizar la seguridad, fiabilidad y sostenibilidad a largo plazo de estas tecnologías innovadoras.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       },
     ]
@@ -980,7 +990,7 @@ const recommendations: Recommendation[] = [
     questionId: "q39",
     recommendations: [
       {
-        text: "Los sistemas de IA son activos cibernéticos dentro de una infraestructura de TIC. Cada uno de sus componentes fuentes de datos, datos, algoritmos, modelos de entrenamiento, procesos de implementación/gestión de datos/pruebas.Estos componentes  pertenecen a las capas de una infraestructura de TIC de la organización. Dado que los sistemas de IA son parte de la infraestructura de las TIC, no solo se deben aplicar prácticas de ciberseguridad específicas de la IA, sino también aquellas que protejan las TIC que abarcan los elementos de la IA. Un buen enfoque para abordar la especificidad de la ciberseguridad por 'capas' es la guia de ENISA, que ofrece un cuestionario de evaluación de preparación en este sentido. ",
+        text: "Los sistemas de IA son activos cibernéticos dentro de una infraestructura de TIC. Cada uno de sus componentes fuentes de datos, datos, algoritmos, modelos de entrenamiento, procesos de implementación/gestión de datos/pruebas.Estos componentes  pertenecen a las capas de una infraestructura de TIC de la organización. Dado que los sistemas de IA son parte de la infraestructura de las TIC, no solo se deben aplicar prácticas de ciberseguridad específicas de la IA, sino también aquellas que protejan las TIC que abarcan los elementos de la IA. Un buen enfoque para abordar la especificidad de la ciberseguridad por 'capas' es la guia de ENISA, que ofrece un cuestionario de evaluación de preparación en este sentido.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       },
     ]
@@ -1066,7 +1076,7 @@ const recommendations: Recommendation[] = [
     questionId: "q46",
     recommendations: [
       {
-        text: "Estos son los criterios considerados por la IGTA para su aplicación.",
+        text: "Es fundamental que los algoritmos utilizados en áreas de alto impacto como la educación, el empleo, los servicios básicos, los subsidios y la ayuda económica, la capacitación laboral, la salud, la seguridad pública, la vivienda, la protección social, y los procesos administrativos como autorizaciones o permisos, sean transparentes y comprensibles. La opacidad de estos algoritmos puede generar desconfianza, reforzar sesgos injustos y perpetuar desigualdades, afectando de manera directa la vida de las personas. La transparencia en el diseño y la toma de decisiones algorítmica permite que los ciudadanos comprendan cómo se les asignan recursos, beneficios o servicios, y asegura que los sistemas sean justos, éticos y responsables. Además, garantiza que los procesos sean auditables y que se puedan corregir posibles errores o sesgos, promoviendo una mayor equidad y evitando la discriminación en áreas clave para el bienestar social. La Recomendación de Transparencia Algoritmica del Consejo para la Transprencia señala vias para fomentar la información en este caso de algoritmos.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       }
     ]
@@ -1075,7 +1085,7 @@ const recommendations: Recommendation[] = [
     questionId: "q47",
     recommendations: [
       {
-        text: "Aplican minimos de transparencia, relacionados con el hecho de estar interactuando con un sistema de IA.",
+        text: "Se recomienda aplicar minimos de transparencia e información relacionados con el hecho de estar interactuando con un sistema de IA.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       }
     ]
@@ -1084,7 +1094,7 @@ const recommendations: Recommendation[] = [
     questionId: "q48",
     recommendations: [
       {
-        text: "Evaluar herramientas que permitan transparentar factores o elementos que tome en cuenta el algoritmo para llegar al resultado. El sector público está sujeto a normativas de transparencia en la función publica reforzadas por mandatos de la ley de datos personales frente a la toma de decisiones automatizadas. Es recomendable hacer un perfil de datos, esto es un análisis exploratorio inicial durante la fase de Recolección y procesamiento de datos del ciclo de vida de IA. Brinda información para evaluar la calidad, integridad, temporalidad, consistencia y posibles sesgos, daños potenciales e implicaciones de su uso",
+        text: "Evaluar herramientas que permitan transparentar factores o elementos que tome en cuenta el algoritmo para llegar al resultado. El sector público está sujeto a normativas de transparencia en la función publica reforzadas por mandatos de la ley de datos personales frente a la toma de decisiones automatizadas. Es recomendable desarrollar una ficha de transparencia, documento que proporciona información relevante sobre la naturaleza, aspectos técnicos, funcionales y del proyecto del SDA. Desempeña un papel fundamental en la promoción de la transparencia, la rendición de cuentas y el uso ético de los algoritmos. La herramienta facilita la creación de esta ficha: ayuda a la identificación de la información relevante sobre el SDA que se debe transparentar y la presenta de manera clara, visible y comprensible tanto para los involucrados en el proceso institucional como para cualquier persona interesada.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       }
     ]
@@ -1093,8 +1103,12 @@ const recommendations: Recommendation[] = [
     questionId: "q49",
     recommendations: [
       {
-        text: "Los sistemas pueden estar protegidos por derechos de propiedad intelectual, sin embargo,  el Estado actua bajo una obligación de transparencia debiendo justificar el resultado de sus decisiones. Asegure la implementación de mecanismos que permitan comprender como un sistema llega a sus resultados, y que a lo menos pueda responder las solicitudes relacionadas con la normativa de datos personales, relacionadas con los deberes de transparencia contenidas en el articulo 8 bis, o solictudes de acceso a la información pública que podrian ser requeridas en este punto. ",
+        text: "Los sistemas pueden estar protegidos por derechos de propiedad intelectual, sin embargo,  el Estado actua bajo una obligación de transparencia debiendo justificar el resultado de sus decisiones. Asegure la implementación de mecanismos que permitan comprender como un sistema llega a sus resultados, y que a lo menos pueda responder las solicitudes relacionadas con la normativa de datos personales, relacionadas con los deberes de transparencia contenidas en el articulo 14 ter, o solictudes de acceso a la información pública que podrian ser requeridas en este punto.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
+      },
+      {
+        text: "Si fuera procedente por disposiciones contractuales, debe garantizarse  la entrega adecuada y transparente del código fuente del sistema. Se aconseja especialmente acordar su entrega cuando el sistema impacte áreas sensibles como la salud, la seguridad pública o los servicios financieros. La entrega del código fuente no solo facilita la auditoría y revisión externa de los algoritmos, sino que también promueve la transparencia, la reproducibilidad de resultados y la posibilidad de detectar y corregir posibles sesgos o vulnerabilidades. Al entregar el código fuente, se debe asegurar que esté debidamente documentado. En el caso que no sea posible exigirlo, la entidad deberá exigir al proveedor niveles adecuados de transparencia que le permita cumplir sus obligaciones legales.",
+        condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       }
     ]
   },
@@ -1119,7 +1133,7 @@ const recommendations: Recommendation[] = [
     questionId: "q51",
     recommendations: [
       {
-        text: "Debe garantizarse que  la ciudadanía tenga una oportunidad de réplica y, de ser necesario, de impugnar el uso de un determinado sistema o los lineamientos empleados para su desarrollo por parte de un organismo público. El uso incorrecto de los sistemas podría conllevar desde un aprovechamiento no óptimo de los recursos, hasta el desencadenamiento de casos de vulneración de derechos de los ciudadanos. Los riesgos y daños potenciales son variados y a menudo difíciles de anticipar. Los hay fundamentalmente de dos tipos: riesgos de inclusión (por ej. asignación de recursos o beneficios a quienes no corresponde) y de exclusión (por ej privación de recursos o beneficios a personas que sí los necesitan).",
+        text: "Se recomienda establecer mecanismos que permitan que la ciudadanía tenga una oportunidad de réplica y, de ser necesario, de impugnar el uso de un determinado sistema o los lineamientos empleados para su desarrollo por parte de un organismo público. El uso incorrecto de los sistemas podría conllevar desde un aprovechamiento no óptimo de los recursos, hasta el desencadenamiento de casos de vulneración de derechos de los ciudadanos. Los riesgos y daños potenciales son variados y a menudo difíciles de anticipar. Los hay fundamentalmente de dos tipos: riesgos de inclusión (por ej. asignación de recursos o beneficios a quienes no corresponde) y de exclusión (por ej privación de recursos o beneficios a personas que sí los necesitan).",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       }
     ]
@@ -1157,7 +1171,7 @@ const recommendations: Recommendation[] = [
     questionId: "q53",
     recommendations: [
       {
-        text: "Será importante comunicar claramente cómo se toman las decisiones y si el modelo es un sistema de toma o de soporte de decisión. Hacer monitoreos periódicos de la herramienta. ",
+        text: "Se recomienda comunicar de manera clara y transparente cómo se toman las decisiones en el sistema, especificando si el modelo actúa como un sistema autónomo de toma de decisiones o como una herramienta de apoyo para la toma de decisiones humanas. Además, es imprescindible realizar monitoreos periódicos de la herramienta para evaluar su desempeño, identificar posibles sesgos o errores, y garantizar que continúa cumpliendo con los objetivos establecidos, los estándares éticos y las normativas aplicables.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       }
     ]
@@ -1166,8 +1180,12 @@ const recommendations: Recommendation[] = [
     questionId: "q54",
     recommendations: [
       {
-        text: "Será importante comunicar claramente cómo se toman las decisiones y si el modelo es un sistema de toma o de soporte de decisión. Hacer monitoreos periódicos de la herramienta. ",
+        text: "Se recomienda comunicar de manera clara y transparente cómo se toman las decisiones en el sistema, especificando si el modelo actúa como un sistema autónomo de toma de decisiones o como una herramienta de apoyo para la toma de decisiones humanas. Además, es imprescindible realizar monitoreos periódicos de la herramienta para evaluar su desempeño, identificar posibles sesgos o errores, y garantizar que continúa cumpliendo con los objetivos establecidos, los estándares éticos y las normativas aplicables.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
+      },
+      {
+        text: "Se recomienda comunicar de manera clara y transparente cómo se toman las decisiones en el sistema, especificando si el modelo actúa como un sistema autónomo de toma de decisiones o como una herramienta de apoyo para la toma de decisiones humanas. Además, es imprescindible realizar monitoreos periódicos de la herramienta para evaluar su desempeño, identificar posibles sesgos o errores, y garantizar que continúa cumpliendo con los objetivos establecidos, los estándares éticos y las normativas aplicables.",
+        condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       }
     ]
   },
@@ -1183,17 +1201,17 @@ const recommendations: Recommendation[] = [
   {
     questionId: "q56",
     recommendations: [
-      /*{
-        text: "",
-        condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
-      }*/
+      {
+        text: "Una auditoría algorítmica es un estudio que busca evaluar el funcionamiento de un sistema algorítmico, durante su despliegue, considerando aspectos de diseño, datos, impactos en materia de precisión, privacidad y seguridad, entre otros. Estas pueden realizarse a manera de medición frente a ciertos estándares (auditorías de rendimiento), o bien como un análisis de cumplimiento de normas particulares (auditorías de cumplimiento). Su importancia radica en que los sistemas  pueden precisar fallas o riesgos que no se detectan a primera vista o cuya relevancia se descuida debido a la frecuencia con que se realizan ciertos procesos. Mientras más complejos sean los sistemas, existen mayores probabilidades de que se presenten errores. La auditoría es un mecanismo de control y revisión que poder realizado por un profesional  interno como externo y su importancia es que permite verificar que se cumplan  los siguientes propósitos : 1) rendir cuenta sobre el uso de los sistemas algorítmicos 2) Fortalecer la capacidad interna de los organismos públicos de evaluar los sistemas que construyen o adquieren, y facilitar que obtengan una mayor experiencia anticipándose a impactos indeseados. 3) son un mecanismo de responsabilidad en el uso de algoritmos, mediante un mecanismo útil y continuo para que terceros revisen y evalúen estos sistemas, de modo que sea posible identificar problemas y resolverlos o mitigarlos.  Planificar auditorías algorítmicas es esencial para garantizar el cumplimiento de estándares, regulaciones o de lo planificado o esperable del sistema. Las auditorias permiten revisar la fiabilidad de los sistemas de inteligencia artificial (IA), identificar sesgos en los datos, errores en los modelos y posibles impactos negativos en los usuarios, asegurando que las decisiones tomadas por los algoritmos sean éticas y justas. También son una herramienta clave para evaluar la sostenibilidad del modelo a largo plazo, facilitando su mejora continua y minimizando riesgos legales, reputacionales o de seguridad. Incorporar auditorías algorítmicas regulares desde la planificación inicial de un proyecto garantiza un enfoque preventivo, en lugar de reactivo, lo que resulta en sistemas más responsables y alineados con los valores organizacionales y sociales.",
+        condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
+      }
     ]
   },
   {
     questionId: "q57",
     recommendations: [
       {
-        text: "Una auditoría algorítmica es un estudio que busca evaluar el funcionamiento de un sistema algorítmico, durante su despliegue, considerando aspectos de diseño, datos, impactos en materia de precisión, privacidad y seguridad, entre otros. Estas pueden realizarse a manera de medición frente a ciertos estándares (auditorías de rendimiento), o bien como un análisis de cumplimiento de normas particulares (auditorías de cumplimiento). Su importancia radica en que los sistemas  pueden precisar fallas o riesgos que no se detectan a primera vista o cuya relevancia se descuida debido a la frecuencia con que se realizan ciertos procesos. Mientras más complejos sean los sistemas, existen mayores probabilidades de que se presenten errores. La auditoría es un mecanismo de control y revisión que poder realizado por un profesional  interno como externo y su importancia es que permite verificar que se cumplan  los siguientes propósitos : 1) rendir cuenta sobre el uso de los sistemas algorítmicos 2) Fortalecer la capacidad interna de los organismos públicos de evaluar los sistemas que construyen o adquieren, y facilitar que obtengan una mayor experiencia anticipándose a impactos indeseados. 3) son un mecanismo de responsabilidad en el uso de algoritmos, mediante un mecanismo útil y continuo para que terceros revisen y evalúen estos sistemas, de modo que sea posible identificar problemas y resolverlos o mitigarlos.",
+        text: "Destinar un presupuesto específico para auditorías algorítmicas es esencial para su ejecución. Estas auditorías requieren recursos especializados, como equipos multidisciplinarios, herramientas de análisis y tiempo para evaluar exhaustivamente los modelos, los datos utilizados y los resultados generados. Sin un presupuesto adecuado, las auditorías pueden ser superficiales o postergadas, lo que aumenta el riesgo de que los sistemas presenten sesgos, errores o vulnerabilidades que impacten negativamente a los usuarios y la organización. Además, invertir en auditorías reduce significativamente los riesgos legales, financieros y reputacionales. La planificación presupuestaria para auditorías debe considerarse una inversión estratégica.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       }
     ]
@@ -1202,7 +1220,7 @@ const recommendations: Recommendation[] = [
     questionId: "q58",
     recommendations: [
       {
-        text: "Debe garantizarse que  la ciudadanía tenga una oportunidad de réplica y, de ser necesario, de impugnar el uso de un determinado sistema o los lineamientos empleados para su desarrollo por parte de un organismo público",
+        text: "No contemplar un diseño adecuado para atender los requerimientos de información de usuarios externos en sistemas de servicios públicos puede generar múltiples falencias. Entre ellas, destacan la falta de transparencia, que puede provocar desconfianza en el sistema de IA o el uso de algoritmos, y la dificultad para que los usuarios comprendan cómo se toman decisiones que afectan sus vidas, como la asignación de recursos o la priorización de servicios. Además, la ausencia de un mecanismo claro y accesible para responder a estas solicitudes puede resultar en una mayor cantidad de reclamaciones, saturación de otros canales de atención y una percepción negativa sobre la gestión del servicio. También puede representar incumplimientos normativos en casos donde la legislación exige accesibilidad y rendición de cuentas en el manejo de sistemas automatizados.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       }
     ]
@@ -1678,7 +1696,15 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                 <Download className="w-4 h-4 mr-2" />
                 Exportar a PDF
               </Button>
+              
             </CardTitle>
+            <h3 className="text-sm font-normal text-gray-500">En este documento se presentan los resultados 
+              de tu evaluación de impacto algorítmica. Las recomendaciones incluidas han sido elaboradas con 
+              base en tus respuestas a cada pregunta de la evaluación. En muchas de ellas, encontrarás recursos
+              adicionales que te permitirán profundizar en cómo aplicar las sugerencias proporcionadas. Para 
+              facilitar su uso, las recomendaciones están organizadas según la etapa del proyecto en la que se deben 
+              implementar. Esperamos que este material te ayude a planificar, organizar y considerar todos los aspectos 
+              éticos relevantes al diseñar, desarrollar e implementar tu proyecto de ciencia de datos e IA.</h3>
           </CardHeader>
 
           <CardContent>
