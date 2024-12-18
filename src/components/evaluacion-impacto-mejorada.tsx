@@ -1870,7 +1870,31 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
               adicionales que te permitirán profundizar en cómo aplicar las sugerencias proporcionadas. Para 
               facilitar su uso, las recomendaciones están organizadas según la etapa del proyecto en la que se deben 
               implementar. Esperamos que este material te ayude a planificar, organizar y considerar todos los aspectos 
-              éticos relevantes al diseñar, desarrollar e implementar tu proyecto de ciencia de datos e IA.</h3>
+              éticos relevantes al diseñar, desarrollar e implementar tu proyecto de ciencia de datos e IA.
+            </h3>
+            
+            <strong className="text-sm">Bajo impacto (0% - 18.32%)</strong>
+            <h3 className="text-sm font-normal text-gray-500">
+              El proyecto presenta un bajo impacto en términos éticos y sociales. Esto sugiere que la mayoría de los factores 
+              críticos han sido considerados de manera adecuada. Continúa monitoreando el proyecto para asegurar que las condiciones 
+              actuales se mantengan a lo largo de su ciclo de vida.
+            </h3>
+            <strong className="text-sm">Impacto moderado (18.33% - 45.54%)</strong>
+            <h3 className="text-sm font-normal text-gray-500">
+              El proyecto presenta un impacto moderado. Aunque se han considerado varios aspectos, aún existen áreas que podrían 
+              fortalecerse. Evalúa las recomendaciones sugeridas y realiza ajustes puntuales para reducir los posibles riesgos identificados
+            </h3>
+            <strong className="text-sm">Alto impacto (45.55% - 72.77%)</strong>
+            <h3 className="text-sm font-normal text-gray-500">
+              El proyecto presenta un alto impacto. Esto no significa que el proyecto sea inviable, sino que existen varios aspectos críticos 
+              que necesitan ser considerados. Revisar las recomendaciones en detalle te permitirá abordar estos puntos y construir un proyecto más sólido y responsable.
+            </h3>
+            <strong className="text-sm">Impacto muy alto (72.78% - 100%)</strong>
+            <h3 className="text-sm font-normal text-gray-500">
+              El proyecto presenta un impacto muy alto. Esto indica que muchos factores críticos no están siendo abordados aún. Este resultado es una oportunidad para 
+              fortalecer tu proyecto desde la base, identificando los riesgos clave y tomando acciones correctivas que garanticen su éxito y minimicen efectos negativos.
+            </h3>
+
           </CardHeader>
 
           <CardContent>
