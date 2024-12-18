@@ -1936,7 +1936,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                     </CardDescription>
 
                     {/* Mensaje específico del nivel de impacto */}
-                    <CardDescription className="text-center text-sm mt-4 text-gray-600">
+                    <CardDescription className="text-center text-xs mt-4 text-gray-600">
                       <strong>
                         {(() => {
                           switch (getImpactLevel(totalScore)) {
