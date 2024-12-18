@@ -1376,7 +1376,6 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   const tableRef = useRef<HTMLTableElement>(null)
   
   const MIN_SCORE = 18.32
-  const MAX_SCORE = 100
 
 
   const calculateTotalScore = (answers: Record<string, string | string[] | boolean | null>): number => {
@@ -1395,15 +1394,6 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
     if (score <= 45.54) return "Impacto moderado";
     if (score <= 72.77) return "Alto impacto";
     return "Impacto muy alto";
-  }
-  const getScorePercentage = (score: number): number => {
-    return ((score - MIN_SCORE) / (MAX_SCORE - MIN_SCORE)) * 100;
-  }
-
-  const getScoreLevel = (score: number): number => {
-    if (score <= 45.54) return 1;
-    if (score <= 72.77) return 2;
-    return 3;
   }
 
   const getScoreByDimension = (answers: Record<string, string | string[] | boolean | null>): Record<string, number> => {
@@ -1946,21 +1936,23 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                     </CardDescription>
 
                     {/* Mensaje específico del nivel de impacto */}
-                    <CardDescription className="text-center text-xs mt-4 text-gray-500">
-                      {(() => {
-                        switch (getImpactLevel(totalScore)) {
-                          case "Bajo impacto":
-                            return "El proyecto presenta un bajo impacto en términos éticos y sociales. Continúa monitoreando para asegurar que se mantenga.";
-                          case "Impacto moderado":
-                            return "El proyecto presenta un impacto moderado. Aún existen áreas que podrían fortalecerse. Revisa las recomendaciones.";
-                          case "Alto impacto":
-                            return "El proyecto presenta un alto impacto. Hay varios aspectos críticos por considerar. Revisa las recomendaciones detalladamente.";
-                          case "Impacto muy alto":
-                            return "El proyecto presenta un impacto muy alto. Es importante abordar los factores críticos identificados para fortalecer tu proyecto.";
-                          default:
-                            return "";
-                        }
-                      })()}
+                    <CardDescription className="text-center text-sm mt-4 text-gray-600">
+                      <strong>
+                        {(() => {
+                          switch (getImpactLevel(totalScore)) {
+                            case "Bajo impacto":
+                              return "El proyecto presenta un bajo impacto en términos éticos y sociales. Continúa monitoreando para asegurar que se mantenga.";
+                            case "Impacto moderado":
+                              return "El proyecto presenta un impacto moderado. Aún existen áreas que podrían fortalecerse. Revisa las recomendaciones.";
+                            case "Alto impacto":
+                              return "El proyecto presenta un alto impacto. Hay varios aspectos críticos por considerar. Revisa las recomendaciones detalladamente.";
+                            case "Impacto muy alto":
+                              return "El proyecto presenta un impacto muy alto. Es importante abordar los factores críticos identificados para fortalecer tu proyecto.";
+                            default:
+                              return "";
+                          }
+                        })()}
+                      </strong>
                     </CardDescription>
                   </CardContent>
                 </div>

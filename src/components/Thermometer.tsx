@@ -28,7 +28,7 @@ export const Thermometer: React.FC<ThermometerProps> = ({ score, minScore, maxSc
           style={{ bottom: `${section === 1 ? 0 : section === 2 ? '27.22%' : '54.45%'}` }}
         />
       ))}
-      {Object.entries(dimensions).map(([dimension, dimensionScore], index) => {
+      {Object.entries(dimensions).map(([dimension, dimensionScore]) => {
         const dimensionPercentage = ((dimensionScore - minScore / dimensions.length) / (maxScore / dimensions.length - minScore / dimensions.length)) * 100;
         return (
           <div
