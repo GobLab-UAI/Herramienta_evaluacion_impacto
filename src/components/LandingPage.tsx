@@ -114,7 +114,7 @@ export function LandingPage() {
             )}
             <div className="flex justify-between space-y-4 p-4 rounded-lg backdrop-blur-sm">
               <Image src="/images/Logo_herramientas_algoritmos.png" alt="HERRAMIENTAS ALGORITMOS ÉTICOS" width={300} height={10} />
-              <Image src="/images/Goblab.png" alt="Gob_Lab UAI" width={250} height={10} />
+              <Image src="/images/logo-goblab-uai.png" alt="Gob_Lab UAI" width={250} height={10} />
               
             </div>
             <p className="text-sm text-gray-600">V.0.0.3 <strong>Beta</strong></p>
@@ -122,7 +122,7 @@ export function LandingPage() {
             <div className="space-y-6 mb-8 text-gray-700">
               <p>
               La herramienta de Evaluación de Impacto Algorítmico (EIA) es un recurso diseñado para analizar y gestionar los riesgos asociados al uso de sistemas 
-              algorítmicos y de inteligencia artificial en el sector público. Su objetivo principal es garantizar que dichos sistemas sean implementados de manera 
+              algorítmicos y de inteligencsia artificial en el sector público. Su objetivo principal es garantizar que dichos sistemas sean implementados de manera 
               ética, segura y transparente. En esta fase beta la herramienta puede presentar errores que estamos trabajando en corregir a la brevedad.
               </p>
               <p>

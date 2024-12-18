@@ -14,7 +14,7 @@ import { Progress } from "@/components/ui/progress"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-
+import { Thermometer } from '@/components/Thermometer'
 import { CheckCircle, HelpCircle, Download, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react'
 //import jsPDF from 'jspdf'
 //import * as XLSX from 'xlsx'
@@ -25,9 +25,10 @@ type QuestionType = 'text' | 'textArea' | 'select' | 'multiselect' | 'yesno' | '
 type Option = {
   value: string
   label: string
+  score?: number
 }
 
-type Question = {
+export type Question = {
   id: string
   text: string
   type: QuestionType
@@ -35,6 +36,8 @@ type Question = {
   stage: 'Conceptualización y diseño' | 'Uso y monitoreo' | 'Recolección y procesamiento de datos'
   info?: string
   options?: Option[]
+  scoreContribution?: boolean
+  score?: (answer: string | string[] | boolean | null) => number
 }
 
 type Answer = string | string[] | boolean | null
@@ -66,7 +69,8 @@ const questions: Question[] = [
     type: "text",
     dimension: "General", 
     stage: "Conceptualización y diseño",
-    info: "Escriba el nombre del proyecto que está evaluando."
+    info: "Escriba el nombre del proyecto que está evaluando.",
+    scoreContribution: false
   },
   { 
     id: "q2", 
@@ -74,7 +78,8 @@ const questions: Question[] = [
     type: "textArea",
     dimension: "General", 
     stage: "Conceptualización y diseño",
-    info: "Describa brevemente el proyecto que está evaluando."
+    info: "Describa brevemente el proyecto que está evaluando.",
+    scoreContribution: false
   },
   { 
     id: "q3", 
@@ -87,7 +92,8 @@ const questions: Question[] = [
       { value: "conceptualizacion", label: "Conceptualización y diseño" },
       { value: "recoleccion", label: "Recolección y procesamiento de datos" },
       { value: "uso", label: "Uso y monitoreo" }
-    ]
+    ],
+    scoreContribution: false
   },
   { 
     id: "q4", 
@@ -101,7 +107,8 @@ const questions: Question[] = [
       { value: "El sistema realiza tareas que los humanos no podrían realizar en un periodo de tiempo razonable", label: "El sistema realiza tareas que los humanos no podrían realizar en un periodo de tiempo razonable" },
       { value: "Reducción de los costos de un programa existente", label: "Reducción de los costos de un programa existente" },
       { value: "Mejorar la calidad general de las decisiones", label: "Mejorar la calidad general de las decisiones" }
-    ]
+    ],
+    scoreContribution: false
   },
   { 
     id: "q5", 
@@ -109,7 +116,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "General", 
     stage: "Conceptualización y diseño",
-    info: ""
+    info: "",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.3 : 0
   },
   { 
     id: "q6", 
@@ -117,7 +126,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "General", 
     stage: "Conceptualización y diseño",
-    info: "Por ejemplo, tu sistema usa o implementa BERT, ChatGPT, etc."
+    info: "Por ejemplo, tu sistema usa o implementa BERT, ChatGPT, etc.",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.3 : 0
   },
   { 
     id: "q7", 
@@ -125,7 +136,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "General", 
     stage: "Conceptualización y diseño",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.3 : 0
   },
   { 
     id: "q8", 
@@ -133,7 +146,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Proporcionalidad", 
     stage: "Conceptualización y diseño",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.3 : 0
   },
   { 
     id: "q9", 
@@ -142,11 +157,12 @@ const questions: Question[] = [
     dimension: "Proporcionalidad", 
     stage: "Conceptualización y diseño",
     info: " ",
+    scoreContribution: true,
     options: [
-      { value: "Utilizar enfoques innovadores", label: "Utilizar enfoques innovadores" },
-      { value: "El sistema realiza tareas que los humanos no podrían realizar en un periodo de tiempo razonable", label: "El sistema realiza tareas que los humanos no podrían realizar en un periodo de tiempo razonable" },
-      { value: "Reducción de los costos de un programa existente", label: "Reducción de los costos de un programa existente" },
-      { value: "Mejorar la calidad general de las decisiones", label: "Mejorar la calidad general de las decisiones" }
+      { value: "Utilizar enfoques innovadores", label: "Utilizar enfoques innovadores", score: 1.3 },
+      { value: "El sistema realiza tareas que los humanos no podrían realizar en un periodo de tiempo razonable", label: "El sistema realiza tareas que los humanos no podrían realizar en un periodo de tiempo razonable", score: 1.3 },
+      { value: "Reducción de los costos de un programa existente", label: "Reducción de los costos de un programa existente", score: 1.3 },
+      { value: "Mejorar la calidad general de las decisiones", label: "Mejorar la calidad general de las decisiones", score: 1.3 }
     ]
   },
   { 
@@ -155,7 +171,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Proporcionalidad", 
     stage: "Conceptualización y diseño",
-    info: "Puedes revisar casos similares en algorítmicospublicos.cl "
+    info: "Puedes revisar casos similares en algorítmicospublicos.cl ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.3 : 0
   },
   { 
     id: "q11", 
@@ -163,7 +181,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Proporcionalidad", 
     stage: "Conceptualización y diseño",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.3 : 0  
 
   },
   { 
@@ -172,7 +192,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Proporcionalidad", 
     stage: "Conceptualización y diseño",
-    info: "Por ejemplo, impácto en Derecho a la educación, salud, propiedad, la privacidad, libertad de expresión o debido proceso,medio ambiente o los que se establecen en el articulo 19 de la constitución"
+    info: "Por ejemplo, impácto en Derecho a la educación, salud, propiedad, la privacidad, libertad de expresión o debido proceso,medio ambiente o los que se establecen en el articulo 19 de la constitución",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.3 : 0
   },
   { 
     id: "q13", 
@@ -180,7 +202,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Normativa", 
     stage: "Conceptualización y diseño",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 5.55 : 0
   },
   { 
     id: "q14", 
@@ -188,7 +212,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Normativa", 
     stage: "Conceptualización y diseño",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 5.55 : 0
   },
   { 
     id: "q15", 
@@ -196,7 +222,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Licencia Social", 
     stage: "Conceptualización y diseño",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 2.77 : 0
   },
   { 
     id: "q16", 
@@ -204,7 +232,10 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Licencia Social", 
     stage: "Conceptualización y diseño",
-    info: "Tales como correo electrónico, formulario de sugerencias, consultas publicas antes de la implementación"
+    info: "Tales como correo electrónico, formulario de sugerencias, consultas publicas antes de la implementación",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 2.77 : 0
+
   },
   { 
     id: "q17", 
@@ -212,7 +243,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Licencia Social", 
     stage: "Conceptualización y diseño",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 2.77 : 0
     
   },
   { 
@@ -221,7 +254,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Licencia Social", 
     stage: "Conceptualización y diseño",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 2.77 : 0
   },
   { 
     id: "q19", 
@@ -229,7 +264,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Gobernanza", 
     stage: "Uso y monitoreo",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 2.22 : 2.22
   },
   { 
     id: "q20", 
@@ -237,7 +274,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Gobernanza", 
     stage: "Uso y monitoreo",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 2.22 : 0
   },
   { 
     id: "q21", 
@@ -245,7 +284,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Gobernanza", 
     stage: "Uso y monitoreo",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 2.22 : 0
   },
   { 
     id: "q22", 
@@ -253,7 +294,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Gobernanza", 
     stage: "Conceptualización y diseño",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 2.22 : 2.22
   },
   { 
     id: "q23", 
@@ -261,7 +304,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Gobernanza", 
     stage: "Conceptualización y diseño",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 2.22 : 2.22
   },
   { 
     id: "q24", 
@@ -269,7 +314,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Conceptualización y diseño",
-    info: "Dato personal: cualquier información vinculada o referida a una persona natural identificada o identificable. Se considerará identificable toda persona cuya identidad pueda determinarse, directa o indirectamente, en particular mediante uno o más identificadores, tales como el nombre, el número de cédula de identidad, el análisis de elementos propios de la identidad física, fisiológica, genética, psíquica, económica, cultural o social de dicha persona. Para determinar si una persona es identificable deberán considerarse todos los medios y factores objetivos que razonablemente se podrían usar para dicha identificación en el momento del tratamiento"
+    info: "Dato personal: cualquier información vinculada o referida a una persona natural identificada o identificable. Se considerará identificable toda persona cuya identidad pueda determinarse, directa o indirectamente, en particular mediante uno o más identificadores, tales como el nombre, el número de cédula de identidad, el análisis de elementos propios de la identidad física, fisiológica, genética, psíquica, económica, cultural o social de dicha persona. Para determinar si una persona es identificable deberán considerarse todos los medios y factores objetivos que razonablemente se podrían usar para dicha identificación en el momento del tratamiento",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.01 : 0
   },
   { 
     id: "q25", 
@@ -277,7 +324,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: "Datos personales sensibles: tendrán esta condición aquellos datos personales que se refieren a las características físicas o morales de las personas o a hechos o circunstancias de su vida privada o intimidad, que revelen el origen étnico o racial, la afiliación política, sindical o gremial, situación socioeconómica, las convicciones ideológicas o filosóficas, las creencias religiosas, los datos relativos a la salud, al perfil biológico humano, los datos biométricos, y la información relativa a la vida sexual, a la orientación sexual y a la identidad de género de una persona natural."
+    info: "Datos personales sensibles: tendrán esta condición aquellos datos personales que se refieren a las características físicas o morales de las personas o a hechos o circunstancias de su vida privada o intimidad, que revelen el origen étnico o racial, la afiliación política, sindical o gremial, situación socioeconómica, las convicciones ideológicas o filosóficas, las creencias religiosas, los datos relativos a la salud, al perfil biológico humano, los datos biométricos, y la información relativa a la vida sexual, a la orientación sexual y a la identidad de género de una persona natural.",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.01 : 0
   },
   { 
     id: "q26", 
@@ -285,7 +334,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.01 : 0
   },
   { 
     id: "q27", 
@@ -293,7 +344,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.01 : 0
   },
   { 
     id: "q28", 
@@ -301,7 +354,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: ""
+    info: "",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.01 : 0
   },
   { 
     id: "q29", 
@@ -309,7 +364,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: "En otras palabras, ¿existe una evaluación ex ante en cuanto a la pertinencia y necesidad de incluir cada uno de los tipos de datos en el sistema?"
+    info: "En otras palabras, ¿existe una evaluación ex ante en cuanto a la pertinencia y necesidad de incluir cada uno de los tipos de datos en el sistema?",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.01 : 0
   },
   { 
     id: "q30", 
@@ -317,7 +374,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.01 : 0
   },
   { 
     id: "q31", 
@@ -325,7 +384,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.01 : 0
   },
   {
     id: "q32",
@@ -334,10 +395,11 @@ const questions: Question[] = [
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
     info: " ",
+    scoreContribution: true,
     options: [
-      { value: "Si", label: "Sí" },
-      { value: "Si, pero parcialmente", label: "SI, pero solo parcialmente ( Acceso, Rectificación, Supresión, Opocisión)" },
-      { value: "No", label: "No" }
+      { value: "Si", label: "Sí", score: 0 },
+      { value: "Si, pero parcialmente", label: "SI, pero solo parcialmente ( Acceso, Rectificación, Supresión, Opocisión)", score: 0.5 },
+      { value: "No", label: "No", score: 1.01 }
     ]
   },
   { 
@@ -346,7 +408,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.01 : 0
   },
   {
     id: "q34",
@@ -354,7 +418,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.01 : 0
   },
   {
     id: "q35",
@@ -362,7 +428,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.58 : 0
   },
   {
     id: "q36",
@@ -370,7 +438,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.58 : 0
   },
   {
     id: "q37",
@@ -378,7 +448,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.58 : 0
   },
   {
     id: "q37.1",
@@ -386,7 +458,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.58 : 0
   },
   {
     id: "q38",
@@ -394,7 +468,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.58 : 0
   },
   {
     id: "q39",
@@ -402,7 +478,9 @@ const questions: Question[] = [
     type: "yesno", 
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.58 : 0
   },
   {
     id: "q39.1",
@@ -410,7 +488,9 @@ const questions: Question[] = [
     type: "yesno", 
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.58 : 0
   },
   {
     id: "q40",
@@ -418,7 +498,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Equidad", 
     stage: "Recolección y procesamiento de datos",
-    info: "La ley chilena prohíbe la discriminación arbitraria, esto toda distinción, exclusión o restricción que carezca de justificación razonable, efectuada por agentes del Estado o particulares, en particular cuando se funden en motivos tales como la raza o etnia, la nacionalidad, la situación socioeconómica, el idioma, la ideología u opinión política, la religión o creencia, la sindicación o participación en organizaciones gremiales o la falta de ellas, el sexo, género, la maternidad, la lactancia materna, el amamantamiento, la orientación sexual, la identidad y expresión de género, el estado civil, la edad, la filiación, la apariencia personal y la enfermedad o discapacidad."
+    info: "La ley chilena prohíbe la discriminación arbitraria, esto toda distinción, exclusión o restricción que carezca de justificación razonable, efectuada por agentes del Estado o particulares, en particular cuando se funden en motivos tales como la raza o etnia, la nacionalidad, la situación socioeconómica, el idioma, la ideología u opinión política, la religión o creencia, la sindicación o participación en organizaciones gremiales o la falta de ellas, el sexo, género, la maternidad, la lactancia materna, el amamantamiento, la orientación sexual, la identidad y expresión de género, el estado civil, la edad, la filiación, la apariencia personal y la enfermedad o discapacidad.",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 2.22 : 0
   },
   {
     id: "q41",
@@ -426,6 +508,8 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Equidad", 
     stage: "Recolección y procesamiento de datos",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 2.22 : 2.22
   },
   {
     id: "q42",
@@ -433,6 +517,8 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Equidad", 
     stage: "Recolección y procesamiento de datos",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 2.22 : 0
   },
   {
     id: "q43",
@@ -440,6 +526,8 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Equidad", 
     stage: "Recolección y procesamiento de datos",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 2.22 : 0
   },
   {
     id: "q44",
@@ -447,6 +535,8 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Equidad", 
     stage: "Recolección y procesamiento de datos",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 2.22 : 2.22
   },
   {
     id: "q45",
@@ -454,6 +544,8 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.58 : 1.58
   },
   {
     id: "q46",
@@ -461,6 +553,8 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.58 : 0
   },
   {
     id: "q47",
@@ -468,6 +562,8 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.58 : 0
   },
   {
     id: "q48",
@@ -475,6 +571,8 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.58 : 0
   },
   {
     id: "q49",
@@ -482,6 +580,8 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.58 : 1.58
   },
   {
     id: "q50",
@@ -489,6 +589,8 @@ const questions: Question[] = [
     type: "yesnoNA",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.58 : 0
    
   },
   {
@@ -497,6 +599,8 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.58 : 0
   },
   {
     id: "q52",
@@ -505,13 +609,14 @@ const questions: Question[] = [
     dimension: "Rendición de cuentas", 
     stage: "Uso y monitoreo",
     options: [
-      { value: "Sistemas de reconocimiento y de detección de eventos", label: "Sistemas de reconocimiento y de detección de eventos" },
-      { value: "Predicción", label: "Predicción" },
-      { value: "Personalización", label: "Personalización" },
-      { value: "Soporte de interacción", label: "Soporte de interacción" },
-      { value: "Optimización", label: "Optimización" },
-      { value: "Razonamiento con estructuras de conocimiento", label: "Razonamiento con estructuras de conocimiento" }
+      { value: "Sistemas de reconocimiento y de detección de eventos", label: "Sistemas de reconocimiento y de detección de eventos", score: 0 },
+      { value: "Predicción", label: "Predicción", score: 0 },
+      { value: "Personalización", label: "Personalización", score: 0 },
+      { value: "Soporte de interacción", label: "Soporte de interacción", score: 0 },
+      { value: "Optimización", label: "Optimización", score: 0 },
+      { value: "Razonamiento con estructuras de conocimiento", label: "Razonamiento con estructuras de conocimiento", score: 0 },
     ],
+    scoreContribution: false,
     info: "Para entender las clasificaciones, visite la guía permitido innovar en el siguiente enlace: https://www.lab.gob.cl/permitido-innovar"
   },
   {
@@ -520,7 +625,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.38 : 0
   },
   {
     id: "q54",
@@ -528,7 +635,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.38 : 1.38
   },
   {
     id: "q55",
@@ -536,7 +645,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.38 : 0
   },
   {
     id: "q56",
@@ -544,7 +655,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.38 : 0
   },
   {
     id: "q57",
@@ -552,7 +665,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.38 : 0
   },
   {
     id: "q58",
@@ -560,7 +675,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === false ? 1.38 : 0
   },
   {
     id: "q59",
@@ -568,7 +685,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
-    info: " "
+    info: " ",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.38 : 1.38
   },
 ];
 
@@ -1251,8 +1370,55 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   const [currentDimension, setCurrentDimension] = useState(dimensions[0])
   const [userEmail] = useState<string | null>(initialEmail ?? null)
   const [selectedRecommendations, setSelectedRecommendations] = useState<Record<string, boolean>>({})
+  const [totalScore, setTotalScore] = useState(0)
+  const [scoreByDimension, setScoreByDimension] = useState<Record<string, number>>({});
   const router = useRouter()
   const tableRef = useRef<HTMLTableElement>(null)
+  
+  const MIN_SCORE = 18.32
+  const MAX_SCORE = 100
+
+
+  const calculateTotalScore = (answers: Record<string, string | string[] | boolean | null>): number => {
+    const rawScore = questions.reduce((total, question) => {
+      if (question.scoreContribution && question.score) {
+        return total + question.score(answers[question.id]);
+      }
+      return total;
+    }, 0);
+    
+    return Math.max(rawScore, MIN_SCORE);
+  }
+
+  const getImpactLevel = (score: number): string => {
+    if (score <= 18.32) return "Bajo impacto";
+    if (score <= 45.54) return "Impacto moderado";
+    if (score <= 72.77) return "Alto impacto";
+    return "Impacto muy alto";
+  }
+  const getScorePercentage = (score: number): number => {
+    return ((score - MIN_SCORE) / (MAX_SCORE - MIN_SCORE)) * 100;
+  }
+
+  const getScoreLevel = (score: number): number => {
+    if (score <= 45.54) return 1;
+    if (score <= 72.77) return 2;
+    return 3;
+  }
+
+  const getScoreByDimension = (answers: Record<string, string | string[] | boolean | null>): Record<string, number> => {
+    return dimensions.reduce((acc, dimension) => {
+      const dimensionQuestions = questions.filter(q => q.dimension === dimension);
+      const dimensionScore = dimensionQuestions.reduce((total, question) => {
+        if (question.scoreContribution && question.score) {
+          return total + question.score(answers[question.id]);
+        }
+        return total;
+      }, 0);
+      acc[dimension] = dimensionScore;
+      return acc;
+    }, {} as Record<string, number>);
+  }
 
   useEffect(() => {
     if (!userEmail) {
@@ -1263,6 +1429,10 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
       if (savedData) {
         const { answers: savedAnswers } = JSON.parse(savedData)
         setAnswers(savedAnswers)
+        const newTotalScore = calculateTotalScore(savedAnswers);
+        const newScoreByDimension = getScoreByDimension(savedAnswers);
+        setTotalScore(newTotalScore);
+        setScoreByDimension(newScoreByDimension);
       }
     }
   }, [userEmail, router])
@@ -1283,7 +1453,9 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
         }
         localStorage.setItem(`evaluationData_${userEmail}`, JSON.stringify(dataToSave))
       }
-      return newAnswers
+      const newTotalScore = calculateTotalScore(newAnswers);
+      setTotalScore(newTotalScore);
+      return newAnswers;
     })
   }
 
@@ -1397,6 +1569,8 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
       if (savedData) {
         const { answers: savedAnswers } = JSON.parse(savedData)
         setAnswers(savedAnswers)
+        const newTotalScore = calculateTotalScore(savedAnswers);
+        setTotalScore(newTotalScore);
         alert('Evaluación cargada correctamente')
       } else {
         alert('No se encontró ninguna evaluación guardada')
@@ -1574,7 +1748,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
       <div className="flex justify-between space-y-1 p-4 rounded-lg backdrop-blur-sm items-center">
         <Image src="/images/Logo_herramientas_algoritmos.png" alt="HERRAMIENTAS ALGORITMOS ÉTICOS" width={300} height={5} />
         <h1 className="text-2xl font-bold mb-4 text-center">Evaluación de Impacto Algorítmico</h1>
-        <Image src="/images/Goblab.png" alt="Gob_Lab UAI" width={220} height={5} />
+        <Image src="/images/logo-goblab-uai.png" alt="Gob_Lab UAI" width={220} height={5} />
       </div>
       
       <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
@@ -1698,6 +1872,8 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
               </Button>
               
             </CardTitle>
+            
+            
             <h3 className="text-sm font-normal text-gray-500">En este documento se presentan los resultados 
               de tu evaluación de impacto algorítmica. Las recomendaciones incluidas han sido elaboradas con 
               base en tus respuestas a cada pregunta de la evaluación. En muchas de ellas, encontrarás recursos
@@ -1709,24 +1885,88 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
 
           <CardContent>
           <div ref={tableRef}>
-
+            
             <Card className="mb-6"> 
-              <CardHeader>
-                <CardTitle>Información General</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableBody>
-                    {getGeneralInfo().map((info, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">{info.question}</TableCell>
-                        <TableCell>{info.answer}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
+              {/* Información General */}
+              <div className="flex-grow">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Información General</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <Table>
+                      <TableBody>
+                        {getGeneralInfo().map((info, index) => (
+                          <TableRow key={index}>
+                            <TableCell className="font-medium">{info.question}</TableCell>
+                            <TableCell>{info.answer}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
+              </div>              
             </Card>
+
+            <Card className="mb-6 p-4"> 
+              <CardHeader className=" mb-2">
+                <CardTitle>Descripciones para cada nivel de impacto</CardTitle>
+              </CardHeader>
+              <div className="flex items-center gap-4"> {/* Contenedor Flexbox */}
+
+              
+
+                {/* Columna 1: Termómetro */}
+                <div className="flex flex-col items-center">
+                  <Thermometer
+                    score={totalScore}
+                    minScore={18.32}
+                    maxScore={100}
+                    dimensions={scoreByDimension}
+                  />
+                  <CardDescription className="text-center text-sm mt-2">
+                    Puntuación total: <strong>{totalScore} %</strong>
+                  </CardDescription>
+                </div>
+
+                {/* Columna 2: Descripción de impacto */}
+                <div className="flex-grow">
+                  
+
+                  <CardContent>
+                    {/* Nivel de Impacto */}
+                    <CardDescription className="text-center text-lg font-semibold mb-4 text-gray-700">
+                      {getImpactLevel(totalScore)}
+                    </CardDescription>
+
+                    {/* Descripción principal */}
+                    <CardDescription className="text-sm leading-relaxed text-gray-600">
+                      Un nivel de impacto alto o muy alto <strong>NO</strong> implica que el proyecto deba descartarse, sino que es importante analizar con mayor <strong>profundidad</strong> las áreas identificadas. La evaluación señala aspectos que aún no están suficientemente considerados, lo que representa oportunidades para <strong>fortalecer tu proyecto</strong> y minimizar posibles riesgos.
+                    </CardDescription>
+
+                    {/* Mensaje específico del nivel de impacto */}
+                    <CardDescription className="text-center text-xs mt-4 text-gray-500">
+                      {(() => {
+                        switch (getImpactLevel(totalScore)) {
+                          case "Bajo impacto":
+                            return "El proyecto presenta un bajo impacto en términos éticos y sociales. Continúa monitoreando para asegurar que se mantenga.";
+                          case "Impacto moderado":
+                            return "El proyecto presenta un impacto moderado. Aún existen áreas que podrían fortalecerse. Revisa las recomendaciones.";
+                          case "Alto impacto":
+                            return "El proyecto presenta un alto impacto. Hay varios aspectos críticos por considerar. Revisa las recomendaciones detalladamente.";
+                          case "Impacto muy alto":
+                            return "El proyecto presenta un impacto muy alto. Es importante abordar los factores críticos identificados para fortalecer tu proyecto.";
+                          default:
+                            return "";
+                        }
+                      })()}
+                    </CardDescription>
+                  </CardContent>
+                </div>
+              </div>    
+            </Card>
+
 
 
             <Table>
