@@ -1,4 +1,3 @@
-<<<
 Este es un proyecto de [Next.js](https://nextjs.org) creado con [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Comenzando
@@ -21,18 +20,8 @@ Puedes comenzar a editar la página modificando `app/page.tsx`. La página se ac
 
 Este proyecto usa [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) para optimizar y cargar automáticamente [Geist](https://vercel.com/font), una nueva familia tipográfica creada por Vercel.
 
-## Aprende Más
-
-Para aprender más sobre Next.js, consulta los siguientes recursos:
-
-- [Documentación de Next.js](https://nextjs.org/docs) - conoce las funcionalidades y API de Next.js.
-- [Aprende Next.js](https://nextjs.org/learn) - un tutorial interactivo de Next.js.
-
-También puedes revisar [el repositorio de Next.js en GitHub](https://github.com/vercel/next.js): ¡tus comentarios y contribuciones son bienvenidos!
-
 ## Despliegue en Vercel
 
 La forma más sencilla de desplegar tu aplicación de Next.js es usando la [plataforma Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme), creada por los desarrolladores de Next.js.
 
-Consulta nuestra [documentación de despliegue de Next.js](https://nextjs.org/docs/app/building-your-application/deploying) para más detalles.
->>>
+Consulta la [documentación de despliegue de Next.js](https://nextjs.org/docs/app/building-your-application/deploying) para más detalles.
