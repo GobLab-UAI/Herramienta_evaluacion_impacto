@@ -7,8 +7,14 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
-import { ChevronLeft, ChevronRight, HelpCircle, Send} from 'lucide-react'
+import { toast } from "@/hooks/use-toast"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { CheckCircle2, ChevronLeft, ChevronRight, HelpCircle, Send} from 'lucide-react'
 import Image from 'next/image'
+import {
+  Select, SelectTrigger, SelectContent, SelectItem, SelectValue,
+} from "@/components/ui/select"
+
 
 export function LandingPage() {
   const [email, setEmail] = useState('')
@@ -16,10 +22,51 @@ export function LandingPage() {
   const [organization, setOrganization] = useState('')
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const router = useRouter()
+  const [category, setCategory] = useState("general")
+  const [submitting, setSubmitting] = useState(false)
+  const [sent, setSent] = useState(false)
 
   const handleStart = (e: React.FormEvent) => {
     e.preventDefault()
     router.push(`/evaluacion?email=${encodeURIComponent(email)}`)
+  }
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();                // ← evita navegación
+    setSubmitting(true);
+
+    try {
+      const res = await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tool: "FichaTransparencia",
+          category,
+          subject: `Feedback ${category}`,
+          message: feedback,
+          organization,
+        }),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+      toast({
+              title: "Feedback enviado",
+              description: "¡Gracias por tu feedback!",
+            });
+      setSent(true);
+      /* limpiar */
+      setFeedback("");
+      setOrganization("");
+      setCategory("general");
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: err instanceof Error ? err.message : "Error desconocido",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -40,27 +87,66 @@ export function LandingPage() {
               </div>
 
               <Separator />
-              <div className="space-y-4 bg-gray-50 p-4 rounded-lg backdrop-blur-sm">
+              {/* -------- FORMULARIO que llama /api/feedback ---------- */}
+              {sent && (
+                <Alert
+                  variant="default"
+                  className="mb-2 flex items-start gap-2 bg-green-50 text-green-800"
+                >
+                  <CheckCircle2 className="h-4 w-4 text-green-600 mt-1" />
+                  <AlertDescription>¡Gracias por tu feedback! Lo hemos recibido.</AlertDescription>
+                </Alert>
+              )}
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-4 bg-gray-50 p-4 rounded-lg"
+              >
                 <h3 className="font-semibold flex items-center">
                   <HelpCircle className="mr-2 h-4 w-4" />
                   Feedback
                 </h3>
+
+                {/* Organización */}
                 <Input
-                  placeholder="Organización"
+                  name="organization"
+                  placeholder="Organización (opcional)"
                   value={organization}
                   onChange={(e) => setOrganization(e.target.value)}
                   maxLength={150}
                 />
+
+                {/* Categoría */}
+                <div>
+                  <label className="text-sm font-medium mb-1 block">Categoría</label>
+                  {/* se envía en “category” */}
+                  <Select value={category} onValueChange={setCategory} name="category">
+                    <SelectTrigger><SelectValue placeholder="Selecciona" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="general">Comentario general</SelectItem>
+                      <SelectItem value="error">Reporte de error</SelectItem>
+                      <SelectItem value="oportunidad_de_mejora">Sugerencia de mejora</SelectItem>
+                      <SelectItem value="pregunta">Pregunta</SelectItem>
+                      <SelectItem value="otra">Otro</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Mensaje */}
                 <Textarea
-                  placeholder="Comparte tus comentarios o sugerencias aquí"
+                  name="message"
+                  placeholder="Comparte tus comentarios aquí"
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
-                  rows={4}
+                  required
                 />
-                <Button className="w-full">
-                  <Send className="mr-2 h-4 w-4" /> Enviar Feedback
+
+                {/* asunto opcional */}
+                <input type="hidden" name="subject" value={`Feedback ${category}`} />
+
+                <Button type="submit" className="w-full" disabled={submitting}>
+                  {submitting ? "Enviando…" : <><Send className="mr-2 h-4 w-4" /> Enviar Feedback</>}
                 </Button>
-              </div>
+              </form>
               <Separator />
               <div className="space-y-4 text-sm">
                 <h3 className="font-semibold">Agradecimientos</h3>
