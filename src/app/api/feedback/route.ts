@@ -7,11 +7,13 @@ export async function POST(req: Request) {
   try {
     /* 1 · Parsear cuerpo */
     const contentType = req.headers.get("content-type") || "";
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     const body: Record<string, any> = contentType.includes("application/json")
       ? await req.json()
       : Object.fromEntries((await req.formData()).entries());
 
     /* 2 · Extraer & validar */
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     const { category, subject, message, organization, tool } = body;
     if (!category || !message) {
       return NextResponse.json(
