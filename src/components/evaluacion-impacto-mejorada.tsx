@@ -390,7 +390,7 @@ const questions: Question[] = [
   },
   {
     id: "q32",
-    text: "Cuenta la entidad con procesos espablecidos para el ejercicio de los derechos vinculados a los datos: Acceso, Rectificación, Supresión, Opocisión, Portabilidad e Impugnación a las decisiones automatizadas?", 
+    text: "Cuenta la entidad con procesos establecidos para el ejercicio de los derechos vinculados a los datos: Acceso, Rectificación, Supresión, Oposición, Portabilidad e Impugnación a las decisiones automatizadas?", 
     type: "select",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
@@ -398,7 +398,7 @@ const questions: Question[] = [
     scoreContribution: true,
     options: [
       { value: "Si", label: "Sí", score: 0 },
-      { value: "Si, pero parcialmente", label: "SI, pero solo parcialmente ( Acceso, Rectificación, Supresión, Opocisión)", score: 0.5 },
+      { value: "Si, pero parcialmente", label: "SI, pero solo parcialmente ( Acceso, Rectificación, Supresión, Oposición)", score: 0.5 },
       { value: "No", label: "No", score: 1.01 }
     ]
   },
