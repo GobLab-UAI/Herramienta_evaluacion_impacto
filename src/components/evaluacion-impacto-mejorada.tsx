@@ -1940,7 +1940,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                     dimensions={scoreByDimension}
                   />
                   <CardDescription className="text-center text-sm mt-2">
-                    Puntuación total: <strong>{totalScore} %</strong>
+                    Puntuación total: <strong>{totalScore.toFixed(2)} %</strong>
                   </CardDescription>
                 </div>
 
