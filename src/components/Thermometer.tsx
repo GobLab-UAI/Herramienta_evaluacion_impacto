@@ -8,7 +8,7 @@ interface ThermometerProps {
 }
 
 export const Thermometer: React.FC<ThermometerProps> = ({ score, minScore, maxScore, dimensions }) => {
-  const percentage = ((score - minScore) / (maxScore - minScore)) * 100;
+  const percentage = (((score - minScore) / (maxScore - minScore)) * 100).toFixed(2);
   const level = score <= 45.54 ? 1 : score <= 72.77 ? 2 : 3;
 
   return (
@@ -29,7 +29,7 @@ export const Thermometer: React.FC<ThermometerProps> = ({ score, minScore, maxSc
         />
       ))}
       {Object.entries(dimensions).map(([dimension, dimensionScore]) => {
-        const dimensionPercentage = ((dimensionScore - minScore / dimensions.length) / (maxScore / dimensions.length - minScore / dimensions.length)) * 100;
+        const dimensionPercentage = (((dimensionScore - minScore / dimensions.length) / (maxScore / dimensions.length - minScore / dimensions.length)) * 100).toFixed(2);
         return (
           <div
             key={dimension}

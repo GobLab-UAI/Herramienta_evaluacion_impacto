@@ -1716,7 +1716,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
         <div style="flex-grow: 1; text-align: center; font-size: 14px; font-weight: bold;">
           Evaluación de Impacto Algorítmico
         </div>
-        <img src="/images/Goblab.png" alt="Logo Derecho" style="height: 40px; margin-right: 10px;" />
+        <img src="/images/logo-goblab-uai.png" alt="Logo Derecho" style="height: 40px; margin-right: 10px;" />
       </div>
     `;
 
