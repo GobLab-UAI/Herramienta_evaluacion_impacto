@@ -25,7 +25,7 @@ export function LandingPage() {
   const [category, setCategory] = useState("general")
   const [submitting, setSubmitting] = useState(false)
   const [sent, setSent] = useState(false)
-  const VERSION = process.env.VERSION || "1.0.0"
+  const VERSION = process.env.NEXT_PUBLIC_VERSION || "1.0.0"
 
   const handleStart = (e: React.FormEvent) => {
     e.preventDefault()
