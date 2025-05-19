@@ -25,6 +25,7 @@ export function LandingPage() {
   const [category, setCategory] = useState("general")
   const [submitting, setSubmitting] = useState(false)
   const [sent, setSent] = useState(false)
+  const VERSION = process.env.VERSION || "1.0.0"
 
   const handleStart = (e: React.FormEvent) => {
     e.preventDefault()
@@ -203,7 +204,7 @@ export function LandingPage() {
               <Image src="/images/logo-goblab-uai.png" alt="Gob_Lab UAI" width={250} height={10} />
               
             </div>
-            <p className="text-sm text-gray-600">V.0.0.3 <strong>Beta</strong></p>
+            <p className="text-sm text-gray-600">V.{VERSION} <strong>Beta</strong></p>
             <h1 className="text-4xl font-bold mb-6">Evaluación de impacto algorítmico (EIA)</h1>
             <div className="space-y-6 mb-8 text-gray-700">
               <p>

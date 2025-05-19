@@ -33,7 +33,7 @@ export type Question = {
   text: string
   type: QuestionType
   dimension: string
-  stage: 'Conceptualización y diseño' | 'Uso y monitoreo' | 'Recolección y procesamiento de datos'
+  stage: 'Conceptualización y diseño' | 'Recolección y procesamiento de datos'| 'Uso y monitoreo'
   info?: string
   options?: Option[]
   scoreContribution?: boolean
@@ -1374,7 +1374,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   const [scoreByDimension, setScoreByDimension] = useState<Record<string, number>>({});
   const router = useRouter()
   const tableRef = useRef<HTMLTableElement>(null)
-  
+  const VERSION = process.env.VERSION || "1.0.0"
   const MIN_SCORE = 18.32
 
 
@@ -1696,11 +1696,11 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
       /* eslint-enable @typescript-eslint/no-require-imports */
       const element = tableRef.current;
       const opt = {
-        margin: 10,
+        margin: 7,
         filename: 'evaluacion_impacto_algoritmico.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
+        image: { type: 'jpeg', quality: 0.70 },
         html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        jsPDF: { unit: 'mm', format: 'A4', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
         autoPaging: true,
         fontFaces: [
@@ -1988,29 +1988,30 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[50px] text-center align-middle py-3">Revisada?</TableHead>                  
+                  <TableHead className="w-[50px] text-center align-middle py-3">¿Revisada?</TableHead>                  
                   <TableHead className="text-center align-middle py-3">Preguntas Relacionadas</TableHead>
                   <TableHead className="text-center align-middle py-3">Recomendación</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {Object.entries(getGroupedRecommendations()).map(([stage, recommendations]) => (
-                  <React.Fragment key={stage}>
-                    <TableRow className="page-break">
-                      <TableCell colSpan={3} className="bg-muted font-semibold text-center align-middle py-3">
-                        {stage}
-                      </TableCell>
-                    </TableRow>
-                    {recommendations.map((item, index) => (
-                      <TableRow key={`${stage}-${index}`}>
-                        <TableCell>
-                        <Checkbox
-                          checked={selectedRecommendations[`${stage}-${index}`] || false}
-                          onCheckedChange={() => handleCheckboxChange(`${stage}-${index}`)}
-                          aria-label={`Seleccionar recomendación ${index + 1} de ${stage}`}
-                        />
+                {["Conceptualización y diseño", "Recolección y procesamiento de datos", "Uso y monitoreo"].map((stage) =>
+                  getGroupedRecommendations()[stage]?.length ? (
+                    <React.Fragment key={stage}>
+                      <TableRow className="page-break">
+                        <TableCell colSpan={3} className="bg-muted font-semibold text-center align-middle py-3">
+                          {stage}
                         </TableCell>
-                        <TableCell>
+                      </TableRow>
+                      {getGroupedRecommendations()[stage].map((item, index) => (
+                        <TableRow key={`${stage}-${index}`}>
+                          <TableCell>
+                            <Checkbox
+                              checked={selectedRecommendations[`${stage}-${index}`] || false}
+                              onCheckedChange={() => handleCheckboxChange(`${stage}-${index}`)}
+                              aria-label={`Seleccionar recomendación ${index + 1} de ${stage}`}
+                            />
+                          </TableCell>
+                          <TableCell>
                             <ul className="list-disc pl-5">
                               {item.questions.map((q, qIndex) => (
                                 <li key={qIndex} className="mb-2">
@@ -2020,24 +2021,61 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                               ))}
                             </ul>
                           </TableCell>
-                        <TableCell>
-                          <p>{item.text}</p>
-                          {item.resource && (
-                            <p className="mt-1 text-sm">
-                              <a href={item.resource.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center">
-                                {item.resource.text}
-                                <ExternalLink className="w-4 h-4 ml-1" />
-                              </a>
-                            </p>
-                          )}
-                        </TableCell>
-                        
-                      </TableRow>
-                    ))}
-                  </React.Fragment>
-                ))}
+                          <TableCell>
+                            <p className='text-justify'>{item.text}</p>
+                            {item.resource && (
+                              <p className="mt-1 text-sm">
+                                <a href={item.resource.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center">
+                                  {item.resource.text}
+                                  <ExternalLink className="w-4 h-4 ml-1" />
+                                </a>
+                              </p>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </React.Fragment>
+                  ) : null
+                )}
               </TableBody>
             </Table>
+            <div className="bg-gray-50 p-4 rounded-lg backdrop-blur-sm text-justify">
+              <h3 className="font-semibold text-center">Exención de responsabilidad</h3>
+              <p className="break-words overflow-wrap">
+                La evaluación de impacto algorítmico es una herramienta desarrollada para dimensionar los
+                riesgos asociados al uso de sistemas algorítmicos de ciencia de datos e inteligencia artificial
+                (IA) en el sector público. La evaluación está diseñada únicamente como un soporte para quienes buscan
+                dimensionar las consideraciones sobre el desarrollo de sus modelos, con el
+                fin de fomentar el cumplimiento de las regulaciones para los modelos  que utilizan IA o ciencia de datos.
+              </p>
+              <p className="break-words overflow-wrap">
+                La Universidad Adolfo Ibáñez (UAI) no ofrece garantías sobre el funcionamiento o el desempeño de
+                los sistemas de ciencia de datos e IA que utilicen esta herramienta. La Universidad no es responsable de
+                ningún tipo de daño directo, indirecto, incidental, especial o consecuente, ni de pérdidas de
+                beneficios que puedan surgir directa o indirectamente de la aplicación de la herramienta.
+              </p>
+              <p className="break-words overflow-wrap">
+                El empleo de las herramientas desarrolladas por la Universidad no implica ni constituye un sello
+                ni certificado de aprobación por parte de la Universidad Adolfo Ibáñez respecto al cumplimiento
+                legal, ético o funcional de un algoritmo de inteligencia artificial.
+              </p>
+              
+
+            </div>
+            <br />
+            <footer className="p-4 rounded-lg backdrop-blur-sm">
+              <p className="break-words overflow-wrap text-center text-sm">
+                Herramienta del GobLab UAI versión V.{VERSION} - Licencia MPL-2.0.
+              </p>
+              <p className="break-words overflow-wrap text-center text-sm">
+                Genera tu evaluación en: https://algoritmospublicos.cl/herramientas
+              </p>
+              <p className="break-words overflow-wrap text-center text-sm">
+                © {new Date().getFullYear()} Evaluación de impacto algorítmico elaborada en {new Date().toLocaleDateString()}.
+              </p>
+
+            </footer>
+
             </div>
             <Button onClick={() => setShowResults(false)} className="mt-4">Volver a la Evaluación</Button>
           </CardContent>
