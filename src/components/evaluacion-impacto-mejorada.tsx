@@ -1835,12 +1835,30 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <span className="cursor-help">
-                                <HelpCircle className="w-4 h-4 flex-shrink-0" />
-                              </span>
+                              <Button
+                                variant="ghost" 
+                                size="sm"
+                                className="h-6 w-6 p-0 rounded-full cursor-help"
+                                type="button"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                }}
+                              >
+                                <HelpCircle className="h-4 w-4" />
+                              </Button>
                             </TooltipTrigger>
-                            <TooltipContent>
-                              <p>{question.info}</p>
+                            <TooltipContent 
+                              side="right" 
+                              className="max-w-sm p-4 max-h-[300px] overflow-y-auto"
+                              align="start"
+                              avoidCollisions={true}
+                            >
+                              <div className="text-sm whitespace-normal">
+                                {question.info?.split('\n').map((paragraph, i) => (
+                                  <p key={i} className="mb-2">{paragraph}</p>
+                                ))}
+                              </div>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
