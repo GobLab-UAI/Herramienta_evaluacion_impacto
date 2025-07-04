@@ -206,13 +206,9 @@ export function LandingPage() {
             <p className="text-sm text-gray-600">V.{VERSION}</p>
             <h1 className="text-4xl font-bold mb-6">Evaluación de impacto algorítmico (EIA)</h1>
             <div className="space-y-6 mb-8 text-gray-700">
+             
               <p>
-              La herramienta de Evaluación de Impacto Algorítmico (EIA) es un recurso diseñado para analizar y gestionar los riesgos asociados al uso de sistemas 
-              algorítmicos y de inteligencia artificial en el sector público. Su objetivo principal es garantizar que dichos sistemas sean implementados de manera 
-              ética, segura y transparente. En esta fase beta la herramienta puede presentar errores que estamos trabajando en corregir a la brevedad.
-              </p>
-              <p>
-              Esta herramienta guía a los equipos de desarrollo en la identificación de posibles riesgos, como sesgos en los datos, falta de equidad, problemas de
+                Esta herramienta guía a los equipos de desarrollo en la identificación de posibles riesgos, como sesgos en los datos, falta de equidad, problemas de
                privacidad o ciberseguridad, y permite diseñar estrategias de mitigación antes de que los sistemas entren en funcionamiento. Además, la EIA asegura 
                que los procesos algorítmicos se ajusten a los principios de transparencia y rendición de cuentas, esenciales en la gestión pública.
               </p>

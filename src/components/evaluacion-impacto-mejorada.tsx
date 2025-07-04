@@ -38,6 +38,11 @@ export type Question = {
   options?: Option[]
   scoreContribution?: boolean
   score?: (answer: string | string[] | boolean | null) => number
+  dependsOn?: {
+    questionId: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    value: string | boolean | null | string[] | ((val: any) => boolean)
+  }
 }
 
 type Answer = string | string[] | boolean | null
@@ -256,6 +261,10 @@ const questions: Question[] = [
     stage: "Conceptualización y diseño",
     info: "Evalúa si el proyecto considera presupuesto específico para implementar mecanismos de participación, como talleres, consultas, encuestas u otras instancias con actores clave o comunidades afectadas",
     scoreContribution: true,
+    dependsOn: {
+      questionId: "q16",
+      value: true
+    },
     score: (answer) => answer === false ? 2.77 : 0
   },
   { 
@@ -306,6 +315,10 @@ const questions: Question[] = [
     stage: "Conceptualización y diseño",
     info: "Se debe garantizar que todos los equipos, departamentos y personas clave de la organización participen y estén alineados con las actividades del proyecto, integrando sus intereses, conocimientos y necesidades en cada fase.",
     scoreContribution: true,
+    dependsOn: {
+      questionId: "q22",
+      value: true
+    },
     score: (answer) => answer === true ? 2.22 : 0
   },
   { 
@@ -326,6 +339,10 @@ const questions: Question[] = [
     stage: "Recolección y procesamiento de datos",
     info: "En Chile, la Ley N° 19.628, sobre Protección de la Vida Privada, define los datos sensibles como  aquellos que se refieren a las características físicas o morales de las personas o a hechos o circunstancias de su vida privada o intimidad, tales como los hábitos personales, el origen racial, las ideologías y opiniones políticas, las creencias o convicciones religiosas, los estados de salud físicos o psíquicos y la vida sexual, etc. Estos datos, por su naturaleza, requieren de una protección especial y no pueden ser tratados sin consentimiento del titular, salvo en casos excepcionales autorizados por la ley.",
     scoreContribution: true,
+    dependsOn: {
+      questionId: "q24",
+      value: true
+    },
     score: (answer) => answer === true ? 1.01 : 0
   },
   { 
@@ -336,6 +353,10 @@ const questions: Question[] = [
     stage: "Recolección y procesamiento de datos",
     info: "Se debe determinar si el sistema emplea datos personales para respaldar, orientar o sustituir decisiones que impacten de forma directa a los titulares de dichos datos.",
     scoreContribution: true,
+    dependsOn: {
+      questionId: "q24",
+      value: true
+    },
     score: (answer) => answer === true ? 1.01 : 0
   },
   { 
@@ -350,11 +371,11 @@ const questions: Question[] = [
   },
   { 
     id: "q28", 
-    text: "¿Los datos utilizados vienen de entidade?", 
+    text: "¿Los datos utilizados vienen de entidades externas?", 
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: "",
+    info: "dispositivo que detecta cambios en el entorno físico (como luz, temperatura, movimiento, presión, sonido, humedad, etc.) y responde sin intervención humana, generalmente activando una acción o registrando datos de forma automatizada",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.01 : 0
   },
@@ -365,8 +386,12 @@ const questions: Question[] = [
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
     info: "",
+    dependsOn: {
+      questionId: "q28",
+      value: true
+    },
     scoreContribution: true,
-    score: (answer) => answer === true ? 1.01 : 0
+    score: (answer) => answer === true ? 0 : 0
   },
   { 
     id: "q29", 
@@ -386,6 +411,10 @@ const questions: Question[] = [
     stage: "Recolección y procesamiento de datos",
     info: "Determinar si los datos utilizados para el entrenamiento y las pruebas se someten a anonimización (eliminación irreversible de identificadores) o a seudonimización (sustitución de identificadores por seudónimos), de modo que no permitan la reidentificación de los titulares.",
     scoreContribution: true,
+    dependsOn: {
+      questionId: "q24",
+      value: true
+    },
     score: (answer) => answer === false ? 1.01 : 0
   },
   { 
@@ -627,7 +656,7 @@ const questions: Question[] = [
   {
     id: "q52",
     text: "Indique las principales características del sistema a desarrollar", 
-    type: "select",
+    type: "multiselect",
     dimension: "Rendición de cuentas", 
     stage: "Uso y monitoreo",
     options: [
@@ -688,6 +717,10 @@ const questions: Question[] = [
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
     info: "Se debe verificar si la organización dispone o habitualmente destina recursos financieros específicos para cubrir los costos de auditorías algorítmicas, incluyendo honorarios de auditores, herramientas de evaluación y otros gastos asociados.",
+    dependsOn: {
+      questionId: "q56",
+      value: true
+    },
     scoreContribution: true,
     score: (answer) => answer === false ? 1.38 : 0
   },
@@ -837,7 +870,7 @@ const recommendations: Recommendation[] = [
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true,
         resource: {
           text: "Evaluacion de impacto en DDHH",
-          url: ""
+          url: "https://www.humanrights.dk/tools/human-rights-impact-assessment-guidance-toolbox/guia-de-evaluacion-de-impacto-en-los-derechos"
         }
       },
     ]
@@ -1131,9 +1164,14 @@ const recommendations: Recommendation[] = [
     questionId: "q39",
     recommendations: [
       {
-        text: "Los sistemas de IA son activos cibernéticos dentro de una infraestructura de TIC. Cada uno de sus componentes fuentes de datos, datos, algoritmos, modelos de entrenamiento, procesos de implementación/gestión de datos/pruebas.Estos componentes  pertenecen a las capas de una infraestructura de TIC de la organización. Dado que los sistemas de IA son parte de la infraestructura de las TIC, no solo se deben aplicar prácticas de ciberseguridad específicas de la IA, sino también aquellas que protejan las TIC que abarcan los elementos de la IA. Un buen enfoque para abordar la especificidad de la ciberseguridad por 'capas' es la guia de ENISA, que ofrece un cuestionario de evaluación de preparación en este sentido.",
-        condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
+        text: "Los sistemas de IA son activos cibernéticos dentro de una infraestructura de TIC. Cada uno de sus componentes fuentes de datos, datos, algoritmos, modelos de entrenamiento, procesos de implementación/gestión de datos/pruebas.Estos componentes  pertenecen a las capas de una infraestructura de TIC de la organización. Dado que los sistemas de IA son parte de la infraestructura de las TIC, no solo se deben aplicar prácticas de ciberseguridad específicas de la IA, sino también aquellas que protejan las TIC que abarcan los elementos de la IA. Un buen enfoque para abordar la especificidad de la ciberseguridad por 'capas' es la guia de ENISA (Agencia europea de ciberseguridad), que ofrece un cuestionario de evaluación de preparación en este sentido.",
+        condition: (answer: Answer) => typeof answer === 'boolean' && answer === false,
+        resource: {
+          text: "Guía de agencia europea de ciberseguridad (ENISA)",
+          url: "https://www.enisa.europa.eu/publications/cybersecurity-of-ai-and-standardisation"
+        }
       },
+
     ]
   },
   {
@@ -1190,11 +1228,11 @@ const recommendations: Recommendation[] = [
     questionId: "q44",
     recommendations: [
       {
-        text: "Utilice para el analisis exploratorio un Perfil de datos. Este perfil es un análisis exploratorio inicial durante la fase de Recolección y procesamiento de datos del ciclo de vida de IA. Brinda información para evaluar la calidad, integridad, temporalidad, consistencia y posibles sesgos, daños potenciales e implicaciones de su uso. En este analisis es posible que descubra que será necesario imputar valores faltantes en los datos. Es importante documentar el porqué no se tienen esa información, si los dataos faltantes están asociados a la variable a predecir.",
+        text: "Utilice para el analisis exploratorio un perfil de datos. Este perfil es un análisis exploratorio inicial durante la fase de recolección y procesamiento de datos del ciclo de vida de IA. Brinda información para evaluar la calidad, integridad, temporalidad, consistencia y posibles sesgos, daños potenciales e implicaciones de su uso. En este analisis es posible que descubra que será necesario imputar valores faltantes en los datos. Es importante documentar el porqué no se tienen esa información, si los datos faltantes están asociados a la variable a predecir.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       },
       {
-        text: "Es recomendable realizar un analisis exploratorio de los datos para ayudar a evaluar los problemas con estos  y documentar las características de un sistema de IA, las suposiciones realizadas y las medidas de mitigación de riesgos aplicadas a lo largo del ciclo de vida. Puede elaborar un  Perfil de datos. Este perfil es un análisis exploratorio inicial durante la fase de Recolección y procesamiento de datos del ciclo de vida de IA. Brinda información para evaluar la calidad, integridad, temporalidad, consistencia y posibles sesgos, daños potenciales e implicaciones de su uso. ",
+        text: "Es recomendable realizar un analisis exploratorio de los datos para ayudar a evaluar los problemas con estos  y documentar las características de un sistema de IA, las suposiciones realizadas y las medidas de mitigación de riesgos aplicadas a lo largo del ciclo de vida. Puede elaborar un  perfil de datos. Este perfil es un análisis exploratorio inicial durante la fase de recolección y procesamiento de datos del ciclo de vida de IA. Brinda información para evaluar la calidad, integridad, temporalidad, consistencia y posibles sesgos, daños potenciales e implicaciones de su uso. ",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       }
     ]
@@ -1263,10 +1301,6 @@ const recommendations: Recommendation[] = [
       {
         text: "Asegúrese de que el acuerdo de entrega del código fuente incluya documentación adecuada",
         condition: (answer: Answer | null) => typeof answer === 'boolean' && answer === true
-      },
-      {
-        text: "Evalúe si la entrega del código fuente es aplicable o necesaria para este proyecto",
-        condition: (answer: Answer | null) => answer === null
       }
     ]
   },
@@ -1411,6 +1445,23 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
     
     return Math.max(rawScore, MIN_SCORE);
   }
+
+  const shouldShowQuestion = (question: Question, answers: Record<string, Answer>): boolean => {
+    if (!question.dependsOn) return true;
+
+    const parentAnswer = answers[question.dependsOn.questionId];
+    const condition = question.dependsOn.value;
+
+    if (typeof condition === 'function') {
+      return condition(parentAnswer);
+    }
+
+    if (Array.isArray(condition)) {
+      return Array.isArray(parentAnswer) && condition.every(c => parentAnswer.includes(c));
+    }
+
+    return parentAnswer === condition;
+  };
 
   const getImpactLevel = (score: number): string => {
     if (score <= 18.32) return "Bajo impacto";
@@ -1827,7 +1878,10 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
               </CardHeader>
               <CardContent>
                 <form>
-                  {questions.filter(q => q.dimension === currentDimension).map((question, qIndex) => (
+                  {questions
+                    .filter(q => q.dimension === currentDimension)
+                    .filter(q => shouldShowQuestion(q, answers)) 
+                    .map((question, qIndex) => (
                     <div key={question.id} className="mb-6">
                       <div className="flex items-start mb-2">
                         <Label className="text-sm mr-2 flex-grow font-normal" htmlFor={question.id}>
