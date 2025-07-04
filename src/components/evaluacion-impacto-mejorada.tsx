@@ -1734,11 +1734,12 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
       // Contenido con encabezado
       const headerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 10px 0; border-bottom: 1px solid #ddd;">
-        <img src="/images/Logo_herramientas_algoritmos.png" alt="Logo Izquierdo" style="height: 40px; margin-left: 10px;" />
+        <img src="/images/logo-goblab-uai.png" alt="Logo Derecho" style="height: 40px; margin-right: 10px;" />
         <div style="flex-grow: 1; text-align: center; font-size: 14px; font-weight: bold;">
           Evaluación de Impacto Algorítmico
         </div>
-        <img src="/images/logo-goblab-uai.png" alt="Logo Derecho" style="height: 40px; margin-right: 10px;" />
+        <img src="/images/herramientas.png" alt="Logo Izquierdo" style="height: 40px; margin-left: 10px;" />
+        
       </div>
     `;
 
@@ -1758,9 +1759,10 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between space-y-1 p-4 rounded-lg backdrop-blur-sm items-center">
-        <Image src="/images/Logo_herramientas_algoritmos.png" alt="HERRAMIENTAS ALGORITMOS ÉTICOS" width={300} height={5} />
-        <h1 className="text-2xl font-bold mb-4 text-center">Evaluación de Impacto Algorítmico</h1>
         <Image src="/images/logo-goblab-uai.png" alt="Gob_Lab UAI" width={220} height={5} />
+        <h1 className="text-2xl font-bold mb-4 text-center">Evaluación de Impacto Algorítmico</h1>
+        <Image src="/images/herramientas.png" alt="HERRAMIENTAS ALGORITMOS ÉTICOS" width={300} height={5} />
+        
       </div>
       
       <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
