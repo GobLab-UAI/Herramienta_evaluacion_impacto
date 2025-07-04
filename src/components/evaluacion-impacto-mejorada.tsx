@@ -1387,6 +1387,7 @@ type EvaluacionImpactoProps = {
 
 export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoProps) {
   const [answers, setAnswers] = useState<Record<string, Answer>>({})
+  const [openTooltipId, setOpenTooltipId] = useState<string | null>(null);
   const [showResults, setShowResults] = useState(false)
   const [progress, setProgress] = useState(0)
   const [currentDimension, setCurrentDimension] = useState(dimensions[0])
@@ -1843,70 +1844,55 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
-                              const tooltipId = `tooltip-${question.id}`;
-                              const currentTooltip = document.getElementById(tooltipId);
+                              setOpenTooltipId((prev) => (prev === question.id ? null : question.id));
                               
-                              // Ocultar todos los tooltips primero
-                              document.querySelectorAll('[id^="tooltip-"]').forEach(el => {
-                                if (el.id !== tooltipId) {
-                                  (el as HTMLElement).style.display = 'none';
-                                }
-                              });
-                              
-                              // Alternar la visibilidad del tooltip actual
-                              if (currentTooltip) {
-                                currentTooltip.style.display = 
-                                  currentTooltip.style.display === 'none' ? 'block' : 'none';
-                              }
                             }}
                           >
                             <HelpCircle className="h-4 w-4" />
                           </Button>
                           
                           {/* Contenido del tooltip */}
-                          <div 
-                            id={`tooltip-${question.id}`}
-                            className="absolute right-0 top-8 z-50 w-[90vw] sm:w-80 p-4 rounded-md border border-slate-200 bg-white shadow-md max-h-[50vh] overflow-y-auto hidden"
-                            style={{ minWidth: '250px' }}
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <div className="text-sm whitespace-normal">
-                              {question.info?.split('\n').map((paragraph, i) => (
-                                <p key={i} className="mb-2">{paragraph}</p>
-                              ))}
-                            </div>
-                            <div className="absolute right-2 top-2">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-5 w-5 p-0 rounded-full"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  const tooltipId = `tooltip-${question.id}`;
-                                  const currentTooltip = document.getElementById(tooltipId);
-                                  if (currentTooltip) {
-                                    currentTooltip.style.display = 'none';
-                                  }
-                                }}
-                              >
-                                <span className="sr-only">Cerrar</span>
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="16"
-                                  height="16"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
+                          {openTooltipId === question.id && (
+                            <div 
+                              className="absolute right-0 top-8 z-50 w-[90vw] sm:w-80 p-4 rounded-md border border-slate-200 bg-white shadow-md max-h-[50vh] overflow-y-auto"
+                              style={{ minWidth: '250px' }}
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <div className="text-sm whitespace-normal">
+                                {question.info?.split('\n').map((paragraph, i) => (
+                                  <p key={i} className="mb-2">{paragraph}</p>
+                                ))}
+                              </div>
+                              <div className="absolute right-2 top-2">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-5 w-5 p-0 rounded-full"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    setOpenTooltipId(null);
+                                  }}
                                 >
-                                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                                </svg>
-                              </Button>
+                                  <span className="sr-only">Cerrar</span>
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  >
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                  </svg>
+                                </Button>
+                              </div>
                             </div>
-                          </div>
+                          )}
                         </div>
                       </div>
                       {renderQuestionInput(question)}
