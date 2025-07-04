@@ -126,7 +126,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "General", 
     stage: "Conceptualización y diseño",
-    info: "Por ejemplo, tu sistema usa o implementa BERT, ChatGPT, etc.",
+    info: "Responde “sí” si el sistema de IA que estás evaluando reutiliza total o parcialmente un modelo ya desarrollado previamente, ya sea por tu equipo, por otra área de tu organización o por un tercero (por ejemplo, un modelo preentrenado, un sistema adaptado de otra aplicación, o una solución open source). \n Esto incluye casos en que el modelo fue ajustado o reentrenado, pero su base proviene de un desarrollo previo. \n Responde “no” si el modelo fue creado desde cero específicamente para este sistema.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.3 : 0
   },
@@ -136,7 +136,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "General", 
     stage: "Conceptualización y diseño",
-    info: " ",
+    info: "Documentar el problema es un paso previo al desarrollo del sistema. Permite entender el contexto y los objetivos del proyecto, más allá de la decisión de usar o no inteligencia artificial.",
     scoreContribution: true,
     score: (answer) => answer === false ? 1.3 : 0
   },
@@ -146,7 +146,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Proporcionalidad", 
     stage: "Conceptualización y diseño",
-    info: " ",
+    info: "Esta pregunta apunta a considerar si existen alternativas no algorítmicas para resolver el problema. A veces se recurre a IA sin evaluar otras soluciones más simples, eficaces o apropiadas.",
     scoreContribution: true,
     score: (answer) => answer === false ? 1.3 : 0
   },
@@ -181,7 +181,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Proporcionalidad", 
     stage: "Conceptualización y diseño",
-    info: " ",
+    info: "Un impacto es irreversible cuando no puede deshacerse o corregirse una vez que ocurre. Esta pregunta invita a reflexionar si las consecuencias del sistema pueden ser revertidas en caso de error o daño.",
     scoreContribution: true,
     score: (answer) => answer === false ? 1.3 : 0  
 
@@ -192,7 +192,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Proporcionalidad", 
     stage: "Conceptualización y diseño",
-    info: "Por ejemplo, impácto en Derecho a la educación, salud, propiedad, la privacidad, libertad de expresión o debido proceso,medio ambiente o los que se establecen en el articulo 19 de la constitución",
+    info: "Considera si el sistema puede afectar derechos protegidos por la Constitución, como la privacidad, la igualdad ante la ley, la no discriminación, la libertad de expresión o el debido proceso. El impacto puede ser directo o indirecto.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.3 : 0
   },
@@ -202,7 +202,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Normativa", 
     stage: "Conceptualización y diseño",
-    info: " ",
+    info: "Esta pregunta no se refiere a si la ley obliga a usar un algoritmo, sino a si el sistema se utiliza para aplicar o ejecutar una norma vigente (como una ley, reglamento o acto administrativo).",
     scoreContribution: true,
     score: (answer) => answer === true ? 5.55 : 0
   },
@@ -212,7 +212,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Normativa", 
     stage: "Conceptualización y diseño",
-    info: " ",
+    info: "Se refiere a normativas con impacto directo sobre el sistema, como la Ley de Protección de Datos, la Ley Marco de Ciberseguridad o la Ley de Propiedad Intelectual. No incluye políticas públicas generales ni lineamientos estratégicos.",
     scoreContribution: true,
     score: (answer) => answer === false ? 5.55 : 0
   },
@@ -222,7 +222,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Licencia Social", 
     stage: "Conceptualización y diseño",
-    info: " ",
+    info: "Se refiere a una situación en la que un tema genera gran atención, controversia o discusión dentro de la opinión pública, involucrando a distintos actores sociales —como ciudadanía, medios de comunicación, autoridades, expertos, organizaciones civiles— que expresan posturas encontradas o fuertes reacciones.",
     scoreContribution: true,
     score: (answer) => answer === true ? 2.77 : 0
   },
@@ -254,7 +254,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Licencia Social", 
     stage: "Conceptualización y diseño",
-    info: " ",
+    info: "Evalúa si el proyecto considera presupuesto específico para implementar mecanismos de participación, como talleres, consultas, encuestas u otras instancias con actores clave o comunidades afectadas",
     scoreContribution: true,
     score: (answer) => answer === false ? 2.77 : 0
   },
@@ -274,7 +274,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Gobernanza", 
     stage: "Uso y monitoreo",
-    info: " ",
+    info: "En lo que respecta a la diversidad de los equipos, las categorías mencionadas deben entenderse como ejemplos orientativos y no como requisitos taxativos. No es necesario cumplir con todas ellas, sino considerar cómo distintas perspectivas pueden enriquecer el análisis y reducir sesgos.",
     scoreContribution: true,
     score: (answer) => answer === false ? 2.22 : 0
   },
@@ -284,7 +284,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Gobernanza", 
     stage: "Uso y monitoreo",
-    info: " ",
+    info: "Documentar cómo el sistema toma decisiones es clave para una IA responsable. Esto permite trazabilidad, transparencia y facilita la rendición de cuentas ante posibles impactos o errores.",
     scoreContribution: true,
     score: (answer) => answer === true ? 2.22 : 0
   },
@@ -294,9 +294,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Gobernanza", 
     stage: "Conceptualización y diseño",
-    info: " ",
+    info: "Se refiere persona o equipo dentro de la organización que actúa como enlace o responsable del seguimiento del proyecto, representando los intereses de la entidad frente a los equipos técnicos, consultores o entidades externas involucradas.",
     scoreContribution: true,
-    score: (answer) => answer === true ? 2.22 : 2.22
+    score: (answer) => answer === true ? 2.22 : 0
   },
   { 
     id: "q23", 
@@ -304,9 +304,9 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Gobernanza", 
     stage: "Conceptualización y diseño",
-    info: " ",
+    info: "Se debe garantizar que todos los equipos, departamentos y personas clave de la organización participen y estén alineados con las actividades del proyecto, integrando sus intereses, conocimientos y necesidades en cada fase.",
     scoreContribution: true,
-    score: (answer) => answer === true ? 2.22 : 2.22
+    score: (answer) => answer === true ? 2.22 : 0
   },
   { 
     id: "q24", 
@@ -314,7 +314,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Conceptualización y diseño",
-    info: "Dato personal: cualquier información vinculada o referida a una persona natural identificada o identificable. Se considerará identificable toda persona cuya identidad pueda determinarse, directa o indirectamente, en particular mediante uno o más identificadores, tales como el nombre, el número de cédula de identidad, el análisis de elementos propios de la identidad física, fisiológica, genética, psíquica, económica, cultural o social de dicha persona. Para determinar si una persona es identificable deberán considerarse todos los medios y factores objetivos que razonablemente se podrían usar para dicha identificación en el momento del tratamiento",
+    info: "En Chile, la protección de datos personales se rige principalmente por la Ley N° 19.628, conocida como la Ley sobre Protección de la Vida Privada, y por la reciente Ley 21.719, que introduce modificaciones importantes y establece la Agencia de Protección de Datos Personales. La ley define los datos personales como cualquier información concerniente a personas naturales, identificadas o identificables, y establece principios y normas para su tratamiento. ",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.01 : 0
   },
@@ -324,7 +324,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: "Datos personales sensibles: tendrán esta condición aquellos datos personales que se refieren a las características físicas o morales de las personas o a hechos o circunstancias de su vida privada o intimidad, que revelen el origen étnico o racial, la afiliación política, sindical o gremial, situación socioeconómica, las convicciones ideológicas o filosóficas, las creencias religiosas, los datos relativos a la salud, al perfil biológico humano, los datos biométricos, y la información relativa a la vida sexual, a la orientación sexual y a la identidad de género de una persona natural.",
+    info: "En Chile, la Ley N° 19.628, sobre Protección de la Vida Privada, define los datos sensibles como  aquellos que se refieren a las características físicas o morales de las personas o a hechos o circunstancias de su vida privada o intimidad, tales como los hábitos personales, el origen racial, las ideologías y opiniones políticas, las creencias o convicciones religiosas, los estados de salud físicos o psíquicos y la vida sexual, etc. Estos datos, por su naturaleza, requieren de una protección especial y no pueden ser tratados sin consentimiento del titular, salvo en casos excepcionales autorizados por la ley.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.01 : 0
   },
@@ -334,7 +334,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: " ",
+    info: "Se debe determinar si el sistema emplea datos personales para respaldar, orientar o sustituir decisiones que impacten de forma directa a los titulares de dichos datos.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.01 : 0
   },
@@ -344,13 +344,23 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: " ",
+    info: "Se debe determinar si los datos provienen de sensores que, sin intervención humana, detectan variaciones en el entorno físico (luz, temperatura, movimiento, presión, sonido, humedad, etc.) y registran o activan acciones de forma automática.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.01 : 0
   },
   { 
     id: "q28", 
-    text: "Si los datos provienen de entidades externas, ¿existen acuerdos escritos detallando las condiciones para el acceso a datos?", 
+    text: "¿Los datos utilizados vienen de entidade?", 
+    type: "yesno",
+    dimension: "Protección de datos", 
+    stage: "Recolección y procesamiento de datos",
+    info: "",
+    scoreContribution: true,
+    score: (answer) => answer === true ? 1.01 : 0
+  },
+  { 
+    id: "q28.1", 
+    text: "¿existen acuerdos escritos detallando las condiciones para el acceso a datos?", 
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
@@ -364,7 +374,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: "En otras palabras, ¿existe una evaluación ex ante en cuanto a la pertinencia y necesidad de incluir cada uno de los tipos de datos en el sistema?",
+    info: "La minimización de datos se refiere a que se debe verificar que únicamente se recopilen y procesen los datos estrictamente necesarios para los fines definidos, limitando su volumen, variedad, periodo de retención y acceso.",
     scoreContribution: true,
     score: (answer) => answer === false ? 1.01 : 0
   },
@@ -374,17 +384,17 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: " ",
+    info: "Determinar si los datos utilizados para el entrenamiento y las pruebas se someten a anonimización (eliminación irreversible de identificadores) o a seudonimización (sustitución de identificadores por seudónimos), de modo que no permitan la reidentificación de los titulares.",
     scoreContribution: true,
     score: (answer) => answer === false ? 1.01 : 0
   },
   { 
     id: "q31", 
-    text: "Se implementará el sistema para algunos de estos usos o casos:  \na) Evaluación sistemática y exhaustiva de aspectos personales de los titulares de datos, basadas en tratamiento o decisiones automatizadas, como la elaboración de perfiles, y que produzcan en ellos efectos jurídicos significativos. \nb) Tratamiento masivo de datos o gran escala. \nc) Tratamiento que implique observación o monitoreo sistemático de una zona de acceso público. \nd) Tratamiento de datos sensibles y especialmente protegidos, en las hipótesis de excepción del consentimiento.", 
+    text: "Se implementará el sistema para algunos de estos usos o casos:  \n a) Evaluación sistemática y exhaustiva de aspectos personales de los titulares de datos, basadas en tratamiento o decisiones automatizadas, como la elaboración de perfiles, y que produzcan en ellos efectos jurídicos significativos. \n b) Tratamiento masivo de datos o gran escala. \n c) Tratamiento que implique observación o monitoreo sistemático de una zona de acceso público. \n d) Tratamiento de datos sensibles y especialmente protegidos, en las hipótesis de excepción del consentimiento.", 
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: " ",
+    info: "Estos cuatro supuestos (perfilado con efectos jurídicos, tratamiento masivo, monitoreo sistemático de zonas públicas y datos sensibles según Art. 9) obligan a realizar una Evaluación de Impacto según el Reglamento General de Protección de Datos de la Unión Europea (Art. 35.3 y Art. 9), por lo que se relacionan a casos críticos en relación a riesgos éticos y es importante abordarlos como tal. Marcar 'Sí' si el sistema responde a al menos uno de ellos para advertir sobre riesgos éticos y de implementación.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.01 : 0
   },
@@ -394,7 +404,7 @@ const questions: Question[] = [
     type: "select",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: " ",
+    info: "Se debe comprobar si la organización cuenta con procesos formales para que los titulares ejerzan sus derechos de Acceso, Rectificación, Supresión, Oposición, Portabilidad e Impugnación de decisiones automatizadas. Si ya existen, aplican al proyecto.",
     scoreContribution: true,
     options: [
       { value: "Si", label: "Sí", score: 0 },
@@ -408,7 +418,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: " ",
+    info: "Se debe identificar si el sistema ejecuta decisiones automatizadas o perfila a los titulares con impacto relevante, por ejemplo al denegar un beneficio, gestionar atención sanitaria, evaluar prestaciones, autorizar acceso a servicios públicos o resolver controversias.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.01 : 0
   },
@@ -418,7 +428,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
-    info: " ",
+    info: "Determinar si se han implementado mecanismos que proporcionen explicaciones claras y comprensibles del proceso de toma de decisiones y del funcionamiento del sistema, dirigidas a usuarios y personas afectadas.",
     scoreContribution: true,
     score: (answer) => answer === false ? 1.01 : 0
   },
@@ -438,7 +448,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
-    info: " ",
+    info: "Se debe verificar si la institución presta sus servicios mediante redes y sistemas informáticos, de modo que cualquier afectación, interceptación, interrupción o destrucción impactaría significativamente la provisión continua de dichos servicios. Esto identifica si corresponde a un “Servicio Esencial” según la ley marco de ciberseguridad (todos los servicios públicos lo son).",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.58 : 0
   },
@@ -454,7 +464,7 @@ const questions: Question[] = [
   },
   {
     id: "q37.1",
-    text: "El sistema está siendo desarrollado por un tercero?", 
+    text: "¿El sistema está siendo o será subcontratado a un tercero para su desarrollo o implementación?", 
     type: "yesno",
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
@@ -484,7 +494,7 @@ const questions: Question[] = [
   },
   {
     id: "q39.1",
-    text: " ¿Ha evaluado los riesgos específicos de ciberseguridad que pueda afectar el funcionamiento del sistema algorítmico implementado?",
+    text: " ¿Ha evaluado los riesgos específicos de ciberseguridad que pueda afectar el funcionamiento del sistema algorítmico?",
     type: "yesno", 
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
@@ -494,7 +504,7 @@ const questions: Question[] = [
   },
   {
     id: "q40",
-    text: "Utiliza el sistema datos que representen algunas de estas características: la raza o etnia, la nacionalidad, la situación socioeconómica, el idioma, la ideología u opinión política, la religión o creencia, la sindicación o participación en organizaciones gremiales o la falta de ellas, el estado civil, la edad, la filiación o información sobre  la enfermedades o discapacidades. ", 
+    text: "¿Utiliza el sistema datos que representen algunas de estas características: la raza o etnia, la nacionalidad, la situación socioeconómica, el idioma, la ideología u opinión política, la religión o creencia, la sindicación o participación en organizaciones gremiales o la falta de ellas, el estado civil, la edad, la filiación o información sobre  la enfermedades o discapacidades?. ", 
     type: "yesno",
     dimension: "Equidad", 
     stage: "Recolección y procesamiento de datos",
@@ -517,6 +527,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Equidad", 
     stage: "Recolección y procesamiento de datos",
+    info: "Diferentes bases de datos o fuentes de datos se refiere a la existencia de múltiples orígenes desde los cuales se obtienen o almacenan datos, que pueden ser utilizados en un mismo sistema, aplicación o proceso de análisis.",
     scoreContribution: true,
     score: (answer) => answer === true ? 2.22 : 0
   },
@@ -526,6 +537,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Equidad", 
     stage: "Recolección y procesamiento de datos",
+    info: "Se refiere a si el algoritmo ha sido desarrollado en un país distinto de Chile, lo que puede implicar desafíos adicionales en cuanto a su adecuación normativa, contexto sociocultural y condiciones de aplicación local.",
     scoreContribution: true,
     score: (answer) => answer === true ? 2.22 : 0
   },
@@ -535,6 +547,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Equidad", 
     stage: "Recolección y procesamiento de datos",
+    info: "Se debe verificar si se ha planificado un análisis exploratorio inicial de los datos para evaluar calidad, integridad, temporalidad y consistencia, así como para identificar desde el comienzo posibles sesgos, daños potenciales e implicaciones de su uso, y no solo en etapas posteriores.",
     scoreContribution: true,
     score: (answer) => answer === true ? 2.22 : 2.22
   },
@@ -544,12 +557,13 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
+    info:"Se debe determinar si el algoritmo interviene en decisiones incluidas en procedimientos formales de la administración (solicitudes, revisiones, resoluciones y notificaciones) que siguen etapas normadas y afectan derechos u obligaciones de los ciudadanos.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.58 : 1.58
   },
   {
     id: "q46",
-    text: "Se enmarca el sistema en alguna de estas finalidades:  las áreas de educación, empleo, servicios básicos, subsidios y ayuda económica, capacitación laboral,  salud, seguridad pública, vivienda, protección social, autorizaciones o permisos administrativos.", 
+    text: "¿Se enmarca el sistema en alguna de estas finalidades:  las áreas de educación, empleo, servicios básicos, subsidios y ayuda económica, capacitación laboral,  salud, seguridad pública, vivienda, protección social, autorizaciones o permisos administrativos?", 
     type: "yesno",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
@@ -558,30 +572,38 @@ const questions: Question[] = [
   },
   {
     id: "q47",
-    text: "¿Saben las personas que la decisión está mediada por un sistema de IA o algoritmos de IA o tomada sobre la base de los mismos?", 
+    text: "¿Sabrán los titulares que la decisión será mediada por un sistema de IA o tomada con base en algoritmos de IA?", 
     type: "yesno",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
+    info:"Se debe comprobar si los titulares son informados de que la decisión está mediada por IA o algoritmos, información obligatoria según la ley de protección de datos personales.",
     scoreContribution: true,
     score: (answer) => answer === false ? 1.58 : 0
   },
   {
     id: "q48",
-    text: "¿Existe una imposibilidad técnica real, conforme con el estado del arte, y derivada, por ejemplo, de sistemas de decisiones automatizadas o semiautomatizadas basados en sistemas de aprendizaje automático (cajas negras), de entregar información respecto del funcionamiento y resultados del algoritmo?", 
+    text: "¿Existe una limitación técnica insalvable, acorde con el estado del arte —por ejemplo, derivada de modelos de aprendizaje automático ‘caja negra’ en sistemas de decisiones automatizadas o semiautomatizadas— que impida entregar información sobre el funcionamiento y los resultados del algoritmo?", 
     type: "yesno",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
+    info: "Se debe evaluar si la opacidad inherente a modelos de ‘caja negra’ de aprendizaje automático genera una limitación técnica insalvable que impida explicar su funcionamiento interno y justificar las decisiones o resultados del algoritmo.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.58 : 0
   },
   {
     id: "q49",
     text: "¿El algoritmo estará protegido por derechos de propiedad intelectual de terceros desarrolladores?", 
-    type: "yesno",
+    type: "select",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
+    info:"Se debe determinar si el algoritmo o modelo está sujeto a licencias, patentes o derechos de autor de terceros, lo que implica restricciones legales para su uso, modificación o distribución.",
+    options: [
+      { value: "Si", label: "Sí", score: 1.58 },
+      { value: "No", label: "No", score: 0.0 },
+      { value: "No Aplica", label: "No Aplica", score: 1.58 }
+    ],
     scoreContribution: true,
-    score: (answer) => answer === true ? 1.58 : 1.58
+    score: (answer) => answer === "Si" ? 1.58 : (answer === "No" ? 0 : 1.58)
   },
   {
     id: "q50",
@@ -595,7 +617,7 @@ const questions: Question[] = [
   },
   {
     id: "q51",
-    text: "¿Has considerado algún mecanismo para que las partes interesadas se comuniquen con la institución por los efectos o impactos que pueda producir el sistema? ", 
+    text: "¿Se ha considerado algún mecanismo para que los usuarios internos o externos se comuniquen con la institución por los efectos o impactos que pueda producir el sistema?", 
     type: "yesno",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
@@ -617,7 +639,7 @@ const questions: Question[] = [
       { value: "Razonamiento con estructuras de conocimiento", label: "Razonamiento con estructuras de conocimiento", score: 0 },
     ],
     scoreContribution: false,
-    info: "Para entender las clasificaciones, visite la guía permitido innovar en el siguiente enlace: https://www.lab.gob.cl/permitido-innovar"
+    info: "Seleccione todas las funciones que describen el sistema: \n Reconocimiento y detección de eventos: Identifica patrones o sucesos en datos (imágenes, audio, señales) y notifica o actúa en consecuencia. \n Predicción: Anticipa valores o comportamientos futuros a partir de patrones históricos. \n Personalización: Ajusta la experiencia o la interfaz según las preferencias individuales. \n Soporte de interacción: Facilita la comunicación entre usuario y sistema (p. ej., chatbots, asistentes). \n Optimización: Mejora automáticamente procesos o recursos para cumplir objetivos específicos. \n Razonamiento con estructuras de conocimiento: Utiliza ontologías, grafos o reglas formales para inferir conclusiones y relaciones."
   },
   {
     id: "q53",
@@ -625,23 +647,23 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
-    info: " ",
+    info: "Debe seleccionarse ‘Sí’ si el sistema automatizado reemplazará decisiones que habitualmente toma una persona. En caso de que aún no se haya decidido este aspecto, marque también ‘Sí’ para que la herramienta proporcione la recomendación correspondiente.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.38 : 0
   },
   {
     id: "q54",
-    text: "¿El sistema está completamente automatizado? ",
+    text: "¿El sistema para la toma de decisiones estará completamente automatizado?",
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
-    info: " ",
+    info: "Se considera completamente automatizado el sistema que, una vez entrenado y desplegado, ejecuta todas sus funciones —incluida la toma de decisiones— sin intervención humana directa en ninguna etapa operativa.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.38 : 1.38
   },
   {
     id: "q55",
-    text: "¿Se proporciona un mecanismo para obtener retroalimentación de los usuarios durante la operación del sistema?",
+    text: " ¿Se proporcionará un mecanismo para obtener retroalimentación de los usuarios durante la operación del sistema?",
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
@@ -665,7 +687,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
-    info: " ",
+    info: "Se debe verificar si la organización dispone o habitualmente destina recursos financieros específicos para cubrir los costos de auditorías algorítmicas, incluyendo honorarios de auditores, herramientas de evaluación y otros gastos asociados.",
     scoreContribution: true,
     score: (answer) => answer === false ? 1.38 : 0
   },
@@ -675,7 +697,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
-    info: " ",
+    info: "Se debe verificar si existe un proceso o mecanismo diseñado para atender solicitudes de información de usuarios externos —es decir, personas o entidades que no participaron en el desarrollo del sistema— sobre su funcionamiento, datos o decisiones.",
     scoreContribution: true,
     score: (answer) => answer === false ? 1.38 : 0
   },
@@ -685,7 +707,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
-    info: " ",
+    info: "Corregir que no se despliegue la recomendación a esta pregunta si el usuario responde que sí.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.38 : 1.38
   },
@@ -911,7 +933,7 @@ const recommendations: Recommendation[] = [
     questionId: "q21",
     recommendations: [
       {
-        text: "Es fundamental que se documente adecuadamente cada una de las decisiones tomadas durante el desarrollo de los sistemas de IA, especialmente cuando se procesan datos personales. Esta documentación debe ser clara y accesible para garantizar el cumplimiento de las obligaciones de transparencia establecidas por las normativas de protección de datos. La transparencia implica no solo informar sobre los criterios y procesos que guían las decisiones automatizadas, sino también permitir a los usuarios entender cómo se recopilan, procesan y utilizan sus datos. Además, se recomienda implementar fichas de transparencia. La ficha de transparencia es un documento que proporciona información relevante sobre la naturaleza, aspectos técnicos, funcionales y del proyecto del SDA. Desempeña un papel fundamental en la promoción de la transparencia, la rendición de cuentas y el uso ético de los algoritmos. La herramienta facilita la creación de esta ficha: ayuda a la identificación de la información relevante sobre el SDA que se debe transparentar y la presenta de manera clara, visible y comprensible tanto para los involucrados en el proceso institucional como para cualquier persona interesada.",
+        text: "Es fundamental que se documente adecuadamente cada una de las decisiones tomadas durante el desarrollo de los sistemas de IA, especialmente cuando se procesan datos personales. Esta documentación debe ser clara y accesible para garantizar el cumplimiento de las obligaciones de transparencia establecidas por las normativas de protección de datos. La transparencia implica no solo informar sobre los criterios y procesos que guían las decisiones automatizadas, sino también permitir a los usuarios entender cómo se recopilan, procesan y utilizan sus datos. Además, se recomienda implementar fichas de transparencia. La ficha de transparencia es un documento que proporciona información relevante sobre la naturaleza, aspectos técnicos, funcionales y del proyecto del sistema de decisiones automatizadas. Desempeña un papel fundamental en la promoción de la transparencia, la rendición de cuentas y el uso ético de los algoritmos. La herramienta facilita la creación de esta ficha: ayuda a la identificación de la información relevante sobre el sistema de decisiones automatizadas que se debe transparentar y la presenta de manera clara, visible y comprensible tanto para los involucrados en el proceso institucional como para cualquier persona interesada.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
 
       }
@@ -1050,7 +1072,7 @@ const recommendations: Recommendation[] = [
     questionId: "q34",
     recommendations: [
       {
-        text: "Evaluar el uso de herramientas que permitan transparentar factores o elementos que tome en cuenta el algoritmo para llegar al resultado. El sector público está sujeto a normativas de transparencia en la función publica reforzadas por mandatos de la ley de datos personales frente a la toma de decisiones automatizadas. Una herramienta adecuada es la a ficha de transparencia es un documento que proporciona información relevante sobre la naturaleza, aspectos técnicos, funcionales y del proyecto del SDA. Desempeña un papel fundamental en la promoción de la transparencia, la rendición de cuentas y el uso ético de los algoritmos. La herramienta facilita la creación de esta ficha: ayuda a la identificación de la información relevante sobre el SDA que se debe transparentar y la presenta de manera clara, visible y comprensible tanto para los involucrados en el proceso institucional como para cualquier persona interesada.",
+        text: "Evaluar el uso de herramientas que permitan transparentar factores o elementos que tome en cuenta el algoritmo para llegar al resultado. El sector público está sujeto a normativas de transparencia en la función publica reforzadas por mandatos de la ley de datos personales frente a la toma de decisiones automatizadas. Una herramienta adecuada es la a ficha de transparencia es un documento que proporciona información relevante sobre la naturaleza, aspectos técnicos, funcionales y del proyecto del sistema de decisiones automatizadas. Desempeña un papel fundamental en la promoción de la transparencia, la rendición de cuentas y el uso ético de los algoritmos. La herramienta facilita la creación de esta ficha: ayuda a la identificación de la información relevante sobre el sistema de decisiones automatizadas que se debe transparentar y la presenta de manera clara, visible y comprensible tanto para los involucrados en el proceso institucional como para cualquier persona interesada.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
 
       }
@@ -1060,7 +1082,7 @@ const recommendations: Recommendation[] = [
     questionId: "q35",
     recommendations: [
       {
-        text: "De acuerdo a sus respuestas la entidad está calificada como servicio escencial debiendo cumplir los estándares dictados por la ANCI para los servicios esenciales. ",
+        text: "De acuerdo a sus respuestas la entidad está calificada como servicio esencial debiendo cumplir los estándares dictados por la ANCI para los servicios esenciales. ",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       },
     ]
@@ -1213,7 +1235,7 @@ const recommendations: Recommendation[] = [
     questionId: "q48",
     recommendations: [
       {
-        text: "Evaluar herramientas que permitan transparentar factores o elementos que tome en cuenta el algoritmo para llegar al resultado. El sector público está sujeto a normativas de transparencia en la función publica reforzadas por mandatos de la ley de datos personales frente a la toma de decisiones automatizadas. Es recomendable desarrollar una ficha de transparencia, documento que proporciona información relevante sobre la naturaleza, aspectos técnicos, funcionales y del proyecto del SDA. Desempeña un papel fundamental en la promoción de la transparencia, la rendición de cuentas y el uso ético de los algoritmos. La herramienta facilita la creación de esta ficha: ayuda a la identificación de la información relevante sobre el SDA que se debe transparentar y la presenta de manera clara, visible y comprensible tanto para los involucrados en el proceso institucional como para cualquier persona interesada.",
+        text: "Evaluar herramientas que permitan transparentar factores o elementos que tome en cuenta el algoritmo para llegar al resultado. El sector público está sujeto a normativas de transparencia en la función publica reforzadas por mandatos de la ley de datos personales frente a la toma de decisiones automatizadas. Es recomendable desarrollar una ficha de transparencia, documento que proporciona información relevante sobre la naturaleza, aspectos técnicos, funcionales y del proyecto del sistema de decisiones automatizadas. Desempeña un papel fundamental en la promoción de la transparencia, la rendición de cuentas y el uso ético de los algoritmos. La herramienta facilita la creación de esta ficha: ayuda a la identificación de la información relevante sobre el sistema de decisiones automatizadas que se debe transparentar y la presenta de manera clara, visible y comprensible tanto para los involucrados en el proceso institucional como para cualquier persona interesada.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       }
     ]

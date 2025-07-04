@@ -200,11 +200,11 @@ export function LandingPage() {
               </Button>
             )}
             <div className="flex justify-between space-y-4 p-4 rounded-lg backdrop-blur-sm">
-              <Image src="/images/Logo_herramientas_algoritmos.png" alt="HERRAMIENTAS ALGORITMOS ÉTICOS" width={300} height={10} />
-              <Image src="/images/logo-goblab-uai.png" alt="Gob_Lab UAI" width={250} height={10} />
+              <Image src="/images/herramientas.png" alt="HERRAMIENTAS ALGORITMOS ÉTICOS" width={250} height={10} />
+              <Image src="/images/logo-goblab-uai.png" alt="Gob_Lab UAI" width={350} height={10} />
               
             </div>
-            <p className="text-sm text-gray-600">V.{VERSION} <strong>Beta</strong></p>
+            <p className="text-sm text-gray-600">V.{VERSION}</p>
             <h1 className="text-4xl font-bold mb-6">Evaluación de impacto algorítmico (EIA)</h1>
             <div className="space-y-6 mb-8 text-gray-700">
               <p>
