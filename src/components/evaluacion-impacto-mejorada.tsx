@@ -1832,36 +1832,82 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                         <Label className="text-sm mr-2 flex-grow font-normal" htmlFor={question.id}>
                           {`${dimensions.indexOf(currentDimension) + 1}.${qIndex + 1}. ${question.text}`}
                         </Label>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
+                        {/* Sistema de información emergente con estado controlado */}
+                        <div className="relative">
+                          <Button
+                            variant="ghost" 
+                            size="sm"
+                            className="h-6 w-6 p-0 rounded-full cursor-help touch-manipulation"
+                            type="button"
+                            aria-label="Mostrar información adicional"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              const tooltipId = `tooltip-${question.id}`;
+                              const currentTooltip = document.getElementById(tooltipId);
+                              
+                              // Ocultar todos los tooltips primero
+                              document.querySelectorAll('[id^="tooltip-"]').forEach(el => {
+                                if (el.id !== tooltipId) {
+                                  (el as HTMLElement).style.display = 'none';
+                                }
+                              });
+                              
+                              // Alternar la visibilidad del tooltip actual
+                              if (currentTooltip) {
+                                currentTooltip.style.display = 
+                                  currentTooltip.style.display === 'none' ? 'block' : 'none';
+                              }
+                            }}
+                          >
+                            <HelpCircle className="h-4 w-4" />
+                          </Button>
+                          
+                          {/* Contenido del tooltip */}
+                          <div 
+                            id={`tooltip-${question.id}`}
+                            className="absolute right-0 top-8 z-50 w-[90vw] sm:w-80 p-4 rounded-md border border-slate-200 bg-white shadow-md max-h-[50vh] overflow-y-auto hidden"
+                            style={{ minWidth: '250px' }}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <div className="text-sm whitespace-normal">
+                              {question.info?.split('\n').map((paragraph, i) => (
+                                <p key={i} className="mb-2">{paragraph}</p>
+                              ))}
+                            </div>
+                            <div className="absolute right-2 top-2">
                               <Button
-                                variant="ghost" 
+                                variant="ghost"
                                 size="sm"
-                                className="h-6 w-6 p-0 rounded-full cursor-help"
-                                type="button"
+                                className="h-5 w-5 p-0 rounded-full"
                                 onClick={(e) => {
                                   e.preventDefault();
-                                  e.stopPropagation();
+                                  const tooltipId = `tooltip-${question.id}`;
+                                  const currentTooltip = document.getElementById(tooltipId);
+                                  if (currentTooltip) {
+                                    currentTooltip.style.display = 'none';
+                                  }
                                 }}
                               >
-                                <HelpCircle className="h-4 w-4" />
+                                <span className="sr-only">Cerrar</span>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                >
+                                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
                               </Button>
-                            </TooltipTrigger>
-                            <TooltipContent 
-                              side="right" 
-                              className="max-w-sm p-4 max-h-[300px] overflow-y-auto"
-                              align="start"
-                              avoidCollisions={true}
-                            >
-                              <div className="text-sm whitespace-normal">
-                                {question.info?.split('\n').map((paragraph, i) => (
-                                  <p key={i} className="mb-2">{paragraph}</p>
-                                ))}
-                              </div>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                       {renderQuestionInput(question)}
                     </div>
