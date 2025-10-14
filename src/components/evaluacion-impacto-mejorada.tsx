@@ -323,11 +323,11 @@ const questions: Question[] = [
   },
   { 
     id: "q24", 
-    text: "¿Utilizará el sistema datos personales como datos de entrada para la toma de decisiones automatizadas?", 
+    text: "¿El sistema utiliza o ha utilizado datos personales en alguna etapa de su ciclo de vida?", 
     type: "yesno",
     dimension: "Protección de datos", 
     stage: "Conceptualización y diseño",
-    info: "En Chile, la protección de datos personales se rige principalmente por la Ley N° 19.628, conocida como la Ley sobre Protección de la Vida Privada, y por la reciente Ley 21.719, que introduce modificaciones importantes y establece la Agencia de Protección de Datos Personales. La ley define los datos personales como cualquier información concerniente a personas naturales, identificadas o identificables, y establece principios y normas para su tratamiento. ",
+    info: "Incluye cualquier forma de tratamiento de datos personales en el sistema, ya sea durante el entrenamiento, el ajuste fino (finetuning) o el uso en producción. Por ejemplo, si un modelo predictivo se entrenó con información de personas, o si un modelo generativo permite que el usuario proporcione datos personales en sus prompts o consultas. En Chile, la protección de datos personales se rige principalmente por la Ley N° 19.628, conocida como la Ley sobre Protección de la Vida Privada, y por la reciente Ley 21.719, que introduce modificaciones importantes y establece la Agencia de Protección de Datos Personales. La ley define los datos personales como cualquier información concerniente a personas naturales, identificadas o identificables, y establece principios y normas para su tratamiento.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.01 : 0
   },
