@@ -11,6 +11,7 @@ import { toast } from "@/hooks/use-toast"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { CheckCircle2, ChevronLeft, ChevronRight, HelpCircle, Send} from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import {
   Select, SelectTrigger, SelectContent, SelectItem, SelectValue,
 } from "@/components/ui/select"
@@ -311,6 +312,11 @@ export function LandingPage() {
               <h3 className="font-semibold mb-2 text-gray-700">Aviso de Privacidad</h3>
               <p>
                 Tu correo electrónico será utilizado para enviarte información sobre el proyecto de algoritmos éticos de GobLab UAI. La información del cuestionario es procesada localmente en tu navegador y no es almacenada por la plataforma.
+              </p>
+              <p className="mt-2">
+                <Link href="/privacidad" className="text-blue-600 hover:underline">
+                  Leer política de privacidad y consentimiento informado →
+                </Link>
               </p>
             </div>
           </div>
