@@ -236,9 +236,13 @@ export function LandingPage() {
                 <ChevronRight className="h-4 w-4" />
               </Button>
             )}
-            <div className="flex justify-between space-y-4 p-4 rounded-lg backdrop-blur-sm">
-              <Image src="/images/logo-goblab-uai.png" alt="Gob_Lab UAI" width={300} height={10} />
-              <Image src="/images/herramientas.png" alt="HERRAMIENTAS ALGORITMOS ÉTICOS" width={200} height={10} />
+            <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-lg backdrop-blur-sm">
+              <div className="relative h-12 w-48 sm:h-14 sm:w-64 md:w-72 flex-shrink-0">
+                <Image src="/images/logo-goblab-uai.png" alt="Gob_Lab UAI" fill className="object-contain object-left" />
+              </div>
+              <div className="relative h-10 w-32 sm:h-12 sm:w-44 md:w-52 flex-shrink-0">
+                <Image src="/images/herramientas.png" alt="HERRAMIENTAS ALGORITMOS ÉTICOS" fill className="object-contain object-right" />
+              </div>
             </div>
             <p className="text-sm text-gray-600">V.{VERSION}</p>
             <h1 className="text-4xl font-bold mb-6">Evaluación de impacto algorítmico (EIA)</h1>
