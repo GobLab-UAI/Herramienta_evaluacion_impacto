@@ -30,10 +30,12 @@
     "next": "14.2.13",
     "react": "^18",
     "react-dom": "^18",
-    "resend": "^4.5.1",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "xlsx": "^0.18.5"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": ["core-js", "unrs-resolver"]
   },
   "devDependencies": {
     "@types/node": "^20",
