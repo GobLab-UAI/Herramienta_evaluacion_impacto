@@ -1,48 +1,46 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
-    /* 1 · Parsear cuerpo */
     const contentType = req.headers.get("content-type") || "";
     /* eslint-disable @typescript-eslint/no-explicit-any */
     const body: Record<string, any> = contentType.includes("application/json")
       ? await req.json()
       : Object.fromEntries((await req.formData()).entries());
 
-    /* 2 · Extraer & validar */
-    /* eslint-disable @typescript-eslint/no-unused-vars */
-    const { category, subject, message, organization, tool } = body;
-    if (!category || !message) {
+    const { feedback_type, description, email, organization } = body;
+    if (!feedback_type || !description) {
       return NextResponse.json(
         { success: false, error: "Campos obligatorios faltantes" },
         { status: 400 }
       );
     }
 
-    /* 3 · Variables */
-    const recipient = process.env.MAIL_TO_SEND || "ejemplo@gmail.com";
-    const toolName = process.env.TOOL || "HERRAMIENTA"; // valor por defecto
+    const supabaseUrl = process.env.SUPABASE_URL!;
+    const supabaseKey = process.env.SUPABASE_ANON_KEY!;
+    const tool = process.env.SUPABASE_TOOL_NAME || "evaluacion de impacto";
 
-    /* 4 · HTML */
-    const html = `
-      <h2>Nuevo feedback</h2>
-      <p><strong>Herramienta:</strong> ${toolName}</p>
-      <p><strong>Organización:</strong> ${organization || "-"}</p>
-      <p><strong>Categoría:</strong> ${category}</p>
-      <p><strong>Mensaje:</strong><br/>${String(message).replace(/\n/g, "<br/>")}</p>
-    `;
-
-    /* 5 · Enviar */
-    const { error } = await resend.emails.send({
-      from: "Feedback GobLab <onboarding@resend.dev>",
-      to: [recipient],
-      subject: `[Feedback][${toolName}] ${subject || category}`,
-      html,
+    const res = await fetch(`${supabaseUrl}/rest/v1/tool_feedback`, {
+      method: "POST",
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify({
+        tool,
+        feedback_type,
+        description,
+        ...(email ? { email } : {}),
+        ...(organization ? { organization } : {}),
+      }),
     });
-    if (error) throw error;
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err);
+    }
 
     return NextResponse.json({ success: true });
   } catch (err: any) {

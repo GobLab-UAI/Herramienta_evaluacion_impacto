@@ -131,7 +131,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "General", 
     stage: "Conceptualización y diseño",
-    info: "Responde “sí” si el sistema de IA que estás evaluando reutiliza total o parcialmente un modelo ya desarrollado previamente, ya sea por tu equipo, por otra área de tu organización o por un tercero (por ejemplo, un modelo preentrenado, un sistema adaptado de otra aplicación, o una solución open source). \n Esto incluye casos en que el modelo fue ajustado o reentrenado, pero su base proviene de un desarrollo previo. \n Responde “no” si el modelo fue creado desde cero específicamente para este sistema.",
+    info: "¿El modelo existente es un modelo general tipo \"chatGPT\" o es un modelo diseñado/por diseñar de manera específica para el proyecto?",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.3 : 0
   },
@@ -151,7 +151,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Proporcionalidad", 
     stage: "Conceptualización y diseño",
-    info: "Esta pregunta apunta a considerar si existen alternativas no algorítmicas para resolver el problema. A veces se recurre a IA sin evaluar otras soluciones más simples, eficaces o apropiadas.",
+    info: "Esta pregunta apunta a considerar si existen alternativas no algorítmicas para resolver el problema ya que a veces se recurre a IA sin evaluar otras soluciones más simples, eficaces o apropiadas. Por ejemplo: rediseño de procesos, restructuración de equipos, opciones no automáticas.",
     scoreContribution: true,
     score: (answer) => answer === false ? 1.3 : 0
   },
@@ -180,26 +180,29 @@ const questions: Question[] = [
     scoreContribution: true,
     score: (answer) => answer === false ? 1.3 : 0
   },
-  { 
-    id: "q11", 
-    text: "¿Son los impactos que ha identificado reversibles?", 
+  {
+    id: "q11",
+    text: "¿La aplicación del sistema tiene algún impacto en derechos humanos según la constitución?",
     type: "yesno",
-    dimension: "Proporcionalidad", 
-    stage: "Conceptualización y diseño",
-    info: "Un impacto es irreversible cuando no puede deshacerse o corregirse una vez que ocurre. Esta pregunta invita a reflexionar si las consecuencias del sistema pueden ser revertidas en caso de error o daño.",
-    scoreContribution: true,
-    score: (answer) => answer === false ? 1.3 : 0  
-
-  },
-  { 
-    id: "q12", 
-    text: "¿La aplicación del sistema tiene algún impacto en derechos humanos según la constitución?", 
-    type: "yesno",
-    dimension: "Proporcionalidad", 
+    dimension: "Proporcionalidad",
     stage: "Conceptualización y diseño",
     info: "Considera si el sistema puede afectar derechos protegidos por la Constitución, como la privacidad, la igualdad ante la ley, la no discriminación, la libertad de expresión o el debido proceso. El impacto puede ser directo o indirecto.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.3 : 0
+  },
+  {
+    id: "q12",
+    text: "¿Son los impactos que ha identificado reversibles?",
+    type: "yesno",
+    dimension: "Proporcionalidad",
+    stage: "Conceptualización y diseño",
+    info: "Un impacto es irreversible cuando no puede deshacerse o corregirse una vez que ocurre. Esta pregunta invita a reflexionar si las consecuencias del sistema pueden ser revertidas en caso de error o daño.",
+    scoreContribution: true,
+    dependsOn: {
+      questionId: "q11",
+      value: true
+    },
+    score: (answer) => answer === false ? 1.3 : 0
   },
   { 
     id: "q13", 
@@ -207,7 +210,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Normativa", 
     stage: "Conceptualización y diseño",
-    info: "Esta pregunta no se refiere a si la ley obliga a usar un algoritmo, sino a si el sistema se utiliza para aplicar o ejecutar una norma vigente (como una ley, reglamento o acto administrativo).",
+    info: "Esta pregunta no se refiere a si la ley obliga a utilizar un algoritmo, sino a si el sistema se emplea para aplicar o ejecutar una norma vigente (por ejemplo: una ley, un reglamento, un acto administrativo, o normativas emitidas por organismos como el Ministerio del Trabajo, el Ministerio de Salud, el Ministerio de Economía, etc.). Es decir, normas que puedan afectar tanto a trabajadores como a clientes.",
     scoreContribution: true,
     score: (answer) => answer === true ? 5.55 : 0
   },
@@ -443,11 +446,11 @@ const questions: Question[] = [
   },
   { 
     id: "q33",
-    text: "¿El sistema implica toma de decisiones automatizadas, incluida la elaboración de perfiles, que afecten signifcativamente a los titulares de datos, esto es, por ejemplo, en la negación de un beneficio, la asistencia sanitaria, evaluación de beneficios, acceso a servicios públicos, resolución de controversias, etc? ", 
+    text: "¿El sistema implica toma de decisiones automatizadas, incluida la elaboración de perfiles, que afecten significativamente a los titulares de datos?",
     type: "yesno",
-    dimension: "Protección de datos", 
+    dimension: "Protección de datos",
     stage: "Recolección y procesamiento de datos",
-    info: "Se debe identificar si el sistema ejecuta decisiones automatizadas o perfila a los titulares con impacto relevante, por ejemplo al denegar un beneficio, gestionar atención sanitaria, evaluar prestaciones, autorizar acceso a servicios públicos o resolver controversias.",
+    info: "Se debe identificar si el sistema ejecuta decisiones automatizadas o realiza elaboración de perfiles que afecten significativamente a los titulares de datos, por ejemplo al denegar un beneficio, gestionar atenciones o servicios, evaluar prestaciones, autorizar accesos, resolver controversias, o intervenir en procesos como la interacción con personas usuarias, la selección de personal, la gestión laboral, la seguridad en el trabajo u otros ámbitos en los que dichas decisiones puedan tener un impacto relevante.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.01 : 0
   },
@@ -543,7 +546,7 @@ const questions: Question[] = [
   },
   {
     id: "q41",
-    text: "¿La ley lo obliga a fundar sus decisiones en alguna de las características descritas anteriormente?", 
+    text: "¿La ley considera principios éticos que funden decisiones en alguna de las características descritas anteriormente?", 
     type: "yesno",
     dimension: "Equidad", 
     stage: "Recolección y procesamiento de datos",
@@ -582,7 +585,7 @@ const questions: Question[] = [
   },
   {
     id: "q45",
-    text: "¿El algoritmo participa de una decisión que forma parte de un proceso administrativo?", 
+    text: "¿Se enmarca el sistema en alguna de las siguientes finalidades: áreas de educación, empleo, recursos humanos, seguridad, subsidios y ayuda económica, capacitación laboral, salud, vivienda, autorizaciones o permisos administrativos?", 
     type: "yesno",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
@@ -853,11 +856,11 @@ const recommendations: Recommendation[] = [
     questionId: "q11",
     recommendations: [
       {
-        text: "El sistema de IA seleccionado debe ser adecuado al contexto específico y fundamentarse en principios científicos rigurosos. En aquellos casos donde las decisiones puedan tener un impacto irreversible, sean difíciles de revertir o involucren aspectos críticos como decisiones de vida o muerte, es imprescindible que la decisión final sea adoptada, o al menos revisada, por un ser humano. Este enfoque garantiza  que ciertas decisiones o funciones críticas permanezcan bajo el control humano, incluso cuando se utilizan sistemas de IA avanzados. Este concepto está estrechamente relacionado con la necesidad de preservar la supervisión humana en situaciones donde las decisiones pueden tener un impacto significativo o irreversible en la vida de las personas.",
-        condition: (answer: Answer) => typeof answer === 'boolean' && answer === false,
+        text: "Si el uso de algoritmos o IA el proyecto, puede tener un impacto en los derechos de las personas, es fundamental garantizar que su implementación sea adecuada al contexto y proporcional al objetivo legítimo que se busca alcanzar. El sistema elegido debe ser cuidadosamente diseñado y evaluado para evitar vulneraciones o tensiones innecesarias con los derechos fundamentales. Para ello, es esencial realizar una evaluación contextual previa que permita identificar y gestionar posibles riesgos, asegurando que las soluciones tecnológicas respeten y se alineen con los derechos de las personas maximizando asi los beneficios.",
+        condition: (answer: Answer) => typeof answer === 'boolean' && answer === true,
         resource: {
-          text: "Recomendación sobre la ética de la inteligencia artificial | UNESCO",
-          url: "https://www.unesco.org/es/articles/recomendacion-sobre-la-etica-de-la-inteligencia-artificial"
+          text: "Evaluacion de impacto en DDHH",
+          url: "https://www.humanrights.dk/tools/human-rights-impact-assessment-guidance-toolbox/guia-de-evaluacion-de-impacto-en-los-derechos"
         }
       },
     ]
@@ -866,11 +869,11 @@ const recommendations: Recommendation[] = [
     questionId: "q12",
     recommendations: [
       {
-        text: "Si el uso de algoritmos o IA el proyecto, puede tener un impacto en los derechos de las personas, es fundamental garantizar que su implementación sea adecuada al contexto y proporcional al objetivo legítimo que se busca alcanzar. El sistema elegido debe ser cuidadosamente diseñado y evaluado para evitar vulneraciones o tensiones innecesarias con los derechos fundamentales. Para ello, es esencial realizar una evaluación contextual previa que permita identificar y gestionar posibles riesgos, asegurando que las soluciones tecnológicas respeten y se alineen con los derechos de las personas maximizando asi los beneficios.",
-        condition: (answer: Answer) => typeof answer === 'boolean' && answer === true,
+        text: "El sistema de IA seleccionado debe ser adecuado al contexto específico y fundamentarse en principios científicos rigurosos. En aquellos casos donde las decisiones puedan tener un impacto irreversible, sean difíciles de revertir o involucren aspectos críticos como decisiones de vida o muerte, es imprescindible que la decisión final sea adoptada, o al menos revisada, por un ser humano. Este enfoque garantiza  que ciertas decisiones o funciones críticas permanezcan bajo el control humano, incluso cuando se utilizan sistemas de IA avanzados. Este concepto está estrechamente relacionado con la necesidad de preservar la supervisión humana en situaciones donde las decisiones pueden tener un impacto significativo o irreversible en la vida de las personas.",
+        condition: (answer: Answer) => typeof answer === 'boolean' && answer === false,
         resource: {
-          text: "Evaluacion de impacto en DDHH",
-          url: "https://www.humanrights.dk/tools/human-rights-impact-assessment-guidance-toolbox/guia-de-evaluacion-de-impacto-en-los-derechos"
+          text: "Recomendación sobre la ética de la inteligencia artificial | UNESCO",
+          url: "https://www.unesco.org/es/articles/recomendacion-sobre-la-etica-de-la-inteligencia-artificial"
         }
       },
     ]

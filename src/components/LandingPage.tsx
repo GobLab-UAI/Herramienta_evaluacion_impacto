@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -22,13 +22,39 @@ export function LandingPage() {
   const [organization, setOrganization] = useState('')
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const router = useRouter()
-  const [category, setCategory] = useState("general")
+
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setIsSidebarOpen(false)
+    }
+  }, [])
+  const [category, setCategory] = useState("Comentario general")
+  const [feedbackEmail, setFeedbackEmail] = useState("")
   const [submitting, setSubmitting] = useState(false)
   const [sent, setSent] = useState(false)
+  const [starting, setStarting] = useState(false)
+  const [subscribe, setSubscribe] = useState(true)
   const VERSION = process.env.NEXT_PUBLIC_VERSION || "1.0.0"
 
-  const handleStart = (e: React.FormEvent) => {
+  const handleStart = async (e: React.FormEvent) => {
     e.preventDefault()
+    setStarting(true)
+    if (subscribe) {
+      try {
+        await fetch("/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        })
+      } catch {
+        toast({
+          variant: "default",
+          title: "Advertencia",
+          description: "No se pudo registrar el correo, pero puedes continuar con la evaluación.",
+        })
+      }
+    }
+    setStarting(false)
     router.push(`/evaluacion?email=${encodeURIComponent(email)}`)
   }
 
@@ -41,10 +67,9 @@ export function LandingPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          tool: "FichaTransparencia",
-          category,
-          subject: `Feedback ${category}`,
-          message: feedback,
+          feedback_type: category,
+          description: feedback,
+          email: feedbackEmail || email || "anonimo@goblab.cl",
           organization,
         }),
       });
@@ -58,7 +83,8 @@ export function LandingPage() {
       /* limpiar */
       setFeedback("");
       setOrganization("");
-      setCategory("general");
+      setFeedbackEmail("");
+      setCategory("Comentario general");
     } catch (err) {
       toast({
         variant: "destructive",
@@ -107,6 +133,16 @@ export function LandingPage() {
                   Feedback
                 </h3>
 
+                {/* Email */}
+                <Input
+                  name="feedbackEmail"
+                  type="email"
+                  placeholder="Correo electrónico (opcional)"
+                  value={feedbackEmail}
+                  onChange={(e) => setFeedbackEmail(e.target.value)}
+                  maxLength={150}
+                />
+
                 {/* Organización */}
                 <Input
                   name="organization"
@@ -123,11 +159,11 @@ export function LandingPage() {
                   <Select value={category} onValueChange={setCategory} name="category">
                     <SelectTrigger><SelectValue placeholder="Selecciona" /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="general">Comentario general</SelectItem>
-                      <SelectItem value="error">Reporte de error</SelectItem>
-                      <SelectItem value="oportunidad_de_mejora">Sugerencia de mejora</SelectItem>
-                      <SelectItem value="pregunta">Pregunta</SelectItem>
-                      <SelectItem value="otra">Otro</SelectItem>
+                      <SelectItem value="Comentario general">Comentario general</SelectItem>
+                      <SelectItem value="Reporte de error">Reporte de error</SelectItem>
+                      <SelectItem value="Sugerencia de mejora">Sugerencia de mejora</SelectItem>
+                      <SelectItem value="Pregunta">Pregunta</SelectItem>
+                      <SelectItem value="Otro">Otro</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -158,7 +194,7 @@ export function LandingPage() {
                     width={150}
                     height={50}
                   />
-                  <p className="break-words overflow-wrap">Subdirección de Investigación Aplicada/Concurso IDeA I+D 2023 proyecto ID23I10357</p>
+                  <p className="break-words overflow-wrap">Esta investigación ha sido realizada por GobLab UAI, el laboratorio público de innovación de la Facultad de Gobierno de la Universidad Adolfo Ibáñez de Chile. Cuenta con el apoyo de la siguiente subvención: ANID/SUBDIRECCIÓN DE INVESTIGACIÓN APLICADA/IT25I0161</p>
                 </div>
 
                 <h3 className="font-semibold">Exención de responsabilidad</h3>
@@ -253,15 +289,28 @@ export function LandingPage() {
                     placeholder="nombre@ejemplo.com"
                   />
                 </div>
-                <Button type="submit" className="w-full">Iniciar Evaluación</Button>
+                <div className="flex items-start gap-2">
+                  <input
+                    id="subscribe"
+                    type="checkbox"
+                    checked={subscribe}
+                    onChange={(e) => setSubscribe(e.target.checked)}
+                    className="mt-1 h-4 w-4 cursor-pointer"
+                  />
+                  <label htmlFor="subscribe" className="text-sm text-gray-600 cursor-pointer">
+                    Autorizo el uso de mi correo para recibir información sobre el proyecto y novedades de la herramienta.
+                  </label>
+                </div>
+                <Button type="submit" className="w-full" disabled={starting}>
+                  {starting ? "Iniciando..." : "Iniciar Evaluación"}
+                </Button>
               </div>
             </form>
-  
+
             <div className="mt-8 text-sm text-gray-500 bg-gray-50 p-4 rounded-lg shadow-inner">
               <h3 className="font-semibold mb-2 text-gray-700">Aviso de Privacidad</h3>
               <p>
-                La información ingresada en esta herramienta no es almacenada por la plataforma. 
-                Todos los datos son procesados localmente en tu navegador para garantizar tu privacidad.
+                Tu correo electrónico será utilizado para enviarte información sobre el proyecto de algoritmos éticos de GobLab UAI. La información del cuestionario es procesada localmente en tu navegador y no es almacenada por la plataforma.
               </p>
             </div>
           </div>
