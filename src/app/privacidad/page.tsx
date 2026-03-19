@@ -131,7 +131,7 @@ export default function PrivacidadPage() {
         <p>
           El tratamiento de tu correo electrónico se basa en el{" "}
           <strong>consentimiento explícito</strong> que otorgas al marcar la
-          casilla <em>"Autorizo el uso de mi correo…"</em> antes de iniciar la
+          casilla <em>&ldquo;Autorizo el uso de mi correo…&rdquo;</em> antes de iniciar la
           evaluación. Si no marcas esa casilla, tu correo no es almacenado.
         </p>
       </section>
@@ -164,7 +164,7 @@ export default function PrivacidadPage() {
           >
             goblab.uai@gmail.com
           </a>{" "}
-          con el asunto <em>"Datos personales EIA"</em>.
+          con el asunto <em>&ldquo;Datos personales EIA&rdquo;</em>.
         </p>
       </section>
 
