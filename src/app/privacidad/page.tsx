@@ -33,18 +33,18 @@ export default function PrivacidadPage() {
         <h2 className="text-xl font-semibold mb-3">1. ¿Quiénes somos?</h2>
         <p>
           Esta herramienta es desarrollada y mantenida por{" "}
-          <strong>GobLab UAI</strong>, el laboratorio público de innovación de
-          la Facultad de Gobierno de la Universidad Adolfo Ibáñez (UAI), con
-          sede en Santiago de Chile. El proyecto cuenta con el financiamiento de
+          <strong>GobLab UAI</strong>, Laboratorio de innovación de la Escuela
+          de Gobierno de la Universidad Adolfo Ibañez, con sede en Santiago de
+          Chile. El proyecto cuenta con el financiamiento de
           ANID/SUBDIRECCIÓN DE INVESTIGACIÓN APLICADA/IT25I0161.
         </p>
         <p className="mt-2">
           Contacto:{" "}
           <a
-            href="mailto:goblab.uai@gmail.com"
+            href="mailto:goblab@uai.cl"
             className="text-blue-600 hover:underline"
           >
-            goblab.uai@gmail.com
+            goblab@uai.cl
           </a>
         </p>
       </section>
@@ -58,10 +58,6 @@ export default function PrivacidadPage() {
           El único dato personal que recopilamos es el{" "}
           <strong>correo electrónico</strong> que ingresas voluntariamente al
           comenzar una evaluación, y solo si marcas la casilla de autorización.
-        </p>
-        <p className="mt-2">
-          No recopilamos nombre, RUT, organización ni ningún otro dato de
-          identificación personal obligatorio.
         </p>
       </section>
 
@@ -86,9 +82,9 @@ export default function PrivacidadPage() {
             herramientas relacionadas.
           </li>
           <li>
-            Llevar <strong>estadísticas de uso agregadas</strong> de la
-            plataforma (número de evaluaciones iniciadas, distribución por
-            organización, etc.).
+            Llevar <strong>estadísticas con datos anonimizados</strong>{" "}
+            (número de evaluaciones iniciadas, distribución por organización,
+            etc.).
           </li>
         </ul>
         <p className="mt-3">
@@ -98,17 +94,17 @@ export default function PrivacidadPage() {
       </section>
 
       {/* 4 */}
-      <section className="mb-8 bg-green-50 border border-green-200 rounded-lg p-5">
-        <h2 className="text-xl font-semibold mb-3 text-green-800">
+      <section className="mb-8 bg-pink-50 border border-pink-200 rounded-lg p-5">
+        <h2 className="text-xl font-semibold mb-3 text-pink-800">
           4. Los datos de tu proyecto no se almacenan en nuestros servidores
         </h2>
-        <p className="text-green-900">
+        <p className="text-pink-900">
           Toda la información que ingresas durante el cuestionario —
           descripción del proyecto, respuestas, puntajes y recomendaciones —
           se <strong>procesa localmente en tu navegador</strong> y{" "}
           <strong>nunca es enviada ni almacenada en nuestros servidores</strong>.
         </p>
-        <p className="mt-2 text-green-900">
+        <p className="mt-2 text-pink-900">
           Para permitirte retomar la evaluación en otra sesión, el progreso se
           guarda temporalmente en el{" "}
           <strong>almacenamiento local de tu navegador</strong> (localStorage),
@@ -117,7 +113,7 @@ export default function PrivacidadPage() {
           <strong>7 días de inactividad</strong>. En ningún momento es
           transmitida a nuestros servidores.
         </p>
-        <p className="mt-2 text-green-900">
+        <p className="mt-2 text-pink-900">
           El informe PDF que puedes descargar al final de la evaluación es
           generado en tu propio dispositivo.
         </p>
@@ -159,10 +155,10 @@ export default function PrivacidadPage() {
         <p className="mt-3">
           Para ejercer estos derechos, escríbenos a{" "}
           <a
-            href="mailto:goblab.uai@gmail.com"
+            href="mailto:goblab@uai.cl"
             className="text-blue-600 hover:underline"
           >
-            goblab.uai@gmail.com
+            goblab@uai.cl
           </a>{" "}
           con el asunto <em>&ldquo;Datos personales EIA&rdquo;</em>.
         </p>
@@ -183,12 +179,19 @@ export default function PrivacidadPage() {
 
       <div className="border-t pt-6 mt-8 text-sm text-gray-500">
         <p>
-          GobLab UAI — Facultad de Gobierno, Universidad Adolfo Ibáñez.
+          GobLab UAI — Escuela de Gobierno, Universidad Adolfo Ibañez.
           Santiago, Chile.
         </p>
         <p className="mt-1">
-          <a href="https://goblab.uai.cl" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
-            goblab.uai.cl
+          Nosotros:{" "}
+          <a href="https://www.uai.cl/goblab" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+            www.uai.cl/goblab
+          </a>
+        </p>
+        <p className="mt-1">
+          Contacto:{" "}
+          <a href="mailto:goblab@uai.cl" className="text-blue-600 hover:underline">
+            goblab@uai.cl
           </a>
         </p>
       </div>

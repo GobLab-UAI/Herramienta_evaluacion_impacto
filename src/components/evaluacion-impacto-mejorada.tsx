@@ -117,7 +117,7 @@ const questions: Question[] = [
   },
   { 
     id: "q5", 
-    text: "¿Es este proyecto una ampliación o adaptación de algún proyecto existente?", 
+    text: "¿El proyecto es una ampliación o adaptación de algún proyecto existente dentro de la organización?",
     type: "yesno",
     dimension: "General", 
     stage: "Conceptualización y diseño",
@@ -157,7 +157,7 @@ const questions: Question[] = [
   },
   { 
     id: "q9", 
-    text: "¿Por qué se favorece la opción que implica un sistema basado en algoritmos?", 
+    text: "¿Por qué se eligió un sistema basado en algoritmos en lugar de otras alternativas?",
     type: "select",
     dimension: "Proporcionalidad", 
     stage: "Conceptualización y diseño",
@@ -236,7 +236,7 @@ const questions: Question[] = [
   },
   { 
     id: "q16", 
-    text: "¿Se han diseñado mecanismos de participación ciudadana para recibir retroalimentación del sistema?", 
+    text: "¿Existen mecanismos para que personas usuarias u otros actores entreguen retroalimentación sobre el funcionamiento del sistema?",
     type: "yesno",
     dimension: "Licencia Social", 
     stage: "Conceptualización y diseño",
@@ -247,7 +247,7 @@ const questions: Question[] = [
   },
   { 
     id: "q17", 
-    text: "¿Se han diseñado mecanismos para la difusión del sistema? ", 
+    text: "¿Se diseñaron mecanismos para la difusión del sistema hacia las comunidades involucradas o afectadas?",
     type: "yesno",
     dimension: "Licencia Social", 
     stage: "Conceptualización y diseño",
@@ -422,11 +422,11 @@ const questions: Question[] = [
   },
   { 
     id: "q31", 
-    text: "Se implementará el sistema para algunos de estos usos o casos:  \n a) Evaluación sistemática y exhaustiva de aspectos personales de los titulares de datos, basadas en tratamiento o decisiones automatizadas, como la elaboración de perfiles, y que produzcan en ellos efectos jurídicos significativos. \n b) Tratamiento masivo de datos o gran escala. \n c) Tratamiento que implique observación o monitoreo sistemático de una zona de acceso público. \n d) Tratamiento de datos sensibles y especialmente protegidos, en las hipótesis de excepción del consentimiento.", 
+    text: "Se implementará el sistema para algunos de estos usos o casos:",
     type: "yesno",
-    dimension: "Protección de datos", 
+    dimension: "Protección de datos",
     stage: "Recolección y procesamiento de datos",
-    info: "Estos cuatro supuestos (perfilado con efectos jurídicos, tratamiento masivo, monitoreo sistemático de zonas públicas y datos sensibles según Art. 9) obligan a realizar una Evaluación de Impacto según el Reglamento General de Protección de Datos de la Unión Europea (Art. 35.3 y Art. 9), por lo que se relacionan a casos críticos en relación a riesgos éticos y es importante abordarlos como tal. Marcar 'Sí' si el sistema responde a al menos uno de ellos para advertir sobre riesgos éticos y de implementación.",
+    info: "a) Evaluación sistemática y exhaustiva de aspectos personales de los titulares de datos, basadas en tratamiento o decisiones automatizadas, como la elaboración de perfiles, y que produzcan en ellos efectos jurídicos significativos.\nb) Tratamiento masivo de datos o gran escala.\nc) Tratamiento que implique observación o monitoreo sistemático de una zona de acceso público.\nd) Tratamiento de datos sensibles y especialmente protegidos, en las hipótesis de excepción del consentimiento.\n\nEstos cuatro supuestos (perfilado con efectos jurídicos, tratamiento masivo, monitoreo sistemático de zonas públicas y datos sensibles según Art. 9) obligan a realizar una Evaluación de Impacto según el Reglamento General de Protección de Datos de la Unión Europea (Art. 35.3 y Art. 9), por lo que se relacionan a casos críticos en relación a riesgos éticos y es importante abordarlos como tal. Marcar 'Sí' si el sistema responde a al menos uno de ellos para advertir sobre riesgos éticos y de implementación.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.01 : 0
   },
@@ -658,12 +658,12 @@ const questions: Question[] = [
   },
   {
     id: "q52",
-    text: "Indique las principales características del sistema a desarrollar", 
+    text: "Indique las principales características del sistema", 
     type: "multiselect",
     dimension: "Rendición de cuentas", 
     stage: "Uso y monitoreo",
     options: [
-      { value: "Sistemas de reconocimiento y de detección de eventos", label: "Sistemas de reconocimiento y de detección de eventos", score: 0 },
+      { value: "Reconocimiento y detección de eventos", label: "Reconocimiento y detección de eventos", score: 0 },
       { value: "Predicción", label: "Predicción", score: 0 },
       { value: "Personalización", label: "Personalización", score: 0 },
       { value: "Soporte de interacción", label: "Soporte de interacción", score: 0 },
@@ -671,7 +671,7 @@ const questions: Question[] = [
       { value: "Razonamiento con estructuras de conocimiento", label: "Razonamiento con estructuras de conocimiento", score: 0 },
     ],
     scoreContribution: false,
-    info: "Seleccione todas las funciones que describen el sistema: \n Reconocimiento y detección de eventos: Identifica patrones o sucesos en datos (imágenes, audio, señales) y notifica o actúa en consecuencia. \n Predicción: Anticipa valores o comportamientos futuros a partir de patrones históricos. \n Personalización: Ajusta la experiencia o la interfaz según las preferencias individuales. \n Soporte de interacción: Facilita la comunicación entre usuario y sistema (p. ej., chatbots, asistentes). \n Optimización: Mejora automáticamente procesos o recursos para cumplir objetivos específicos. \n Razonamiento con estructuras de conocimiento: Utiliza ontologías, grafos o reglas formales para inferir conclusiones y relaciones."
+    info: "Seleccione todas las funciones que describen el sistema:\n**Reconocimiento y detección de eventos**: Identifica patrones o sucesos en datos (imágenes, audio, señales) y notifica o actúa en consecuencia.\n**Predicción**: Anticipa valores o comportamientos futuros a partir de patrones históricos.\n**Personalización**: Ajusta la experiencia o la interfaz según las preferencias individuales.\n**Soporte de interacción**: Facilita la comunicación entre usuario y sistema (p. ej., chatbots, asistentes).\n**Optimización**: Mejora automáticamente procesos o recursos para cumplir objetivos específicos.\n**Razonamiento con estructuras de conocimiento**: Utiliza ontologías, grafos o reglas formales para inferir conclusiones y relaciones."
   },
   {
     id: "q53",
@@ -743,7 +743,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
-    info: "Corregir que no se despliegue la recomendación a esta pregunta si el usuario responde que sí.",
+    info: "",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.38 : 1.38
   },
@@ -1321,7 +1321,7 @@ const recommendations: Recommendation[] = [
     recommendations: [
       /*{
         text: " ",
-        condition: (answer: string[]) => !answer.includes("Sistemas de reconocimiento y de detección de eventos")
+        condition: (answer: string[]) => !answer.includes("Reconocimiento y detección de eventos")
       },
       {
         text: " ",
@@ -1406,10 +1406,6 @@ const recommendations: Recommendation[] = [
   {
     questionId: "q59",
     recommendations: [
-      {
-        text: "Es recomendable que el director del proyecto, sea responsable de  documentar, junto con el equipo técnico, todo el proceso de desarrollo para poder justificar frente a la ciudadanía y otras partes interesadas las decisiones tomadas a lo largo de todo el ciclo de vida de la IA.",
-        condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
-      },
       {
         text: "Es recomendable que el director del proyecto, sea responsable de  documentar, junto con el equipo técnico, todo el proceso de desarrollo para poder justificar frente a la ciudadanía y otras partes interesadas las decisiones tomadas a lo largo de todo el ciclo de vida de la IA.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
@@ -1505,9 +1501,13 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   }, [userEmail, router])
 
   useEffect(() => {
-    const answeredQuestions = Object.keys(answers).length
-    const totalQuestions = questions.length
-    setProgress((answeredQuestions / totalQuestions) * 100)
+    const visibleQuestions = questions.filter(q => shouldShowQuestion(q, answers))
+    const answeredQuestions = visibleQuestions.filter(q => {
+      const ans = answers[q.id]
+      return ans !== undefined && ans !== null && ans !== ''
+    }).length
+    const totalQuestions = visibleQuestions.length
+    setProgress(totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0)
   }, [answers])
 
   const handleAnswer = (questionId: string, value: Answer) => {
@@ -1891,7 +1891,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                           {`${dimensions.indexOf(currentDimension) + 1}.${qIndex + 1}. ${question.text}`}
                         </Label>
                         {/* Sistema de información emergente con estado controlado */}
-                        <div className="relative">
+                        {question.info?.trim() && <div className="relative">
                           <Button
                             variant="ghost" 
                             size="sm"
@@ -1916,9 +1916,18 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                               onClick={(e) => e.stopPropagation()}
                             >
                               <div className="text-sm whitespace-normal">
-                                {question.info?.split('\n').map((paragraph, i) => (
-                                  <p key={i} className="mb-2">{paragraph}</p>
-                                ))}
+                                {question.info?.split('\n').map((paragraph, i) => {
+                                  const parts = paragraph.split(/(\*\*[^*]+\*\*)/)
+                                  return (
+                                    <p key={i} className="mb-2 text-justify">
+                                      {parts.map((part, j) =>
+                                        part.startsWith('**') && part.endsWith('**')
+                                          ? <strong key={j}>{part.slice(2, -2)}</strong>
+                                          : part
+                                      )}
+                                    </p>
+                                  )
+                                })}
                               </div>
                               <div className="absolute right-2 top-2">
                                 <Button
@@ -1950,7 +1959,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                               </div>
                             </div>
                           )}
-                        </div>
+                        </div>}
                       </div>
                       {renderQuestionInput(question)}
                     </div>

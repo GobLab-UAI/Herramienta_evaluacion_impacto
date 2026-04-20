@@ -34,7 +34,7 @@ export function LandingPage() {
   const [submitting, setSubmitting] = useState(false)
   const [sent, setSent] = useState(false)
   const [starting, setStarting] = useState(false)
-  const [subscribe, setSubscribe] = useState(true)
+  const [subscribe, setSubscribe] = useState(false)
   const VERSION = process.env.NEXT_PUBLIC_VERSION || "1.0.0"
 
   const handleStart = async (e: React.FormEvent) => {
@@ -42,17 +42,17 @@ export function LandingPage() {
     setStarting(true)
     if (subscribe) {
       try {
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 4000)
         await fetch("/api/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email }),
+          signal: controller.signal,
         })
+        clearTimeout(timeoutId)
       } catch {
-        toast({
-          variant: "default",
-          title: "Advertencia",
-          description: "No se pudo registrar el correo, pero puedes continuar con la evaluación.",
-        })
+        // Registro falló o tardó demasiado — no bloquear el acceso
       }
     }
     setStarting(false)
