@@ -240,7 +240,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Licencia Social", 
     stage: "Conceptualización y diseño",
-    info: "Tales como correo electrónico, formulario de sugerencias, consultas publicas antes de la implementación",
+    info: "Por ejemplo: campañas informativas, sitios web, documentos explicativos, instancias de presentación pública, comunicaciones internas, materiales educativos u otros medios para dar a conocer el sistema, sus objetivos y funcionamiento.",
     scoreContribution: true,
     score: (answer) => answer === false ? 2.77 : 0
 
@@ -271,12 +271,12 @@ const questions: Question[] = [
     score: (answer) => answer === false ? 2.77 : 0
   },
   { 
-    id: "q19", 
-    text: "¿Existe alguna unidad interna encargada de supervisar la gobernanza (operación, manejo, despliegue) de la solución desarrollada?", 
+    id: "q19",
+    text: "¿Existe alguna unidad interna encargada de supervisar la gobernanza (operación, manejo, despliegue) de la solución desarrollada?",
     type: "yesno",
-    dimension: "Gobernanza", 
+    dimension: "Gobernanza",
     stage: "Uso y monitoreo",
-    info: " ",
+    info: "Se refiere a cualquier área, equipo, comité o rol dentro de la organización que tenga responsabilidad sobre la supervisión del funcionamiento del sistema, incluyendo su operación, uso, actualización, cumplimiento de normas, gestión de riesgos o toma de decisiones relevantes. Puede ser una unidad formal o una función asignada dentro de un área existente (por ejemplo: TI, cumplimiento, legal, datos, ética, innovación u otra similar).",
     scoreContribution: true,
     score: (answer) => answer === true ? 2.22 : 2.22
   },
@@ -709,7 +709,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
-    info: " ",
+    info: "Por auditorías algorítmicas se entiende procesos planificados de revisión de sistemas basados en algoritmos para evaluar su funcionamiento, decisiones e impactos, con el fin de identificar riesgos como errores, sesgos, discriminación o incumplimientos normativos. Estas auditorías pueden ser internas o externas y realizarse antes o después del despliegue del sistema.",
     scoreContribution: true,
     score: (answer) => answer === false ? 1.38 : 0
   },
