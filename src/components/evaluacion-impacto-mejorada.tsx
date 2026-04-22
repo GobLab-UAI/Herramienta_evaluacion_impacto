@@ -585,20 +585,11 @@ const questions: Question[] = [
   },
   {
     id: "q45",
-    text: "¿Se enmarca el sistema en alguna de las siguientes finalidades: áreas de educación, empleo, recursos humanos, seguridad, subsidios y ayuda económica, capacitación laboral, salud, vivienda, autorizaciones o permisos administrativos?", 
+    text: "¿Se enmarca el sistema en alguna de las siguientes finalidades: educación, empleo, recursos humanos, servicios básicos, subsidios y ayuda económica, capacitación laboral, salud, seguridad pública, vivienda, protección social, autorizaciones o permisos administrativos?",
     type: "yesno",
-    dimension: "Transparencia", 
+    dimension: "Transparencia",
     stage: "Recolección y procesamiento de datos",
-    info:"Se debe determinar si el algoritmo interviene en decisiones incluidas en procedimientos formales de la administración (solicitudes, revisiones, resoluciones y notificaciones) que siguen etapas normadas y afectan derechos u obligaciones de los ciudadanos.",
-    scoreContribution: true,
-    score: (answer) => answer === true ? 1.58 : 1.58
-  },
-  {
-    id: "q46",
-    text: "¿Se enmarca el sistema en alguna de estas finalidades:  las áreas de educación, empleo, servicios básicos, subsidios y ayuda económica, capacitación laboral,  salud, seguridad pública, vivienda, protección social, autorizaciones o permisos administrativos?", 
-    type: "yesno",
-    dimension: "Transparencia", 
-    stage: "Recolección y procesamiento de datos",
+    info: "Se debe determinar si el algoritmo interviene en decisiones incluidas en procedimientos formales de la administración (solicitudes, revisiones, resoluciones y notificaciones) que siguen etapas normadas y afectan derechos u obligaciones de los ciudadanos.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.58 : 0
   },
@@ -1242,24 +1233,19 @@ const recommendations: Recommendation[] = [
   },
 
   {
-    questionId : "q45",
+    questionId: "q45",
     recommendations: [
       {
         text: "Si un sistema algorítmico opera dentro de la administración del Estado, se sujetará a las normas administrativas y de derecho público correspondiente. Esto implica que siendo parte un proceso administrativo su despliegue y funcionamiento están sujetos a las normas administrativas de transparencia. ",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       },
       {
-        text: "Si al algoritmo no opera dentro de algun proceso administrativo, aplican minimos de transparencia, relacionados con el hecho de estar interactuando con un sistema de IA.",
-        condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
-      }
-    ]
-  },
-  {
-    questionId: "q46",
-    recommendations: [
-      {
         text: "Es fundamental que los algoritmos utilizados en áreas de alto impacto como la educación, el empleo, los servicios básicos, los subsidios y la ayuda económica, la capacitación laboral, la salud, la seguridad pública, la vivienda, la protección social, y los procesos administrativos como autorizaciones o permisos, sean transparentes y comprensibles. La opacidad de estos algoritmos puede generar desconfianza, reforzar sesgos injustos y perpetuar desigualdades, afectando de manera directa la vida de las personas. La transparencia en el diseño y la toma de decisiones algorítmica permite que los ciudadanos comprendan cómo se les asignan recursos, beneficios o servicios, y asegura que los sistemas sean justos, éticos y responsables. Además, garantiza que los procesos sean auditables y que se puedan corregir posibles errores o sesgos, promoviendo una mayor equidad y evitando la discriminación en áreas clave para el bienestar social. La Recomendación de Transparencia Algoritmica del Consejo para la Transprencia señala vias para fomentar la información en este caso de algoritmos.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
+      },
+      {
+        text: "Si al algoritmo no opera dentro de algun proceso administrativo, aplican minimos de transparencia, relacionados con el hecho de estar interactuando con un sistema de IA.",
+        condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       }
     ]
   },
