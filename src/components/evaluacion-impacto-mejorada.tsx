@@ -1963,8 +1963,8 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                   Anterior
                 </Button>
                 <div className="flex gap-2">
-                  <Button 
-                    onClick={() => setShowResults(true)} 
+                  <Button
+                    onClick={() => { trackToolComplete(); setShowResults(true); }}
                     variant={isLastDimension ? "default" : "outline"}
                     className={isLastDimension ? "bg-blue-500 hover:bg-blue-600 text-white" : ""}
                   >
