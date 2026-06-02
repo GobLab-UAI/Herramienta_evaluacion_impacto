@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { trackSectionComplete, trackToolComplete, trackToolExport } from '@/lib/analytics'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -1737,7 +1738,10 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   const handleNextDimension = () => {
     const currentIndex = dimensions.indexOf(currentDimension)
     if (currentIndex < dimensions.length - 1) {
+      trackSectionComplete(currentDimension, currentIndex, dimensions.length)
       setCurrentDimension(dimensions[currentIndex + 1])
+    } else {
+      trackToolComplete()
     }
   }
 
@@ -1753,6 +1757,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   }
   
   const exportToPDF = () => {
+    trackToolExport('pdf')
     if (tableRef.current) {
       /* eslint-disable @typescript-eslint/no-require-imports */
       const html2pdf = require('html2pdf.js');

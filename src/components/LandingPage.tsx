@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { trackToolStart } from '@/lib/analytics'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -55,6 +56,7 @@ export function LandingPage() {
         // Registro falló o tardó demasiado — no bloquear el acceso
       }
     }
+    trackToolStart()
     setStarting(false)
     router.push(`/evaluacion?email=${encodeURIComponent(email)}`)
   }
