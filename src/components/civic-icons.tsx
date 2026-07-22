@@ -14,6 +14,7 @@ export const I = {
   users: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.5" {...base} {...p}><circle cx="5" cy="5" r="2" /><path d="M1.5 12c0-2 1.5-3.5 3.5-3.5S8.5 10 8.5 12M9.5 3.5a2 2 0 1 1 0 4M12.5 12c0-1.5-1-2.8-2.5-3.3" /></svg>,
   doc: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.5" {...base} {...p}><path d="M3 1.5h5l3 3V12a.5.5 0 0 1-.5.5h-7A.5.5 0 0 1 3 12V2a.5.5 0 0 1 .5-.5z" /><path d="M8 1.5v3h3" /></svg>,
   flag: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.5" {...base} {...p}><path d="M3 12V2M3 2h7l-1.5 2.5L10 7H3" /></svg>,
+  thumb: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.5" {...base} {...p}><path d="M5 6V3a1 1 0 0 1 2 0c0 2 1 3 2 3h2.5a1 1 0 0 1 1 1.2l-1 4a1 1 0 0 1-1 .8H5V6zM5 6H2.5v6H5" /></svg>,
   target: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.5" {...base} {...p}><circle cx="7" cy="7" r="5.5" /><circle cx="7" cy="7" r="2.5" /></svg>,
   lock: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.5" {...base} {...p}><rect x="3" y="6.5" width="8" height="6" rx="1" /><path d="M5 6.5V4.5a2 2 0 1 1 4 0v2" /></svg>,
   globe: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.5" {...base} {...p}><circle cx="7" cy="7" r="5.5" /><path d="M1.5 7h11M7 1.5C8.8 3.5 9.5 5.2 9.5 7S8.8 10.5 7 12.5C5.2 10.5 4.5 8.8 4.5 7S5.2 3.5 7 1.5z" /></svg>,

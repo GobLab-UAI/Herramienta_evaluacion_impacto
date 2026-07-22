@@ -3,10 +3,10 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { trackToolStart } from '@/lib/analytics'
-import { toast } from "@/hooks/use-toast"
 import Link from 'next/link'
 import { T, SERIF, MONO } from '@/lib/civic'
 import { I, LogoUAIGobLab } from '@/components/civic-icons'
+import { FeedbackPill } from '@/components/FeedbackPill'
 
 /* ── 9 dimensiones ─────────────────────────────────────────────── */
 const DIMS = [
@@ -155,13 +155,6 @@ export function LandingPage() {
   const [subscribe, setSubscribe] = useState(false)
   const [starting, setStarting] = useState(false)
 
-  const [fbOpen, setFbOpen] = useState(false)
-  const [feedback, setFeedback] = useState('')
-  const [organization, setOrganization] = useState('')
-  const [category, setCategory] = useState('Comentario general')
-  const [feedbackEmail, setFeedbackEmail] = useState('')
-  const [submitting, setSubmitting] = useState(false)
-
   const router = useRouter()
   const VERSION = process.env.NEXT_PUBLIC_VERSION || '1.0.0'
 
@@ -186,39 +179,6 @@ export function LandingPage() {
     trackToolStart()
     setStarting(false)
     router.push(`/evaluacion?email=${encodeURIComponent(email)}`)
-  }
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setSubmitting(true)
-    try {
-      const res = await fetch('/api/feedback', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          feedback_type: category,
-          description: feedback,
-          email: feedbackEmail || email || 'anonimo@goblab.cl',
-          organization,
-        }),
-      })
-      const data = await res.json()
-      if (!data.success) throw new Error(data.error)
-      toast({ title: 'Feedback enviado', description: '¡Gracias por tu feedback!' })
-      setFbOpen(false)
-      setFeedback('')
-      setOrganization('')
-      setFeedbackEmail('')
-      setCategory('Comentario general')
-    } catch (err) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: err instanceof Error ? err.message : 'Error desconocido',
-      })
-    } finally {
-      setSubmitting(false)
-    }
   }
 
   const fieldStyle: React.CSSProperties = {
@@ -399,58 +359,7 @@ export function LandingPage() {
         <span style={{ fontFamily: MONO, fontSize: 11, opacity: 0.7 }}>ANID IT25I0161</span>
       </footer>
 
-      {/* ── Floating feedback ── */}
-      <button
-        onClick={() => setFbOpen(true)}
-        style={{ position: 'fixed', bottom: 20, right: 20, display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff', color: T.burgundy, padding: '10px 16px', borderRadius: 99, boxShadow: '0 8px 28px rgba(0,0,0,.14)', fontSize: 13, fontWeight: 600, border: `1px solid ${T.roseLight}`, zIndex: 99, cursor: 'pointer', fontFamily: 'inherit' }}
-      >
-        <I.chat /> Enviar feedback
-      </button>
-
-      {fbOpen && (
-        <div
-          onClick={() => setFbOpen(false)}
-          style={{ position: 'fixed', inset: 0, background: 'rgba(10,10,10,.4)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}
-        >
-          <form
-            onClick={e => e.stopPropagation()}
-            onSubmit={handleSubmit}
-            style={{ background: '#fff', borderRadius: 16, padding: '24px 26px', width: '100%', maxWidth: 460, display: 'flex', flexDirection: 'column', gap: 12, boxShadow: '0 20px 60px rgba(0,0,0,.2)' }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ fontSize: 16, fontWeight: 600 }}>Enviar feedback</div>
-              <button type="button" onClick={() => setFbOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: T.ink60, padding: 4 }}>
-                <I.close />
-              </button>
-            </div>
-
-            <input type="email" placeholder="Correo electrónico (opcional)" value={feedbackEmail} onChange={e => setFeedbackEmail(e.target.value)} maxLength={150} style={fieldStyle} />
-            <input placeholder="Organización (opcional)" value={organization} onChange={e => setOrganization(e.target.value)} maxLength={150} style={fieldStyle} />
-            <select value={category} onChange={e => setCategory(e.target.value)} style={fieldStyle}>
-              <option>Comentario general</option>
-              <option>Reporte de error</option>
-              <option>Sugerencia de mejora</option>
-              <option>Pregunta</option>
-              <option>Otro</option>
-            </select>
-            <textarea
-              placeholder="Comparte tus comentarios aquí"
-              value={feedback}
-              onChange={e => setFeedback(e.target.value)}
-              required
-              rows={4}
-              style={{ ...fieldStyle, resize: 'vertical' }}
-            />
-            <button
-              type="submit"
-              disabled={submitting}
-              style={{ background: T.burgundy, color: '#fff', border: 'none', borderRadius: 10, padding: 12, fontSize: 14, fontWeight: 700, cursor: submitting ? 'wait' : 'pointer', fontFamily: 'inherit', letterSpacing: 0.4, opacity: submitting ? 0.7 : 1 }}
-            >
-              {submitting ? 'ENVIANDO…' : 'ENVIAR FEEDBACK'}
-            </button>
-          </form>
-        </div>
-      )}
+      <FeedbackPill context={{ pantalla: 'portada' }} defaultEmail={email} />
 
       <style jsx>{`
         .eia-hero {

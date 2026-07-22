@@ -34,6 +34,27 @@ export function trackToolComplete() {
   });
 }
 
+/**
+ * Señal de claridad por pregunta. Los 👍 se registran solo aquí y no crean
+ * fila en Supabase: son miles de eventos sin texto accionable, y en GA4
+ * sirven igual para medir la proporción de preguntas poco claras.
+ */
+export function trackQuestionFeedback(questionId: string, helpful: boolean) {
+  gtag("event", "question_feedback", {
+    tool_name: TOOL_NAME,
+    question_id: questionId,
+    helpful,
+  });
+}
+
+export function trackFeedbackSubmit(category: string, screen: string) {
+  gtag("event", "feedback_submit", {
+    tool_name: TOOL_NAME,
+    feedback_category: category,
+    screen,
+  });
+}
+
 export function trackToolExport(format: string = "pdf") {
   gtag("event", "tool_export", {
     tool_name: TOOL_NAME,

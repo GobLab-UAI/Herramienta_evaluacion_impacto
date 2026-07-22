@@ -12,6 +12,10 @@ import { ExternalLink } from 'lucide-react'
 import { T, SERIF, MONO, inputBase } from '@/lib/civic'
 import { I, LogoUAIGobLab } from '@/components/civic-icons'
 import { toast } from '@/hooks/use-toast'
+import { FeedbackPill } from '@/components/FeedbackPill'
+import { QuestionFeedback, FlaggedLabel, type FlagState } from '@/components/QuestionFeedback'
+import { sendFeedback } from '@/lib/feedback'
+import { trackFeedbackSubmit } from '@/lib/analytics'
 //import jsPDF from 'jspdf'
 //import * as XLSX from 'xlsx'
 //import html2pdf from 'html2pdf.js'
@@ -1448,6 +1452,9 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   const [fbNote, setFbNote] = useState('')
   const [fbSending, setFbSending] = useState(false)
   const [fbSent, setFbSent] = useState(false)
+  // Marcas 👍/👎 por pregunta. Van en su propia clave de localStorage para no
+  // tocar el payload de respuestas que alimenta el scoring y el PDF.
+  const [flags, setFlags] = useState<Record<string, FlagState>>({})
   const router = useRouter()
   const tableRef = useRef<HTMLTableElement>(null)
   const VERSION = process.env.NEXT_PUBLIC_VERSION || "1.0.0"
@@ -1517,8 +1524,27 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
         setTotalScore(newTotalScore);
         setScoreByDimension(newScoreByDimension);
       }
+
+      try {
+        const savedFlags = localStorage.getItem(`feedbackFlags_${userEmail}`)
+        if (savedFlags) setFlags(JSON.parse(savedFlags))
+      } catch {
+        // Marcas corruptas: se ignoran, no deben impedir usar la herramienta.
+      }
     }
   }, [userEmail, router])
+
+  const handleFlag = (questionId: string, state: FlagState | undefined) => {
+    setFlags(prev => {
+      const next = { ...prev }
+      if (state) next[questionId] = state
+      else delete next[questionId]
+      if (userEmail) {
+        localStorage.setItem(`feedbackFlags_${userEmail}`, JSON.stringify(next))
+      }
+      return next
+    })
+  }
 
   useEffect(() => {
     const visibleQuestions = questions.filter(q => shouldShowQuestion(q, answers))
@@ -1669,18 +1695,14 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
     if (!fbNote.trim()) return
     setFbSending(true)
     try {
-      const res = await fetch('/api/feedback', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          feedback_type: fbCategory || 'Comentario general',
-          description: fbRating ? `[${fbRating}/5] ${fbNote}` : fbNote,
-          email: userEmail || 'anonimo@goblab.cl',
-          organization: '',
-        }),
+      const category = fbCategory || 'Comentario general'
+      await sendFeedback({
+        category,
+        text: fbRating ? `[${fbRating}/5] ${fbNote}` : fbNote,
+        email: userEmail || undefined,
+        context: { pantalla: 'resultados', progreso: progress },
       })
-      const data = await res.json()
-      if (!data.success) throw new Error(data.error)
+      trackFeedbackSubmit(category, 'resultados')
       setFbSent(true)
     } catch (err) {
       toast({
@@ -2081,6 +2103,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                         {dimIndex + 1}.{qIndex + 1}
                       </span>
                       {question.text}
+                      {flags[question.id] === 'down' && <FlaggedLabel />}
                     </label>
 
                     {question.info?.trim() && (
@@ -2127,6 +2150,20 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                     )}
                   </div>
                   {renderQuestionInput(question)}
+
+                  <QuestionFeedback
+                    questionId={question.id}
+                    flag={flags[question.id]}
+                    onFlag={state => handleFlag(question.id, state)}
+                    email={userEmail || undefined}
+                    context={{
+                      pantalla: 'cuestionario',
+                      seccion: `${String(dimIndex + 1).padStart(2, '0')} ${currentDimension}`,
+                      pregunta: `${dimIndex + 1}.${qIndex + 1}`,
+                      questionId: question.id,
+                      progreso: progress,
+                    }}
+                  />
                 </div>
               ))}
             </form>
@@ -2659,6 +2696,19 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
           </div>
         </div>
       )}
+
+      <FeedbackPill
+        defaultEmail={userEmail || ''}
+        context={
+          showResults
+            ? { pantalla: 'resultados', progreso: progress }
+            : {
+              pantalla: 'cuestionario',
+              seccion: `${String(dimIndex + 1).padStart(2, '0')} ${currentDimension}`,
+              progreso: progress,
+            }
+        }
+      />
 
       <style jsx>{`
         @media (max-width: 560px) {
