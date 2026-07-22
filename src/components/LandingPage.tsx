@@ -5,36 +5,8 @@ import { useRouter } from 'next/navigation'
 import { trackToolStart } from '@/lib/analytics'
 import { toast } from "@/hooks/use-toast"
 import Link from 'next/link'
-
-/* ── Design tokens (Civic Rose — lib/shared.jsx) ───────────────── */
-const T = {
-  ink: '#0A0A0A',
-  ink80: '#2A2622',
-  ink60: '#5A534C',
-  ink40: '#8F877F',
-  rose: '#C08A93',
-  roseLight: '#E8D1D5',
-  burgundy: '#7A3B48',
-  rosePaper: '#FBF3F4',
-}
-const SERIF = 'var(--font-fraunces), Georgia, serif'
-const MONO = 'var(--font-mono), ui-monospace, monospace'
-
-/* ── Icons ─────────────────────────────────────────────────────── */
-const svgBase = { fill: 'none', stroke: 'currentColor', strokeLinecap: 'round', strokeLinejoin: 'round' } as const
-type IconProps = React.SVGProps<SVGSVGElement>
-const I = {
-  arrow: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.6" {...svgBase} {...p}><path d="M3 7h8M8 4l3 3-3 3" /></svg>,
-  check: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.8" {...svgBase} {...p}><path d="M3 7.5l3 3 5-6" /></svg>,
-  chat: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.6" {...svgBase} {...p}><path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H6l-3 2v-2a2 2 0 0 1-1-2V4z" /></svg>,
-  users: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.5" {...svgBase} {...p}><circle cx="5" cy="5" r="2" /><path d="M1.5 12c0-2 1.5-3.5 3.5-3.5S8.5 10 8.5 12M9.5 3.5a2 2 0 1 1 0 4M12.5 12c0-1.5-1-2.8-2.5-3.3" /></svg>,
-  doc: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.5" {...svgBase} {...p}><path d="M3 1.5h5l3 3V12a.5.5 0 0 1-.5.5h-7A.5.5 0 0 1 3 12V2a.5.5 0 0 1 .5-.5z" /><path d="M8 1.5v3h3" /></svg>,
-  flag: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.5" {...svgBase} {...p}><path d="M3 12V2M3 2h7l-1.5 2.5L10 7H3" /></svg>,
-  target: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.5" {...svgBase} {...p}><circle cx="7" cy="7" r="5.5" /><circle cx="7" cy="7" r="2.5" /></svg>,
-  lock: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.5" {...svgBase} {...p}><rect x="3" y="6.5" width="8" height="6" rx="1" /><path d="M5 6.5V4.5a2 2 0 1 1 4 0v2" /></svg>,
-  globe: (p: IconProps = {}) => <svg width="14" height="14" viewBox="0 0 14 14" strokeWidth="1.5" {...svgBase} {...p}><circle cx="7" cy="7" r="5.5" /><path d="M1.5 7h11M7 1.5C8.8 3.5 9.5 5.2 9.5 7S8.8 10.5 7 12.5C5.2 10.5 4.5 8.8 4.5 7S5.2 3.5 7 1.5z" /></svg>,
-  close: (p: IconProps = {}) => <svg width="16" height="16" viewBox="0 0 16 16" strokeWidth="1.6" {...svgBase} {...p}><path d="M4 4l8 8M12 4l-8 8" /></svg>,
-}
+import { T, SERIF, MONO } from '@/lib/civic'
+import { I, LogoUAIGobLab } from '@/components/civic-icons'
 
 /* ── 9 dimensiones ─────────────────────────────────────────────── */
 const DIMS = [
@@ -48,22 +20,6 @@ const DIMS = [
   { n: '08', title: 'Ciberseguridad' },
   { n: '09', title: 'No discriminación · equidad' },
 ]
-
-/* ── Logos ─────────────────────────────────────────────────────── */
-function LogoUAIGobLab({ height = 36 }: { height?: number }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'stretch', height, fontFamily: 'inherit', color: '#fff' }}>
-      <div style={{ background: T.ink, padding: '0 14px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 2 }}>
-        <div style={{ fontWeight: 800, fontSize: height * 0.32, letterSpacing: 2, fontFamily: MONO }}>UAI</div>
-        <div style={{ fontSize: height * 0.16, letterSpacing: 1.5, opacity: 0.9 }}>UNIVERSIDAD ADOLFO IBÁÑEZ</div>
-      </div>
-      <div style={{ background: T.rose, padding: '0 14px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 2 }}>
-        <div style={{ fontWeight: 600, fontSize: height * 0.36, lineHeight: 1 }}>GobLab</div>
-        <div style={{ fontSize: height * 0.16, letterSpacing: 1.5, borderTop: '1px solid rgba(255,255,255,.6)', paddingTop: 2 }}>ESCUELA DE GOBIERNO</div>
-      </div>
-    </div>
-  )
-}
 
 function LogoHerramientas({ scale = 0.7 }: { scale?: number }) {
   return (
@@ -275,9 +231,9 @@ export function LandingPage() {
 
       {/* ── Top bar ── */}
       <header style={{ padding: '14px 40px', background: '#fff', borderBottom: `1px solid ${T.roseLight}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-          <LogoUAIGobLab height={36} />
-          <div style={{ width: 1, height: 24, background: T.roseLight }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap', minWidth: 0 }}>
+          <LogoUAIGobLab height={36} rose={T.rose} ink={T.ink} mono={MONO} />
+          <div className="eia-logo-sep" style={{ width: 1, height: 24, background: T.roseLight }} />
           <LogoHerramientas scale={0.7} />
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 22, fontSize: 13, color: T.ink80 }}>
@@ -510,6 +466,10 @@ export function LandingPage() {
           .eia-hero { grid-template-columns: 1fr; }
           .eia-hero-copy { border-right: none !important; }
           .eia-form-grid { grid-template-columns: 1fr; }
+        }
+        /* Con el logo institucional envuelto, el separador vertical sobra. */
+        @media (max-width: 560px) {
+          .eia-logo-sep { display: none; }
         }
       `}</style>
     </div>

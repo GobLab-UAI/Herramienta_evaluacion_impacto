@@ -2,21 +2,16 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
 import { trackSectionComplete, trackToolComplete, trackToolExport } from '@/lib/analytics'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
-//import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+// Card/Table sólo se usan en el marcado oculto que alimenta el PDF.
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Thermometer } from '@/components/Thermometer'
-import { CheckCircle, HelpCircle, Download, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react'
+import { ExternalLink } from 'lucide-react'
+import { T, SERIF, MONO, inputBase } from '@/lib/civic'
+import { I, LogoUAIGobLab } from '@/components/civic-icons'
+import { toast } from '@/hooks/use-toast'
 //import jsPDF from 'jspdf'
 //import * as XLSX from 'xlsx'
 //import html2pdf from 'html2pdf.js'
@@ -1401,6 +1396,38 @@ const recommendations: Recommendation[] = [
   }
 ]
 
+/**
+ * Puntaje máximo alcanzable por dimensión. Se obtiene evaluando la función
+ * `score` de cada pregunta sobre todas sus respuestas posibles y quedándose
+ * con la mayor. Sirve de denominador para normalizar a 0–100 en el radar y
+ * en la tabla de resultados.
+ */
+const maxScoreByDimension: Record<string, number> = (() => {
+  const acc: Record<string, number> = {}
+  for (const dim of dimensions) {
+    acc[dim] = questions
+      .filter(q => q.dimension === dim && q.scoreContribution && q.score)
+      .reduce((total, q) => {
+        const candidates: Answer[] = [true, false, null]
+        if (q.options) {
+          for (const o of q.options) candidates.push(o.value)
+          candidates.push(q.options.map(o => o.value))
+        }
+        let best = 0
+        for (const c of candidates) {
+          try {
+            const v = q.score!(c)
+            if (Number.isFinite(v) && v > best) best = v
+          } catch {
+            // Una combinación no soportada por esta pregunta: se ignora.
+          }
+        }
+        return total + best
+      }, 0)
+  }
+  return acc
+})()
+
 type EvaluacionImpactoProps = {
   initialEmail?: string
 }
@@ -1415,6 +1442,12 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   const [selectedRecommendations, setSelectedRecommendations] = useState<Record<string, boolean>>({})
   const [totalScore, setTotalScore] = useState(0)
   const [scoreByDimension, setScoreByDimension] = useState<Record<string, number>>({});
+  const [activeTab, setActiveTab] = useState<'resumen' | 'recomendaciones' | 'feedback'>('resumen')
+  const [fbRating, setFbRating] = useState(0)
+  const [fbCategory, setFbCategory] = useState('')
+  const [fbNote, setFbNote] = useState('')
+  const [fbSending, setFbSending] = useState(false)
+  const [fbSent, setFbSent] = useState(false)
   const router = useRouter()
   const tableRef = useRef<HTMLTableElement>(null)
   const VERSION = process.env.NEXT_PUBLIC_VERSION || "1.0.0"
@@ -1507,8 +1540,10 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
         }
         localStorage.setItem(`evaluationData_${userEmail}`, JSON.stringify(dataToSave))
       }
-      const newTotalScore = calculateTotalScore(newAnswers);
-      setTotalScore(newTotalScore);
+      setTotalScore(calculateTotalScore(newAnswers));
+      // También por dimensión: alimenta el termómetro, el radar y la tabla
+      // de resultados, que antes quedaban vacíos en una sesión nueva.
+      setScoreByDimension(getScoreByDimension(newAnswers));
       return newAnswers;
     })
   }
@@ -1602,8 +1637,21 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
 
   
 
+  // Solo cuentan las preguntas visibles: una condicional oculta nunca se
+  // responde y dejaría la dimensión marcada como incompleta para siempre.
   const isDimensionComplete = (dim: string) => {
-    return questions.filter(q => q.dimension === dim).every(q => answers[q.id] !== undefined)
+    const visible = questions.filter(q => q.dimension === dim && shouldShowQuestion(q, answers))
+    return visible.length > 0 && visible.every(q => answers[q.id] !== undefined)
+  }
+
+  const dimensionProgress = (dim: string) => {
+    const visible = questions.filter(q => q.dimension === dim && shouldShowQuestion(q, answers))
+    if (!visible.length) return 0
+    const done = visible.filter(q => {
+      const a = answers[q.id]
+      return a !== undefined && a !== '' && !(Array.isArray(a) && a.length === 0)
+    }).length
+    return Math.round((done / visible.length) * 100)
   }
 
   const saveEvaluation = () => {
@@ -1613,7 +1661,35 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
         timestamp: new Date().getTime()
       }
       localStorage.setItem(`evaluationData_${userEmail}`, JSON.stringify(dataToSave))
-      alert('Evaluación guardada correctamente')
+      toast({ title: 'Evaluación guardada', description: 'Tu progreso quedó guardado en este navegador.' })
+    }
+  }
+
+  const sendToolFeedback = async () => {
+    if (!fbNote.trim()) return
+    setFbSending(true)
+    try {
+      const res = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          feedback_type: fbCategory || 'Comentario general',
+          description: fbRating ? `[${fbRating}/5] ${fbNote}` : fbNote,
+          email: userEmail || 'anonimo@goblab.cl',
+          organization: '',
+        }),
+      })
+      const data = await res.json()
+      if (!data.success) throw new Error(data.error)
+      setFbSent(true)
+    } catch (err) {
+      toast({
+        variant: 'destructive',
+        title: 'No se pudo enviar',
+        description: err instanceof Error ? err.message : 'Error desconocido',
+      })
+    } finally {
+      setFbSending(false)
     }
   }
 
@@ -1625,111 +1701,158 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
         setAnswers(savedAnswers)
         const newTotalScore = calculateTotalScore(savedAnswers);
         setTotalScore(newTotalScore);
-        alert('Evaluación cargada correctamente')
+        toast({ title: 'Evaluación cargada', description: 'Recuperamos tus respuestas guardadas.' })
       } else {
-        alert('No se encontró ninguna evaluación guardada')
+        toast({ variant: 'destructive', title: 'Sin datos', description: 'No se encontró ninguna evaluación guardada.' })
       }
     }
   }
 
   const isLastDimension = currentDimension === dimensions[dimensions.length - 1]
   
+  const focusOn = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.target.style.borderColor = T.burgundy
+    e.target.style.boxShadow = '0 0 0 3px rgba(122,59,72,.1)'
+  }
+  const focusOff = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.target.style.borderColor = T.roseLight
+    e.target.style.boxShadow = 'none'
+  }
+
   const renderQuestionInput = (question: Question) => {
     switch (question.type) {
       case 'text':
         return (
-          <Input
+          <input
             type="text"
             id={question.id}
             value={answers[question.id] as string || ''}
             onChange={(e) => handleAnswer(question.id, e.target.value)}
+            placeholder="Ingrese su respuesta aquí…"
+            style={inputBase}
+            onFocus={focusOn}
+            onBlur={focusOff}
           />
         )
-        case 'textArea':
-          return (
-            <Textarea
+      case 'textArea':
+        return (
+          <textarea
             id={question.id}
             value={answers[question.id] as string || ''}
             onChange={(e) => handleAnswer(question.id, e.target.value)}
-            className="min-h-[100px] text-base leading-relaxed"
-            placeholder="Ingrese su respuesta aquí..."
+            rows={4}
+            placeholder="Ingrese su respuesta aquí…"
+            style={{ ...inputBase, resize: 'vertical', lineHeight: 1.6, minHeight: 100 }}
+            onFocus={focusOn}
+            onBlur={focusOff}
           />
-          )
-      case 'select':
-        return (
-          <Select 
-            value={answers[question.id] as string} 
-            onValueChange={(value) => handleAnswer(question.id, value)}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Seleccione una opción" />
-            </SelectTrigger>
-            <SelectContent>
-              {question.options?.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         )
-      case 'multiselect':
+      case 'select': {
+        const val = (answers[question.id] as string) ?? ''
         return (
-          <div className="space-y-2">
-            {question.options?.map((option) => (
-              <div key={option.value} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`${question.id}-${option.value}`}
-                  checked={(answers[question.id] as string[] || []).includes(option.value)}
-                  onCheckedChange={(checked) => {
-                    const currentAnswers = answers[question.id] as string[] || []
-                    const newAnswers = checked
-                      ? [...currentAnswers, option.value]
-                      : currentAnswers.filter(v => v !== option.value)
-                    handleAnswer(question.id, newAnswers)
-                  }}
-                />
-                <Label className='text-sm font-normal' htmlFor={`${question.id}-${option.value}`}>{option.label}</Label>
-              </div>
-            ))}
+          <div style={{ position: 'relative' }}>
+            <select
+              id={question.id}
+              value={val}
+              onChange={(e) => handleAnswer(question.id, e.target.value)}
+              style={{
+                ...inputBase,
+                appearance: 'none', WebkitAppearance: 'none', paddingRight: 38, cursor: 'pointer',
+                color: val ? T.ink : T.ink60,
+                borderColor: val ? T.burgundy : T.roseLight,
+                background: val ? T.rosePaper : '#fff',
+              }}
+            >
+              <option value="" disabled>Seleccione una opción</option>
+              {question.options?.map((option) => (
+                <option key={option.value} value={option.value}>{option.label}</option>
+              ))}
+            </select>
+            <div style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: T.burgundy }}>
+              <I.chevron />
+            </div>
           </div>
         )
-      case 'yesno':
-      case 'yesnoNA':
-        const answerValue = answers[question.id]
-        let radioValue = ''
-        if (answerValue === true) radioValue = 'yes'
-        else if (answerValue === false) radioValue = 'no'
-        else if (answerValue === null && question.type === 'yesnoNA') radioValue = 'na'
-        
+      }
+      case 'multiselect': {
+        const current = (answers[question.id] as string[]) || []
         return (
-          <RadioGroup
-            value={radioValue}
-            onValueChange={(value) => {
-              let newValue: boolean | null = null
-              if (value === 'yes') newValue = true
-              else if (value === 'no') newValue = false
-              else if (value === 'na' && question.type === 'yesnoNA') newValue = null
-              handleAnswer(question.id, newValue)
-            }}
-            className="flex space-x-4 mt-2 text-sm font-normal"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="yes" id={`${question.id}-yes`} />
-              <Label htmlFor={`${question.id}-yes`}>Sí</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="no" id={`${question.id}-no`} />
-              <Label htmlFor={`${question.id}-no`}>No</Label>
-            </div>
-            {question.type === 'yesnoNA' && (
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="na" id={`${question.id}-na`} />
-                <Label htmlFor={`${question.id}-na`}>No aplica</Label>
-              </div>
-            )}
-          </RadioGroup>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {question.options?.map((option) => {
+              const checked = current.includes(option.value)
+              return (
+                <label
+                  key={option.value}
+                  style={{
+                    display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer',
+                    padding: '9px 12px', borderRadius: 9,
+                    border: `1.5px solid ${checked ? T.burgundy : T.roseLight}`,
+                    background: checked ? T.rosePaper : '#fff', transition: 'all .15s',
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={(e) => handleAnswer(
+                      question.id,
+                      e.target.checked ? [...current, option.value] : current.filter(v => v !== option.value)
+                    )}
+                    style={{ position: 'absolute', opacity: 0, width: 0, height: 0 }}
+                  />
+                  <span aria-hidden style={{
+                    width: 16, height: 16, borderRadius: 4, flexShrink: 0, marginTop: 1, color: '#fff',
+                    border: `1.5px solid ${checked ? T.burgundy : T.ink40}`,
+                    background: checked ? T.burgundy : '#fff',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all .15s',
+                  }}>
+                    {checked && <I.check width={10} height={10} />}
+                  </span>
+                  <span style={{ fontSize: 13, lineHeight: 1.45, color: checked ? T.ink : T.ink80 }}>{option.label}</span>
+                </label>
+              )
+            })}
+          </div>
         )
+      }
+      case 'yesno':
+      case 'yesnoNA': {
+        const answerValue = answers[question.id]
+        const opts: Array<{ key: string; label: string; value: boolean | null }> = [
+          { key: 'yes', label: 'Sí', value: true },
+          { key: 'no', label: 'No', value: false },
+        ]
+        if (question.type === 'yesnoNA') opts.push({ key: 'na', label: 'No aplica', value: null })
+
+        return (
+          <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+            {opts.map(opt => {
+              // `null` es una respuesta válida en yesnoNA, así que distinguimos
+              // "sin responder" (undefined) de "No aplica" (null).
+              const selected = question.id in answers && answerValue === opt.value
+              return (
+                <label key={opt.key} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 14, color: T.ink }}>
+                  <input
+                    type="radio"
+                    name={question.id}
+                    checked={selected}
+                    onChange={() => handleAnswer(question.id, opt.value)}
+                    style={{ position: 'absolute', opacity: 0, width: 0, height: 0 }}
+                  />
+                  <span aria-hidden style={{
+                    width: 18, height: 18, borderRadius: 99, flexShrink: 0,
+                    border: `1.5px solid ${selected ? T.burgundy : T.ink40}`,
+                    background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    transition: 'all .15s',
+                  }}>
+                    {selected && <span style={{ width: 8, height: 8, borderRadius: 99, background: T.burgundy }} />}
+                  </span>
+                  {opt.label}
+                </label>
+              )
+            })}
+          </div>
+        )
+      }
       default:
         return null
     }
@@ -1802,237 +1925,582 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
     }
   };
 
+  const dimIndex = dimensions.indexOf(currentDimension)
+  const visibleInDim = questions
+    .filter(q => q.dimension === currentDimension)
+    .filter(q => shouldShowQuestion(q, answers))
+
+  const projectName = (answers['q1'] as string) || 'Sistema sin nombre'
+  const answeredCount = questions
+    .filter(q => shouldShowQuestion(q, answers))
+    .filter(q => {
+      const a = answers[q.id]
+      return a !== undefined && a !== '' && !(Array.isArray(a) && a.length === 0)
+    }).length
+
+  const impactLevel = getImpactLevel(totalScore)
+  const impactColor =
+    impactLevel === 'Bajo impacto' ? T.success
+      : impactLevel === 'Impacto moderado' ? T.warn
+        : impactLevel === 'Alto impacto' ? T.rose
+          : T.burgundy
+
+  // Puntaje normalizado 0–100 por dimensión, para el radar y la tabla.
+  const normalized = dimensions.map(dim => {
+    const max = maxScoreByDimension[dim] || 0
+    const raw = scoreByDimension[dim] || 0
+    return { dim, pct: max > 0 ? Math.min(100, Math.round((raw / max) * 100)) : 0 }
+  })
+
+  const ghostBtn: React.CSSProperties = {
+    padding: '8px 14px', border: `1px solid ${T.roseLight}`, borderRadius: 9,
+    fontSize: 13, color: T.ink80, background: '#fff', cursor: 'pointer',
+    fontFamily: 'inherit', display: 'inline-flex', alignItems: 'center', gap: 7,
+  }
+  const solidBtn: React.CSSProperties = {
+    padding: '10px 20px', background: T.burgundy, color: '#fff', border: 'none',
+    borderRadius: 9, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+    fontFamily: 'inherit', display: 'inline-flex', alignItems: 'center', gap: 8,
+  }
+
+  const Tab = ({ id, label }: { id: typeof activeTab; label: string }) => (
+    <button
+      onClick={() => setActiveTab(id)}
+      style={{
+        padding: '11px 20px', border: 'none', background: 'transparent', fontFamily: 'inherit',
+        fontSize: 13, fontWeight: activeTab === id ? 600 : 400, cursor: 'pointer',
+        color: activeTab === id ? T.burgundy : T.ink60,
+        borderBottom: `2px solid ${activeTab === id ? T.burgundy : 'transparent'}`,
+        transition: 'all .15s',
+      }}
+    >{label}</button>
+  )
+
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex justify-between space-y-1 p-4 rounded-lg backdrop-blur-sm items-center">
-        <Image src="/images/logo-goblab-uai.png" alt="Gob_Lab UAI" width={220} height={5} />
-        <h1 className="text-2xl font-bold mb-4 text-center">Evaluación de Impacto Algorítmico</h1>
-        <Image src="/images/herramientas.png" alt="HERRAMIENTAS ALGORITMOS ÉTICOS" width={300} height={5} />
-        
-      </div>
-      
-      <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
-        <div className="flex flex-col md:flex-row items-center  gap-4">
-          <div className="w-20 h-20 rounded-full border-4 border-primary flex items-center justify-center text-xl font-bold">
-            {Math.round(progress)}%
+    <div style={{ background: T.paper, minHeight: '100vh', color: T.ink, display: 'flex', flexDirection: 'column' }}>
+
+      {/* ── Header ── */}
+      <header style={{ background: '#fff', borderBottom: `1px solid ${T.roseLight}`, padding: '12px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', minWidth: 0 }}>
+          <LogoUAIGobLab height={34} rose={T.rose} ink={T.ink} mono={MONO} />
+          <div className="eia-logo-sep" style={{ width: 1, height: 22, background: T.roseLight }} />
+          <div>
+            <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 1.5, color: T.ink60 }}>HERRAMIENTA</div>
+            <div style={{ fontSize: 14, fontWeight: 600, marginTop: 1 }}>Evaluación de Impacto Algorítmico</div>
           </div>
-          <Progress value={progress} className="w-full md:w-64" />
         </div>
-        <div className="flex gap-2">
-          <Button onClick={saveEvaluation}>Guardar</Button>
-          <Button onClick={loadEvaluation} variant="outline">Cargar</Button>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+          <div style={{ fontFamily: MONO, fontSize: 11, color: T.ink60 }}>{Math.round(progress)}% completo</div>
+          <div style={{ width: 110, height: 5, background: T.paperDeep, borderRadius: 3, overflow: 'hidden' }}>
+            <div style={{ width: `${progress}%`, height: '100%', background: `linear-gradient(90deg,${T.rose},${T.burgundy})`, transition: 'width .4s cubic-bezier(.16,1,.3,1)' }} />
+          </div>
+          <button onClick={saveEvaluation} style={ghostBtn}>Guardar</button>
+          <button onClick={loadEvaluation} style={ghostBtn}>Cargar</button>
         </div>
-      </div>
+      </header>
+
       {!showResults ? (
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="md:w-1/4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Dimensiones</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {dimensions.map((dim, index) => (
-                    <li
-                      key={dim}
-                      className={`cursor-pointer p-2 rounded ${
-                        currentDimension === dim ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-                      }`}
-                      onClick={() => setCurrentDimension(dim)}
-                    >
-                      {`${index + 1}. ${dim}`}
-                      {isDimensionComplete(dim) && (
-                        <CheckCircle className="inline-block w-4 h-4 ml-2 text-green-500" />
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-          <div className="md:w-3/4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                  <span>{currentDimension}</span>
-                </CardTitle>
-                <div className="bg-blue-50 border-l-4 border-blue-500 p-4">
-                <div className="flex">
-                  <div className="flex-shrink-0">
-                    <HelpCircle className="h-5 w-5 text-blue-500" />
-                  </div>
-                  <div className="ml-3">
-                    <p className="text-sm text-blue-700">
-                      Cada pregunta incluye un ícono de ayuda con información adicional
-                    </p>
-                  </div>
+        /* ══════════════ CUESTIONARIO ══════════════ */
+        <div className="eia-shell" style={{ flex: 1, display: 'grid', gridTemplateColumns: '260px 1fr', alignItems: 'start' }}>
+
+          {/* Sidebar de dimensiones */}
+          <aside className="eia-aside" style={{ background: '#fff', borderRight: `1px solid ${T.roseLight}`, position: 'sticky', top: 0, alignSelf: 'start', maxHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ padding: '14px 14px 10px', borderBottom: `1px solid ${T.roseLight}` }}>
+              <div style={{ fontSize: 10, fontFamily: MONO, letterSpacing: 1, color: T.ink60, marginBottom: 4 }}>SISTEMA EN EVALUACIÓN</div>
+              <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1.3 }}>{projectName}</div>
+            </div>
+            <nav style={{ flex: 1, overflow: 'auto', padding: 8 }}>
+              {dimensions.map((dim, i) => {
+                const active = currentDimension === dim
+                const done = isDimensionComplete(dim)
+                return (
+                  <button
+                    key={dim}
+                    onClick={() => setCurrentDimension(dim)}
+                    style={{
+                      width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 9,
+                      padding: '8px', borderRadius: 8, marginBottom: 2, cursor: 'pointer',
+                      border: 'none', fontFamily: 'inherit', transition: 'background .15s',
+                      background: active ? T.burgundy : 'transparent',
+                      color: active ? '#fff' : done ? T.ink80 : T.ink60,
+                    }}
+                  >
+                    <span style={{
+                      width: 22, height: 22, borderRadius: 99, flexShrink: 0, display: 'flex',
+                      alignItems: 'center', justifyContent: 'center', fontSize: 9, fontWeight: 700,
+                      fontFamily: MONO, transition: 'all .15s',
+                      background: active || done ? T.rose : 'transparent',
+                      color: active || done ? '#fff' : T.ink40,
+                      border: !active && !done ? `1.5px solid ${T.ink20}` : 'none',
+                    }}>{done ? <I.check width={11} height={11} /> : String(i + 1).padStart(2, '0')}</span>
+                    <span style={{ flex: 1, fontSize: 12, fontWeight: active ? 600 : 400, lineHeight: 1.3 }}>{dim}</span>
+                    <span style={{ fontSize: 10, fontFamily: MONO, color: active ? T.roseLight : T.ink40 }}>
+                      {dimensionProgress(dim)}%
+                    </span>
+                  </button>
+                )
+              })}
+            </nav>
+            <div style={{ padding: '12px 14px', borderTop: `1px solid ${T.roseLight}`, fontSize: 11, color: T.ink60, display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ color: T.burgundy, display: 'inline-flex' }}><I.lock /></span> Auto-guardado local
+            </div>
+          </aside>
+
+          {/* Preguntas de la dimensión */}
+          <main style={{ padding: '28px 36px 0', minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
+              <div style={{ width: 44, height: 44, borderRadius: 99, background: T.rose, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: MONO, fontWeight: 700, fontSize: 14, flexShrink: 0 }}>
+                {String(dimIndex + 1).padStart(2, '0')}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <h2 style={{ fontFamily: SERIF, fontWeight: 500, fontSize: 26, letterSpacing: -0.6, margin: 0, lineHeight: 1.1 }}>{currentDimension}</h2>
+                <div style={{ fontSize: 12, color: T.ink60, marginTop: 2 }}>
+                  {visibleInDim.length} {visibleInDim.length === 1 ? 'pregunta' : 'preguntas'} · Sección {dimIndex + 1} de {dimensions.length}
                 </div>
               </div>
-                <CardDescription>Responda las siguientes preguntas</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form>
-                  {questions
-                    .filter(q => q.dimension === currentDimension)
-                    .filter(q => shouldShowQuestion(q, answers)) 
-                    .map((question, qIndex) => (
-                    <div key={question.id} className="mb-6">
-                      <div className="flex items-start mb-2">
-                        <Label className="text-sm mr-2 flex-grow font-normal" htmlFor={question.id}>
-                          {`${dimensions.indexOf(currentDimension) + 1}.${qIndex + 1}. ${question.text}`}
-                        </Label>
-                        {/* Sistema de información emergente con estado controlado */}
-                        {question.info?.trim() && <div className="relative">
-                          <Button
-                            variant="ghost" 
-                            size="sm"
-                            className="h-6 w-6 p-0 rounded-full cursor-help touch-manipulation"
-                            type="button"
-                            aria-label="Mostrar información adicional"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              setOpenTooltipId((prev) => (prev === question.id ? null : question.id));
-                              
-                            }}
+              <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                <div style={{ fontSize: 10, fontFamily: MONO, color: T.ink60, letterSpacing: 1 }}>AVANCE</div>
+                <div style={{ fontFamily: SERIF, fontSize: 22, color: T.burgundy, lineHeight: 1 }}>
+                  {dimensionProgress(currentDimension)}<span style={{ color: T.ink40, fontSize: 14 }}>%</span>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: 'rgba(192,138,147,.08)', borderLeft: `3px solid ${T.rose}`, borderRadius: '0 8px 8px 0', marginBottom: 22, fontSize: 13, color: T.ink80 }}>
+              <span style={{ color: T.rose, display: 'inline-flex', flexShrink: 0 }}><I.help width={14} height={14} /></span>
+              Cada pregunta incluye un ícono de ayuda con información adicional.
+            </div>
+
+            <form onSubmit={e => e.preventDefault()} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+              {visibleInDim.map((question, qIndex) => (
+                <div key={question.id} style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 12, padding: '18px 20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12, gap: 12 }}>
+                    <label htmlFor={question.id} style={{ fontSize: 14, fontWeight: 500, color: T.ink, lineHeight: 1.45 }}>
+                      <span style={{ fontFamily: MONO, fontSize: 12, color: T.burgundy, marginRight: 6 }}>
+                        {dimIndex + 1}.{qIndex + 1}
+                      </span>
+                      {question.text}
+                    </label>
+
+                    {question.info?.trim() && (
+                      <div style={{ position: 'relative', flexShrink: 0 }}>
+                        <button
+                          type="button"
+                          aria-label="Mostrar información adicional"
+                          onClick={() => setOpenTooltipId(prev => prev === question.id ? null : question.id)}
+                          style={{ width: 24, height: 24, borderRadius: 99, border: `1.5px solid ${T.roseLight}`, background: openTooltipId === question.id ? T.rosePaper : '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: openTooltipId === question.id ? T.burgundy : T.ink60 }}
+                        >
+                          <I.help />
+                        </button>
+
+                        {openTooltipId === question.id && (
+                          <div
+                            style={{ position: 'absolute', right: 0, top: 30, zIndex: 50, width: 'min(90vw, 340px)', padding: '16px 18px', borderRadius: 12, border: `1px solid ${T.roseLight}`, background: '#fff', boxShadow: '0 12px 40px rgba(0,0,0,.14)', maxHeight: '50vh', overflowY: 'auto' }}
+                            onClick={e => e.stopPropagation()}
                           >
-                            <HelpCircle className="h-4 w-4" />
-                          </Button>
-                          
-                          {/* Contenido del tooltip */}
-                          {openTooltipId === question.id && (
-                            <div 
-                              className="absolute right-0 top-8 z-50 w-[90vw] sm:w-80 p-4 rounded-md border border-slate-200 bg-white shadow-md max-h-[50vh] overflow-y-auto"
-                              style={{ minWidth: '250px' }}
-                              onClick={(e) => e.stopPropagation()}
+                            <button
+                              type="button"
+                              onClick={() => setOpenTooltipId(null)}
+                              style={{ position: 'absolute', right: 10, top: 10, border: 'none', background: 'transparent', cursor: 'pointer', color: T.ink60, padding: 2 }}
                             >
-                              <div className="text-sm whitespace-normal">
-                                {question.info?.split('\n').map((paragraph, i) => {
-                                  const parts = paragraph.split(/(\*\*[^*]+\*\*)/)
-                                  return (
-                                    <p key={i} className="mb-2 text-justify">
-                                      {parts.map((part, j) =>
-                                        part.startsWith('**') && part.endsWith('**')
-                                          ? <strong key={j}>{part.slice(2, -2)}</strong>
-                                          : part
-                                      )}
-                                    </p>
-                                  )
-                                })}
-                              </div>
-                              <div className="absolute right-2 top-2">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-5 w-5 p-0 rounded-full"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    setOpenTooltipId(null);
-                                  }}
-                                >
-                                  <span className="sr-only">Cerrar</span>
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  >
-                                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                                  </svg>
-                                </Button>
-                              </div>
+                              <span className="sr-only">Cerrar</span>
+                              <I.close width={14} height={14} />
+                            </button>
+                            <div style={{ fontSize: 13, color: T.ink80, lineHeight: 1.6, paddingRight: 14 }}>
+                              {question.info?.split('\n').map((paragraph, i) => {
+                                const parts = paragraph.split(/(\*\*[^*]+\*\*)/)
+                                return (
+                                  <p key={i} style={{ margin: '0 0 8px', textAlign: 'justify' }}>
+                                    {parts.map((part, j) =>
+                                      part.startsWith('**') && part.endsWith('**')
+                                        ? <strong key={j} style={{ color: T.burgundy }}>{part.slice(2, -2)}</strong>
+                                        : part
+                                    )}
+                                  </p>
+                                )
+                              })}
                             </div>
-                          )}
-                        </div>}
+                          </div>
+                        )}
                       </div>
-                      {renderQuestionInput(question)}
-                    </div>
-                  ))}
-                </form>
-              </CardContent>
-              <div className="flex justify-between p-4">
-                <Button onClick={handlePreviousDimension} disabled={currentDimension === dimensions[0]}>
-                  <ChevronLeft className="w-4 h-4 mr-2" />
-                  Anterior
-                </Button>
-                <div className="flex gap-2">
-                  <Button
-                    onClick={() => { trackToolComplete(); setShowResults(true); }}
-                    variant={isLastDimension ? "default" : "outline"}
-                    className={isLastDimension ? "bg-blue-500 hover:bg-blue-600 text-white" : ""}
-                  >
-                    Ver Resultados
-                  </Button>
-                  <Button 
-                    onClick={handleNextDimension} 
-                    disabled={isLastDimension}
-                  >
-                    Siguiente
-                    <ChevronRight className="w-4 h-4 ml-2" />
-                  </Button>
+                    )}
+                  </div>
+                  {renderQuestionInput(question)}
                 </div>
+              ))}
+            </form>
+
+            {/* Barra de navegación inferior */}
+            <div style={{ position: 'sticky', bottom: 0, background: '#fff', borderTop: `1px solid ${T.roseLight}`, padding: '14px 0', marginTop: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap', boxShadow: '0 -4px 20px rgba(0,0,0,.06)' }}>
+              <button onClick={handlePreviousDimension} disabled={dimIndex === 0} style={{ ...ghostBtn, opacity: dimIndex === 0 ? 0.4 : 1, cursor: dimIndex === 0 ? 'not-allowed' : 'pointer' }}>
+                <span style={{ transform: 'rotate(180deg)', display: 'inline-flex' }}><I.arrow /></span> Anterior
+              </button>
+              <div style={{ fontSize: 12, color: T.ink60, fontFamily: MONO, letterSpacing: 0.5 }}>
+                Sección {dimIndex + 1} de {dimensions.length} · <span style={{ color: T.burgundy, fontWeight: 600 }}>Guardado automáticamente</span>
               </div>
-            </Card>
-          </div>
+              <div style={{ display: 'flex', gap: 10 }}>
+                <button onClick={() => { trackToolComplete(); setShowResults(true); }} style={ghostBtn}>Ver resultados</button>
+                <button onClick={handleNextDimension} disabled={isLastDimension} style={{ ...solidBtn, opacity: isLastDimension ? 0.4 : 1, cursor: isLastDimension ? 'not-allowed' : 'pointer' }}>
+                  Siguiente <I.arrow />
+                </button>
+              </div>
+            </div>
+          </main>
         </div>
       ) : (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex justify-between items-center">
-              <span>Resultados de la Evaluación de Impacto Algorítmico</span>
-              <Button onClick={exportToPDF} className="bg-green-500 hover:bg-green-600 text-white">
-                <Download className="w-4 h-4 mr-2" />
-                Exportar a PDF
-              </Button>
-              
-            </CardTitle>
-            
-            
-            <h3 className="text-sm font-normal text-gray-500">En este documento se presentan los resultados 
-              de tu evaluación de impacto algorítmica. Las recomendaciones incluidas han sido elaboradas con 
-              base en tus respuestas a cada pregunta de la evaluación. En muchas de ellas, encontrarás recursos
-              adicionales que te permitirán profundizar en cómo aplicar las sugerencias proporcionadas. Para 
-              facilitar su uso, las recomendaciones están organizadas según la etapa del proyecto en la que se deben 
-              implementar. Esperamos que este material te ayude a planificar, organizar y considerar todos los aspectos 
-              éticos relevantes al diseñar, desarrollar e implementar tu proyecto de ciencia de datos e IA.
-            </h3>
-            
-            <strong className="text-sm">Bajo impacto (0% - 18.32%)</strong>
-            <h3 className="text-sm font-normal text-gray-500">
-              El proyecto presenta un bajo impacto en términos éticos y sociales. Esto sugiere que la mayoría de los factores 
-              críticos han sido considerados de manera adecuada. Continúa monitoreando el proyecto para asegurar que las condiciones 
-              actuales se mantengan a lo largo de su ciclo de vida.
-            </h3>
-            <strong className="text-sm">Impacto moderado (18.33% - 45.54%)</strong>
-            <h3 className="text-sm font-normal text-gray-500">
-              El proyecto presenta un impacto moderado. Aunque se han considerado varios aspectos, aún existen áreas que podrían 
-              fortalecerse. Evalúa las recomendaciones sugeridas y realiza ajustes puntuales para reducir los posibles riesgos identificados
-            </h3>
-            <strong className="text-sm">Alto impacto (45.55% - 72.77%)</strong>
-            <h3 className="text-sm font-normal text-gray-500">
-              El proyecto presenta un alto impacto. Esto no significa que el proyecto sea inviable, sino que existen varios aspectos críticos 
-              que necesitan ser considerados. Revisar las recomendaciones en detalle te permitirá abordar estos puntos y construir un proyecto más sólido y responsable.
-            </h3>
-            <strong className="text-sm">Impacto muy alto (72.78% - 100%)</strong>
-            <h3 className="text-sm font-normal text-gray-500">
-              El proyecto presenta un impacto muy alto. Esto indica que muchos factores críticos no están siendo abordados aún. Este resultado es una oportunidad para 
-              fortalecer tu proyecto desde la base, identificando los riesgos clave y tomando acciones correctivas que garanticen su éxito y minimicen efectos negativos.
-            </h3>
+        /* ══════════════ RESULTADOS ══════════════ */
+        <div style={{ flex: 1 }}>
 
-          </CardHeader>
+          {/* Banner de puntaje */}
+          <div className="eia-banner" style={{ background: T.burgundy, padding: '32px 40px', display: 'grid', gridTemplateColumns: '1fr auto', gap: 40, alignItems: 'center' }}>
+            <div style={{ color: '#fff', minWidth: 0 }}>
+              <div style={{ fontSize: 11, fontFamily: MONO, letterSpacing: 1.5, opacity: .7, marginBottom: 8 }}>
+                EVALUACIÓN COMPLETADA · {new Date().toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' })}
+              </div>
+              <h1 style={{ fontFamily: SERIF, fontWeight: 500, fontSize: 36, letterSpacing: -1, margin: '0 0 6px', lineHeight: 1.1 }}>{projectName}</h1>
+              <div style={{ fontSize: 13, opacity: .75 }}>{userEmail}</div>
+              <div style={{ display: 'flex', gap: 22, marginTop: 20, flexWrap: 'wrap' }}>
+                {([
+                  [String(dimensions.length), 'dimensiones evaluadas'],
+                  [String(answeredCount), 'preguntas respondidas'],
+                  ['PDF', 'listo para descargar'],
+                ] as const).map(([k, l]) => (
+                  <div key={l} style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                    <span style={{ fontFamily: SERIF, fontSize: 22, fontWeight: 500, color: T.rose }}>{k}</span>
+                    <span style={{ fontSize: 11, opacity: .7 }}>{l}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ textAlign: 'right', color: '#fff' }}>
+              <div style={{ fontSize: 11, fontFamily: MONO, letterSpacing: 1.5, opacity: .6 }}>NIVEL DE IMPACTO</div>
+              <div style={{ fontFamily: SERIF, fontSize: 76, fontWeight: 500, lineHeight: 1 }}>{totalScore.toFixed(0)}</div>
+              <div style={{ fontSize: 11, opacity: .6, marginBottom: 8 }}>de 100 puntos</div>
+              <div style={{ display: 'inline-block', padding: '5px 16px', borderRadius: 99, background: impactColor, fontSize: 13, fontWeight: 700 }}>{impactLevel}</div>
+            </div>
+          </div>
 
-          <CardContent>
-          <div ref={tableRef}>
-            
-            <Card className="mb-6"> 
-              {/* Información General */}
+          {/* Pestañas */}
+          <div style={{ background: '#fff', borderBottom: `1px solid ${T.roseLight}`, padding: '0 40px', display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+            <Tab id="resumen" label="Resumen" />
+            <Tab id="recomendaciones" label="Recomendaciones" />
+            <Tab id="feedback" label="Evalúa esta herramienta" />
+          </div>
+
+          {/* ── Pestaña: Resumen ── */}
+          {activeTab === 'resumen' && (
+            <div className="eia-two-col" style={{ padding: '28px 40px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18, alignContent: 'start' }}>
+
+              <div style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '20px 22px' }}>
+                <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 10 }}>Perfil por dimensión</div>
+                <svg viewBox="0 0 380 340" style={{ width: '100%', height: 260 }}>
+                  {(() => {
+                    const CX = 190, CY = 165, R = 118, n = dimensions.length
+                    const at = (pct: number, i: number) => {
+                      const a = (i / n) * Math.PI * 2 - Math.PI / 2
+                      const r = (pct / 100) * R
+                      return `${(CX + Math.cos(a) * r).toFixed(1)},${(CY + Math.sin(a) * r).toFixed(1)}`
+                    }
+                    return (
+                      <>
+                        {[25, 50, 75, 100].map((sc, i) => (
+                          <polygon key={i} points={dimensions.map((_, j) => at(sc, j)).join(' ')} fill={i === 3 ? T.rosePaper : 'none'} stroke={T.roseLight} strokeWidth="1" />
+                        ))}
+                        {dimensions.map((_, i) => {
+                          const a = (i / n) * Math.PI * 2 - Math.PI / 2
+                          return <line key={i} x1={CX} y1={CY} x2={CX + Math.cos(a) * R} y2={CY + Math.sin(a) * R} stroke={T.roseLight} strokeWidth="1" />
+                        })}
+                        <polygon points={normalized.map((d, i) => at(d.pct, i)).join(' ')} fill={T.rose} fillOpacity="0.32" stroke={T.burgundy} strokeWidth="2" />
+                        {normalized.map((d, i) => {
+                          const [x, y] = at(d.pct, i).split(',')
+                          return <circle key={i} cx={x} cy={y} r="4" fill={T.burgundy} />
+                        })}
+                        {dimensions.map((_, i) => {
+                          const a = (i / n) * Math.PI * 2 - Math.PI / 2
+                          const r = R + 22
+                          return (
+                            <text key={i} x={CX + Math.cos(a) * r} y={CY + Math.sin(a) * r} textAnchor="middle" dominantBaseline="middle" fill={T.ink60} fontFamily={MONO} fontSize="9" fontWeight="600">
+                              {String(i + 1).padStart(2, '0')}
+                            </text>
+                          )
+                        })}
+                      </>
+                    )
+                  })()}
+                </svg>
+              </div>
+
+              <div style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '20px 22px' }}>
+                <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 12 }}>Puntaje por dimensión</div>
+                {normalized.map((d, i) => (
+                  <div key={d.dim} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '7px 0', borderBottom: i < normalized.length - 1 ? `1px dashed ${T.roseLight}` : 'none' }}>
+                    <span style={{ fontFamily: MONO, fontSize: 10, color: T.burgundy, width: 20, flexShrink: 0 }}>{String(i + 1).padStart(2, '0')}</span>
+                    <span style={{ flex: 1, fontSize: 13, fontWeight: 500, minWidth: 0 }}>{d.dim}</span>
+                    <div style={{ width: 70, height: 5, background: T.paperDeep, borderRadius: 3, overflow: 'hidden', flexShrink: 0 }}>
+                      <div style={{ width: `${d.pct}%`, height: '100%', background: d.pct > 60 ? T.burgundy : T.rose, transition: 'width .5s' }} />
+                    </div>
+                    <span style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, color: d.pct > 60 ? T.burgundy : T.rose, width: 26, textAlign: 'right', flexShrink: 0 }}>{d.pct}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Termómetro + interpretación */}
+              <div style={{ gridColumn: '1/-1', background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '22px 26px', display: 'flex', gap: 28, alignItems: 'center', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+                  <Thermometer score={totalScore} minScore={18.32} maxScore={100} dimensions={scoreByDimension} />
+                  <div style={{ fontSize: 13, marginTop: 8, color: T.ink60 }}>
+                    Puntuación total: <strong style={{ color: T.burgundy }}>{totalScore.toFixed(2)}%</strong>
+                  </div>
+                </div>
+                <div style={{ flex: 1, minWidth: 260 }}>
+                  <div style={{ fontFamily: SERIF, fontSize: 22, color: impactColor, marginBottom: 10 }}>{impactLevel}</div>
+                  <p style={{ fontSize: 13, color: T.ink80, lineHeight: 1.65, margin: '0 0 12px' }}>
+                    Un nivel de impacto alto o muy alto <strong>NO</strong> implica que el proyecto deba descartarse, sino que es importante analizar con mayor <strong>profundidad</strong> las áreas identificadas. La evaluación señala aspectos que aún no están suficientemente considerados, lo que representa oportunidades para <strong>fortalecer tu proyecto</strong> y minimizar posibles riesgos.
+                  </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {([
+                      ['Bajo impacto', '0 – 18,32%', T.success],
+                      ['Impacto moderado', '18,33 – 45,54%', T.warn],
+                      ['Alto impacto', '45,55 – 72,77%', T.rose],
+                      ['Impacto muy alto', '72,78 – 100%', T.burgundy],
+                    ] as const).map(([label, range, color]) => (
+                      <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 12, color: label === impactLevel ? T.ink : T.ink60, fontWeight: label === impactLevel ? 600 : 400 }}>
+                        <span style={{ width: 9, height: 9, borderRadius: 99, background: color, flexShrink: 0 }} />
+                        <span style={{ flex: 1 }}>{label}</span>
+                        <span style={{ fontFamily: MONO, fontSize: 11 }}>{range}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Información general */}
+              <div style={{ gridColumn: '1/-1', background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '20px 24px' }}>
+                <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 12 }}>Información general</div>
+                {getGeneralInfo().map((info, i) => (
+                  <div key={i} style={{ display: 'flex', gap: 16, padding: '9px 0', borderBottom: i < 3 ? `1px dashed ${T.roseLight}` : 'none', fontSize: 13 }}>
+                    <span style={{ width: '38%', color: T.ink60, flexShrink: 0 }}>{info.question}</span>
+                    <span style={{ flex: 1, color: T.ink }}>{info.answer || '—'}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA descarga */}
+              <div style={{ gridColumn: '1/-1', background: T.rosePaper, border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '22px 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>
+                <div>
+                  <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>Tu informe está listo</div>
+                  <div style={{ fontSize: 13, color: T.ink60 }}>PDF con diagnóstico completo, nivel de impacto y recomendaciones por etapa.</div>
+                </div>
+                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                  <button onClick={exportToPDF} style={{ ...solidBtn, padding: '12px 26px', fontSize: 14 }}>
+                    <I.download /> Descargar informe PDF
+                  </button>
+                  <button onClick={() => setShowResults(false)} style={{ ...ghostBtn, padding: '12px 20px', fontSize: 14 }}>
+                    Volver a la evaluación
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── Pestaña: Recomendaciones ── */}
+          {activeTab === 'recomendaciones' && (
+            <div style={{ padding: '28px 40px' }}>
+              <div style={{ fontSize: 13, color: T.ink60, marginBottom: 18, maxWidth: 780, lineHeight: 1.65 }}>
+                Las recomendaciones se elaboran a partir de tus respuestas y están organizadas según la etapa del proyecto en la que conviene implementarlas. Marca cada una a medida que la revises.
+              </div>
+
+              {["Conceptualización y diseño", "Recolección y procesamiento de datos", "Uso y monitoreo"].map((stage) => {
+                const items = getGroupedRecommendations()[stage]
+                if (!items?.length) return null
+                return (
+                  <section key={stage} style={{ marginBottom: 26 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                      <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 1.5, color: '#fff', background: T.burgundy, padding: '4px 12px', borderRadius: 99 }}>ETAPA</span>
+                      <h3 style={{ fontFamily: SERIF, fontSize: 20, fontWeight: 500, margin: 0 }}>{stage}</h3>
+                      <span style={{ fontSize: 12, color: T.ink60 }}>{items.length} {items.length === 1 ? 'recomendación' : 'recomendaciones'}</span>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                      {items.map((item, index) => {
+                        const key = `${stage}-${index}`
+                        const checked = selectedRecommendations[key] || false
+                        return (
+                          <div key={key} style={{ background: '#fff', border: `1px solid ${checked ? T.rose : T.roseLight}`, borderRadius: 12, padding: '16px 20px', display: 'grid', gridTemplateColumns: 'auto 1fr', gap: 14, alignItems: 'start', opacity: checked ? 0.72 : 1, transition: 'all .15s' }}>
+                            <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', paddingTop: 2 }}>
+                              <input
+                                type="checkbox"
+                                checked={checked}
+                                onChange={() => handleCheckboxChange(key)}
+                                aria-label={`Marcar recomendación ${index + 1} de ${stage} como revisada`}
+                                style={{ position: 'absolute', opacity: 0, width: 0, height: 0 }}
+                              />
+                              <span aria-hidden style={{ width: 18, height: 18, borderRadius: 5, border: `1.5px solid ${checked ? T.burgundy : T.ink40}`, background: checked ? T.burgundy : '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', flexShrink: 0 }}>
+                                {checked && <I.check width={11} height={11} />}
+                              </span>
+                            </label>
+
+                            <div style={{ minWidth: 0 }}>
+                              <p style={{ fontSize: 14, color: T.ink, lineHeight: 1.65, margin: '0 0 12px', textAlign: 'justify', textDecoration: checked ? 'line-through' : 'none' }}>
+                                {item.text}
+                              </p>
+
+                              {item.resource && (
+                                <a href={item.resource.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12.5, color: T.burgundy, fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 5, textDecoration: 'none', marginBottom: 12 }}>
+                                  {item.resource.text} <ExternalLink className="w-3 h-3" />
+                                </a>
+                              )}
+
+                              <details style={{ marginTop: 4 }}>
+                                <summary style={{ fontSize: 12, color: T.ink60, cursor: 'pointer', fontFamily: MONO, letterSpacing: 0.5 }}>
+                                  {item.questions.length} {item.questions.length === 1 ? 'PREGUNTA RELACIONADA' : 'PREGUNTAS RELACIONADAS'}
+                                </summary>
+                                <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                  {item.questions.map((q, qi) => (
+                                    <div key={qi} style={{ background: T.rosePaper, borderRadius: 9, padding: '10px 13px', fontSize: 12.5, lineHeight: 1.55 }}>
+                                      <div style={{ color: T.ink80 }}>
+                                        <span style={{ fontFamily: MONO, color: T.burgundy, marginRight: 6 }}>{q.number}</span>{q.text}
+                                      </div>
+                                      <div style={{ color: T.ink60, marginTop: 4 }}>Respuesta: <strong style={{ color: T.burgundy }}>{q.answer}</strong></div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </details>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </section>
+                )
+              })}
+
+              <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 4, paddingBottom: 16 }}>
+                <button onClick={exportToPDF} style={{ ...solidBtn, padding: '13px 30px', fontSize: 14 }}>
+                  <I.download /> Descargar informe PDF completo
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* ── Pestaña: Evalúa esta herramienta ── */}
+          {activeTab === 'feedback' && (
+            <div className="eia-two-col" style={{ padding: '40px', display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: 28, alignContent: 'start' }}>
+              {fbSent ? (
+                <div style={{ gridColumn: '1/-1', background: T.rosePaper, border: `1px solid ${T.roseLight}`, borderRadius: 16, padding: '48px 40px', textAlign: 'center' }}>
+                  <div style={{ fontSize: 44, marginBottom: 16 }}>🌸</div>
+                  <h2 style={{ fontFamily: SERIF, fontWeight: 500, fontSize: 32, letterSpacing: -0.8, margin: '0 0 12px', color: T.burgundy }}>¡Gracias por tu feedback!</h2>
+                  <p style={{ fontSize: 15, color: T.ink60, maxWidth: 460, margin: '0 auto', lineHeight: 1.6 }}>
+                    Tu opinión nos ayuda a mejorar la herramienta para todos los equipos del sector público.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div>
+                    <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 2, color: T.burgundy, marginBottom: 12 }}>PASO 4 DE 4</div>
+                    <h2 style={{ fontFamily: SERIF, fontWeight: 500, fontSize: 34, letterSpacing: -0.8, margin: '0 0 12px', lineHeight: 1.1 }}>
+                      Evalúa esta<br /><em style={{ color: T.burgundy }}>herramienta</em>.
+                    </h2>
+                    <p style={{ fontSize: 14, color: T.ink60, lineHeight: 1.65, margin: '0 0 28px', maxWidth: 440 }}>
+                      Tu opinión es clave para mejorar la EIA. Cuéntanos cómo fue tu experiencia completando la evaluación.
+                    </p>
+
+                    <div style={{ marginBottom: 20 }}>
+                      <span style={{ fontSize: 12, fontWeight: 600, color: T.ink80, display: 'block', marginBottom: 10 }}>¿Qué tan útil fue la herramienta?</span>
+                      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                        {[1, 2, 3, 4, 5].map(n => (
+                          <button
+                            key={n}
+                            type="button"
+                            onClick={() => setFbRating(n)}
+                            aria-label={`${n} de 5`}
+                            style={{ width: 46, height: 46, borderRadius: 12, border: `1.5px solid ${fbRating >= n ? T.burgundy : T.roseLight}`, background: fbRating >= n ? T.burgundy : '#fff', color: fbRating >= n ? '#fff' : T.ink60, fontSize: 19, cursor: 'pointer', transition: 'all .15s', fontFamily: 'inherit' }}
+                          >★</button>
+                        ))}
+                        {fbRating > 0 && (
+                          <span style={{ fontSize: 13, color: T.burgundy, fontWeight: 600, marginLeft: 4 }}>
+                            {['', 'Poco útil', 'Algo útil', 'Útil', 'Muy útil', 'Excelente'][fbRating]}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div style={{ marginBottom: 16 }}>
+                      <label htmlFor="fb-cat" style={{ fontSize: 12, fontWeight: 600, color: T.ink80, display: 'block', marginBottom: 6 }}>Categoría</label>
+                      <div style={{ position: 'relative' }}>
+                        <select
+                          id="fb-cat"
+                          value={fbCategory}
+                          onChange={e => setFbCategory(e.target.value)}
+                          style={{ ...inputBase, appearance: 'none', WebkitAppearance: 'none', paddingRight: 38, cursor: 'pointer', borderColor: fbCategory ? T.burgundy : T.roseLight, background: fbCategory ? T.rosePaper : '#fff', color: fbCategory ? T.ink : T.ink60 }}
+                        >
+                          <option value="" disabled>Selecciona una categoría…</option>
+                          {['Comentario general', 'Sugerencia de mejora', 'Reporte de error', 'Pregunta', 'Otro'].map(op => (
+                            <option key={op} value={op}>{op}</option>
+                          ))}
+                        </select>
+                        <div style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: T.burgundy }}>
+                          <I.chevron />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ marginBottom: 20 }}>
+                      <label htmlFor="fb-note" style={{ fontSize: 12, fontWeight: 600, color: T.ink80, display: 'block', marginBottom: 6 }}>
+                        Comentario <span style={{ fontWeight: 400, color: T.ink60 }}>(requerido)</span>
+                      </label>
+                      <textarea
+                        id="fb-note"
+                        value={fbNote}
+                        onChange={e => setFbNote(e.target.value)}
+                        placeholder="Cuéntanos tu experiencia, qué mejorarías o qué encontraste confuso…"
+                        style={{ ...inputBase, minHeight: 100, resize: 'vertical', background: T.rosePaper, borderColor: fbNote ? T.burgundy : T.roseLight }}
+                      />
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={sendToolFeedback}
+                      disabled={!fbNote.trim() || fbSending}
+                      style={{ width: '100%', background: fbNote.trim() ? T.burgundy : T.ink20, color: '#fff', border: 'none', borderRadius: 10, padding: 14, fontSize: 14, fontWeight: 700, cursor: fbNote.trim() && !fbSending ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, fontFamily: 'inherit', transition: 'background .2s' }}
+                    >
+                      {fbSending ? 'Enviando…' : <>Enviar feedback <I.arrow /></>}
+                    </button>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                    <div style={{ background: T.rosePaper, border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '20px 22px' }}>
+                      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 1.5, color: T.burgundy, marginBottom: 12 }}>POR QUÉ IMPORTA</div>
+                      <p style={{ fontSize: 13, color: T.ink80, margin: 0, lineHeight: 1.65 }}>
+                        La EIA es una herramienta en constante mejora. Cada comentario se analiza para ajustar preguntas, ejemplos y recomendaciones. Tu experiencia construye una mejor herramienta para todos los equipos del sector público.
+                      </p>
+                    </div>
+                    <div style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '20px 22px' }}>
+                      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 1.5, color: T.burgundy, marginBottom: 10 }}>¿QUIERES MÁS?</div>
+                      <p style={{ fontSize: 13, color: T.ink80, margin: '0 0 12px', lineHeight: 1.6 }}>
+                        Si quieres presentar tu caso como <strong>Experiencia Destacada</strong> de uso de IA responsable en el sector público, inscríbete en el piloto.
+                      </p>
+                      <a href="https://algoritmospublicos.cl/quiero_participar" target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: T.burgundy, fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 5, textDecoration: 'none' }}>
+                        algoritmospublicos.cl <I.arrow />
+                      </a>
+                    </div>
+                    <div style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '18px 22px' }}>
+                      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 1.5, color: T.burgundy, marginBottom: 8 }}>FINANCIAMIENTO</div>
+                      <p style={{ fontSize: 12, color: T.ink60, margin: 0, lineHeight: 1.6 }}>
+                        Esta investigación es realizada por GobLab UAI con el apoyo de ANID/Subdirección de Investigación Aplicada IT25I0161.
+                      </p>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
+          {/* Contenido del PDF — oculto en pantalla, se serializa vía innerHTML.
+              Se mantiene el marcado original para no alterar el informe generado. */}
+          <div ref={tableRef} style={{ display: 'none' }}>
+            <Card className="mb-6">
               <div className="flex-grow">
                 <Card>
                   <CardHeader>
@@ -2051,18 +2519,14 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                     </Table>
                   </CardContent>
                 </Card>
-              </div>              
+              </div>
             </Card>
 
-            <Card className="mb-6 p-4"> 
+            <Card className="mb-6 p-4">
               <CardHeader className=" mb-2">
                 <CardTitle>Descripciones para cada nivel de impacto</CardTitle>
               </CardHeader>
-              <div className="flex items-center gap-4"> {/* Contenedor Flexbox */}
-
-              
-
-                {/* Columna 1: Termómetro */}
+              <div className="flex items-center gap-4">
                 <div className="flex flex-col items-center">
                   <Thermometer
                     score={totalScore}
@@ -2074,23 +2538,14 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                     Puntuación total: <strong>{totalScore.toFixed(2)} %</strong>
                   </CardDescription>
                 </div>
-
-                {/* Columna 2: Descripción de impacto */}
                 <div className="flex-grow">
-                  
-
                   <CardContent>
-                    {/* Nivel de Impacto */}
                     <CardDescription className="text-center text-lg font-semibold mb-4 text-gray-700">
                       {getImpactLevel(totalScore)}
                     </CardDescription>
-
-                    {/* Descripción principal */}
                     <CardDescription className="text-sm leading-relaxed text-gray-600">
                       Un nivel de impacto alto o muy alto <strong>NO</strong> implica que el proyecto deba descartarse, sino que es importante analizar con mayor <strong>profundidad</strong> las áreas identificadas. La evaluación señala aspectos que aún no están suficientemente considerados, lo que representa oportunidades para <strong>fortalecer tu proyecto</strong> y minimizar posibles riesgos.
                     </CardDescription>
-
-                    {/* Mensaje específico del nivel de impacto */}
                     <CardDescription className="text-center text-xs mt-4 text-gray-600">
                       <strong>
                         {(() => {
@@ -2111,15 +2566,13 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                     </CardDescription>
                   </CardContent>
                 </div>
-              </div>    
+              </div>
             </Card>
-
-
 
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[50px] text-center align-middle py-3">¿Revisada?</TableHead>                  
+                  <TableHead className="w-[50px] text-center align-middle py-3">¿Revisada?</TableHead>
                   <TableHead className="text-center align-middle py-3">Preguntas Relacionadas</TableHead>
                   <TableHead className="text-center align-middle py-3">Recomendación</TableHead>
                 </TableRow>
@@ -2190,8 +2643,6 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                 ni certificado de aprobación por parte de la Universidad Adolfo Ibáñez respecto al cumplimiento
                 legal, ético o funcional de un algoritmo de inteligencia artificial.
               </p>
-              
-
             </div>
             <br />
             <footer className="p-4 rounded-lg backdrop-blur-sm">
@@ -2204,14 +2655,22 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
               <p className="break-words overflow-wrap text-center text-sm">
                 © {new Date().getFullYear()} Evaluación de impacto algorítmico elaborada en {new Date().toLocaleDateString()}.
               </p>
-
             </footer>
-
-            </div>
-            <Button onClick={() => setShowResults(false)} className="mt-4">Volver a la Evaluación</Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
+
+      <style jsx>{`
+        @media (max-width: 560px) {
+          .eia-logo-sep { display: none; }
+        }
+        @media (max-width: 900px) {
+          .eia-shell { grid-template-columns: 1fr !important; }
+          .eia-aside { position: static !important; max-height: none !important; border-right: none !important; border-bottom: 1px solid ${T.roseLight}; }
+          .eia-two-col { grid-template-columns: 1fr !important; }
+          .eia-banner { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </div>
   )
 }
