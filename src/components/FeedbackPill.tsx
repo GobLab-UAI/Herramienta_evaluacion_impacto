@@ -20,9 +20,11 @@ const CHIPS: Array<{ label: string; value: string }> = [
   { label: '❓ Pregunta', value: FEEDBACK_TYPES.pregunta },
 ]
 
-export function FeedbackPill({ context, defaultEmail = '' }: {
+export function FeedbackPill({ context, defaultEmail = '', bottom = 20 }: {
   context: FeedbackContext
   defaultEmail?: string
+  /** Separación desde el borde inferior. Súbela para no tapar una barra fija. */
+  bottom?: number
 }) {
   const [open, setOpen] = useState(false)
   const [category, setCategory] = useState<string>(FEEDBACK_TYPES.comentario)
@@ -73,7 +75,7 @@ export function FeedbackPill({ context, defaultEmail = '' }: {
         type="button"
         onClick={() => setOpen(true)}
         style={{
-          position: 'fixed', bottom: 20, right: 20, zIndex: 90,
+          position: 'fixed', bottom, right: 20, zIndex: 90,
           display: 'inline-flex', alignItems: 'center', gap: 8,
           background: '#fff', color: T.burgundy, padding: '10px 16px',
           borderRadius: 99, boxShadow: '0 8px 28px rgba(0,0,0,.14)',

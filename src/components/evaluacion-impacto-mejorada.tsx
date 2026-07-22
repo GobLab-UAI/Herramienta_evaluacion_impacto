@@ -1455,6 +1455,10 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   // Marcas 👍/👎 por pregunta. Van en su propia clave de localStorage para no
   // tocar el payload de respuestas que alimenta el scoring y el PDF.
   const [flags, setFlags] = useState<Record<string, FlagState>>({})
+  // Alto real de la barra fija: en pantallas angostas envuelve y crece, así que
+  // la pill de feedback y el padding del contenido se calculan a partir de él.
+  const navbarRef = useRef<HTMLDivElement>(null)
+  const [navH, setNavH] = useState(68)
   const router = useRouter()
   const tableRef = useRef<HTMLTableElement>(null)
   const VERSION = process.env.NEXT_PUBLIC_VERSION || "1.0.0"
@@ -1533,6 +1537,16 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
       }
     }
   }, [userEmail, router])
+
+  useEffect(() => {
+    const el = navbarRef.current
+    if (!el) return
+    const update = () => setNavH(el.offsetHeight)
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [showResults])
 
   const handleFlag = (questionId: string, state: FlagState | undefined) => {
     setFlags(prev => {
@@ -2070,7 +2084,8 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
           </aside>
 
           {/* Preguntas de la dimensión */}
-          <main style={{ padding: '28px 36px 0', minWidth: 0 }}>
+          {/* El padding inferior reserva el alto de la barra fija. */}
+          <main style={{ padding: '28px 36px 0', paddingBottom: navH + 36, minWidth: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
               <div style={{ width: 44, height: 44, borderRadius: 99, background: T.rose, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: MONO, fontWeight: 700, fontSize: 14, flexShrink: 0 }}>
                 {String(dimIndex + 1).padStart(2, '0')}
@@ -2168,22 +2183,24 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
               ))}
             </form>
 
-            {/* Barra de navegación inferior */}
-            <div style={{ position: 'sticky', bottom: 0, background: '#fff', borderTop: `1px solid ${T.roseLight}`, padding: '14px 0', marginTop: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap', boxShadow: '0 -4px 20px rgba(0,0,0,.06)' }}>
-              <button onClick={handlePreviousDimension} disabled={dimIndex === 0} style={{ ...ghostBtn, opacity: dimIndex === 0 ? 0.4 : 1, cursor: dimIndex === 0 ? 'not-allowed' : 'pointer' }}>
-                <span style={{ transform: 'rotate(180deg)', display: 'inline-flex' }}><I.arrow /></span> Anterior
-              </button>
-              <div style={{ fontSize: 12, color: T.ink60, fontFamily: MONO, letterSpacing: 0.5 }}>
-                Sección {dimIndex + 1} de {dimensions.length} · <span style={{ color: T.burgundy, fontWeight: 600 }}>Guardado automáticamente</span>
-              </div>
-              <div style={{ display: 'flex', gap: 10 }}>
-                <button onClick={() => { trackToolComplete(); setShowResults(true); }} style={ghostBtn}>Ver resultados</button>
-                <button onClick={handleNextDimension} disabled={isLastDimension} style={{ ...solidBtn, opacity: isLastDimension ? 0.4 : 1, cursor: isLastDimension ? 'not-allowed' : 'pointer' }}>
-                  Siguiente <I.arrow />
-                </button>
-              </div>
-            </div>
           </main>
+
+          {/* Barra de navegación: anclada al viewport, siempre visible.
+              Arranca después del sidebar en escritorio (ver .eia-navbar). */}
+          <div ref={navbarRef} className="eia-navbar" style={{ position: 'fixed', bottom: 0, left: 260, right: 0, zIndex: 40, background: '#fff', borderTop: `1px solid ${T.roseLight}`, padding: '14px 36px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap', boxShadow: '0 -4px 20px rgba(0,0,0,.06)' }}>
+            <button onClick={handlePreviousDimension} disabled={dimIndex === 0} style={{ ...ghostBtn, opacity: dimIndex === 0 ? 0.4 : 1, cursor: dimIndex === 0 ? 'not-allowed' : 'pointer' }}>
+              <span style={{ transform: 'rotate(180deg)', display: 'inline-flex' }}><I.arrow /></span> Anterior
+            </button>
+            <div style={{ fontSize: 12, color: T.ink60, fontFamily: MONO, letterSpacing: 0.5 }}>
+              Sección {dimIndex + 1} de {dimensions.length} · <span style={{ color: T.burgundy, fontWeight: 600 }}>Guardado automáticamente</span>
+            </div>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button onClick={() => { trackToolComplete(); setShowResults(true); }} style={ghostBtn}>Ver resultados</button>
+              <button onClick={handleNextDimension} disabled={isLastDimension} style={{ ...solidBtn, opacity: isLastDimension ? 0.4 : 1, cursor: isLastDimension ? 'not-allowed' : 'pointer' }}>
+                Siguiente <I.arrow />
+              </button>
+            </div>
+          </div>
         </div>
       ) : (
         /* ══════════════ RESULTADOS ══════════════ */
@@ -2699,6 +2716,8 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
 
       <FeedbackPill
         defaultEmail={userEmail || ''}
+        // En el cuestionario se apoya sobre la barra fija; en resultados no hay barra.
+        bottom={showResults ? 20 : navH + 16}
         context={
           showResults
             ? { pantalla: 'resultados', progreso: progress }
@@ -2717,6 +2736,8 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
         @media (max-width: 900px) {
           .eia-shell { grid-template-columns: 1fr !important; }
           .eia-aside { position: static !important; max-height: none !important; border-right: none !important; border-bottom: 1px solid ${T.roseLight}; }
+          /* Sin sidebar lateral, la barra ocupa todo el ancho. */
+          .eia-navbar { left: 0 !important; padding-left: 20px !important; padding-right: 20px !important; }
           .eia-two-col { grid-template-columns: 1fr !important; }
           .eia-banner { grid-template-columns: 1fr !important; }
         }
