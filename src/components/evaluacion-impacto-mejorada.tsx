@@ -1871,7 +1871,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   const [navH, setNavH] = useState(68)
   const router = useRouter()
   const tableRef = useRef<HTMLTableElement>(null)
-  const VERSION = process.env.NEXT_PUBLIC_VERSION || "1.0.0"
+  const VERSION = process.env.NEXT_PUBLIC_VERSION || "5.0.0"
   const MIN_SCORE = 18.32
 
 

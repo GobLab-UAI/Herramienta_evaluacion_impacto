@@ -156,7 +156,7 @@ export function LandingPage() {
   const [starting, setStarting] = useState(false)
 
   const router = useRouter()
-  const VERSION = process.env.NEXT_PUBLIC_VERSION || '1.0.0'
+  const VERSION = process.env.NEXT_PUBLIC_VERSION || '5.0.0'
 
   const handleStart = async (e: React.FormEvent) => {
     e.preventDefault()
