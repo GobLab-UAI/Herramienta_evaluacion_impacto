@@ -38,6 +38,9 @@ export type Question = {
   options?: Option[]
   scoreContribution?: boolean
   score?: (answer: string | string[] | boolean | null) => number
+  // Recorrido al que pertenece la pregunta tras la bifurcación de IA generativa.
+  // 'universal' (por defecto) se muestra siempre; 'iagen' solo si qGen === true.
+  track?: 'universal' | 'iagen'
   dependsOn?: {
     questionId: string
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -100,8 +103,19 @@ const questions: Question[] = [
     ],
     scoreContribution: false
   },
-  { 
-    id: "q4", 
+  {
+    // BIF_Q1 — bifurcación IA generativa. Determina si se muestran las
+    // preguntas con track: 'iagen'. No puntúa (scoring pendiente).
+    id: "qGen",
+    text: "¿El sistema incorpora IA generativa?",
+    type: "yesno",
+    dimension: "General",
+    stage: "Conceptualización y diseño",
+    info: "La IA generativa es un tipo de inteligencia artificial capaz de producir contenido nuevo, como texto, imágenes, audio o código, a partir de instrucciones o datos de entrada. Se diferencia de otros sistemas algorítmicos porque sus outputs no son predeterminados sino generados en cada interacción.",
+    scoreContribution: false
+  },
+  {
+    id: "q4",
     text: "Razones para la automatización de este proceso.", 
     type: "multiselect",
     dimension: "General", 
@@ -1477,6 +1491,11 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   }
 
   const shouldShowQuestion = (question: Question, answers: Record<string, Answer>): boolean => {
+    // Bifurcación IAGen: las preguntas del recorrido 'iagen' solo se muestran
+    // si el usuario respondió que el sistema incorpora IA generativa (qGen).
+    // Es ortogonal a dependsOn: una pregunta puede exigir ambas condiciones.
+    if (question.track === 'iagen' && answers['qGen'] !== true) return false;
+
     if (!question.dependsOn) return true;
 
     const parentAnswer = answers[question.dependsOn.questionId];
