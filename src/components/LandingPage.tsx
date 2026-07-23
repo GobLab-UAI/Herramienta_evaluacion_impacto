@@ -8,17 +8,19 @@ import { T, SERIF, MONO } from '@/lib/civic'
 import { I, LogoUAIGobLab } from '@/components/civic-icons'
 import { FeedbackPill } from '@/components/FeedbackPill'
 
-/* ── 9 dimensiones ─────────────────────────────────────────────── */
+/* ── 11 dimensiones (mismas y en el mismo orden que el cuestionario) ─── */
 const DIMS = [
-  { n: '01', title: 'Proporcionalidad' },
-  { n: '02', title: 'Normativa' },
-  { n: '03', title: 'Protección · de datos' },
+  { n: '01', title: 'General' },
+  { n: '02', title: 'Proporcionalidad' },
+  { n: '03', title: 'Normativa' },
   { n: '04', title: 'Licencia · social' },
   { n: '05', title: 'Gobernanza' },
-  { n: '06', title: 'Rendición · de cuentas' },
-  { n: '07', title: 'Transparencia' },
-  { n: '08', title: 'Ciberseguridad' },
-  { n: '09', title: 'No discriminación · equidad' },
+  { n: '06', title: 'Protección · de datos' },
+  { n: '07', title: 'Ciberseguridad' },
+  { n: '08', title: 'Equidad' },
+  { n: '09', title: 'Transparencia' },
+  { n: '10', title: 'Rendición · de cuentas' },
+  { n: '11', title: 'Sostenibilidad' },
 ]
 
 function LogoHerramientas({ scale = 0.7 }: { scale?: number }) {
@@ -74,7 +76,7 @@ function DimensionGraph() {
         <circle r="62" fill="#fff" stroke={T.rose} strokeWidth="1.5" />
         <circle r="52" fill={T.rosePaper} />
         <text y="-7" textAnchor="middle" fill={T.burgundy} fontFamily={SERIF} fontStyle="italic" fontSize="26" fontWeight="500">EIA</text>
-        <text y="14" textAnchor="middle" fill={T.ink60} fontFamily={MONO} fontSize="8" letterSpacing="1.5">9 DIMENSIONES</text>
+        <text y="14" textAnchor="middle" fill={T.ink60} fontFamily={MONO} fontSize="8" letterSpacing="1.5">11 DIMENSIONES</text>
       </g>
 
       {nodes.map((n, i) => {
@@ -128,7 +130,7 @@ const WHY_CARDS = [
     icon: I.flag,
     q: '¿Qué obtienes?',
     items: [
-      'Informe con nivel de impacto del sistema y recomendaciones personalizadas para 9 dimensiones.',
+      'Informe con nivel de impacto del sistema y recomendaciones personalizadas para 11 dimensiones.',
     ],
   },
 ]
@@ -208,7 +210,7 @@ export function LandingPage() {
       <section className="eia-hero" style={{ background: T.rosePaper, borderBottom: `1px solid ${T.roseLight}` }}>
         <div className="eia-hero-copy" style={{ padding: '48px 44px 44px', display: 'flex', flexDirection: 'column', justifyContent: 'center', borderRight: `1px solid ${T.roseLight}` }}>
           <div style={{ display: 'inline-flex', alignSelf: 'flex-start', alignItems: 'center', gap: 8, padding: '4px 12px', borderRadius: 99, background: '#fff', color: T.burgundy, fontSize: 11, fontWeight: 600, letterSpacing: 0.4, marginBottom: 18, border: `1px solid ${T.roseLight}` }}>
-            <span style={{ width: 6, height: 6, background: T.rose, borderRadius: 99 }} /> Herramienta · v{VERSION} · 9 dimensiones
+            <span style={{ width: 6, height: 6, background: T.rose, borderRadius: 99 }} /> Herramienta · v{VERSION} · 11 dimensiones
           </div>
           <h1 style={{ fontFamily: SERIF, fontWeight: 500, fontSize: 'clamp(34px, 4vw, 52px)', lineHeight: 1.02, margin: '0 0 16px', letterSpacing: -1.5, color: T.ink }}>
             Evaluación de<br /><em style={{ color: T.burgundy }}>impacto</em> algorítmico.
