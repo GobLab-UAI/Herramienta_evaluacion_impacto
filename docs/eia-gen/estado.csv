@@ -13,10 +13,10 @@ General,"1,6",Label,Modificar,IAGen,q6,implementado,fase2
 General,"1,6",Tooltip,Modificar,IAGen,q6,implementado,fase2
 General,"1,7",Label,Modificar,Universal,q7,implementado,fase2
 General,"1,7",Tooltip,Mantener,Universal,,pendiente,
-General,"1,8",Label,Agregar (nueva),IAGen,,pendiente,
-General,"1,8",Tooltip,Agregar (nueva),IAGen,,pendiente,
-General,"1,9",Label,Agregar (nueva),Universal,,pendiente,
-General,"1,9",Tooltip,Agregar (nueva),Universal,,pendiente,
+General,"1,8",Label,Agregar (nueva),IAGen,q60,implementado,fase3
+General,"1,8",Tooltip,Agregar (nueva),IAGen,q60,implementado,fase3
+General,"1,9",Label,Agregar (nueva),Universal,q61,implementado,fase3
+General,"1,9",Tooltip,Agregar (nueva),Universal,q61,implementado,fase3
 General,"1,9",Recoemndacion,Agregar (nueva),Universal,,pendiente,
 Proporcionalidad,"2,1",Tooltip,Modificar,Universal,q8,implementado,fase2
 Proporcionalidad,"2,2",Label,Modificar,Universal,q9,implementado,fase2
@@ -25,33 +25,33 @@ Proporcionalidad,"2,3",Tooltip,Modificar,Universal,q10,implementado,fase2
 Proporcionalidad,"2,4",Label,Modificar,Universal,q11,implementado,fase2
 Proporcionalidad,"2,4",Tooltip,Modificar,Universal,q11,implementado,fase2
 Proporcionalidad,"2,4",Recomendación,Modificar,Universal,,pendiente,
-Proporcionalidad,"2,5",Label,Agregar (nuevo),Universal,,pendiente,
-Proporcionalidad,"2,5",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Proporcionalidad,"2,5",Label,Agregar (nuevo),Universal,q62,implementado,fase3
+Proporcionalidad,"2,5",Tooltip,Agregar (nuevo),Universal,q62,implementado,fase3
 Proporcionalidad,"2,5",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Proporcionalidad,"2,6",Label,Agregar (nuevo),IAGen,,pendiente,
-Proporcionalidad,"2,6",Tooltip,Agregar (nuevo),IAGen,,pendiente,
+Proporcionalidad,"2,6",Label,Agregar (nuevo),IAGen,q63,implementado,fase3
+Proporcionalidad,"2,6",Tooltip,Agregar (nuevo),IAGen,q63,implementado,fase3
 Proporcionalidad,"2,6",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Proporcionalidad,"2,7",Label,Agregar (nuevo),Universal,,pendiente,
-Proporcionalidad,"2,7",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Proporcionalidad,"2,7",Label,Agregar (nuevo),Universal,q64,implementado,fase3
+Proporcionalidad,"2,7",Tooltip,Agregar (nuevo),Universal,q64,implementado,fase3
 Proporcionalidad,"2,7",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Proporcionalidad,"2,8",Label,Agregar (nuevo),Universal,,pendiente,
-Proporcionalidad,"2,8",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Proporcionalidad,"2,8",Label,Agregar (nuevo),Universal,q65,implementado,fase3
+Proporcionalidad,"2,8",Tooltip,Agregar (nuevo),Universal,q65,implementado,fase3
 Proporcionalidad,"2,8",Recomendación,Agregar (nuevo),Universal,,pendiente,
 Normativa,"3,1",Tooltip,Modificar,Universal,q13,implementado,fase2
 Normativa,"3,1",Recomendación,Agregar (nueva),Universal,,pendiente,
 Normativa,"3,2",Label,Modificar,Universal,q14,implementado,fase2
 Normativa,"3,2",Tooltip,Modificar,Universal,q14,implementado,fase2
-Normativa,"3,3",Label,Agregar (nueva),IAGen,,pendiente,
-Normativa,"3,3",Tooltip,Agregar (nueva),IAGen,,pendiente,
+Normativa,"3,3",Label,Agregar (nueva),IAGen,q66,implementado,fase3
+Normativa,"3,3",Tooltip,Agregar (nueva),IAGen,q66,implementado,fase3
 Normativa,"3,3",Recomendación,Agregar (nueva),IAGen,,pendiente,
-Normativa,"3,4",Label,Agregar (nueva),IAGen,,pendiente,
-Normativa,"3,4",Tooltip,Agregar (nueva),IAGen,,pendiente,
+Normativa,"3,4",Label,Agregar (nueva),IAGen,q67,implementado,fase3
+Normativa,"3,4",Tooltip,Agregar (nueva),IAGen,q67,implementado,fase3
 Normativa,"3,4",Recomendación,Agregar (nueva),IAGen,,pendiente,
-Normativa,"3,5",Label,Agregar (nueva),IAGen,,pendiente,
-Normativa,"3,5",Tooltip,Agregar (nueva),IAGen,,pendiente,
+Normativa,"3,5",Label,Agregar (nueva),IAGen,q68,implementado,fase3
+Normativa,"3,5",Tooltip,Agregar (nueva),IAGen,q68,implementado,fase3
 Normativa,"3,5",Recomendación,Agregar (nueva),IAGen,,pendiente,
-Normativa,"3,6",Label,Agregar (nueva),IAGen,,pendiente,
-Normativa,"3,6",Tooltip,Agregar (nueva),IAGen,,pendiente,
+Normativa,"3,6",Label,Agregar (nueva),IAGen,q69,implementado,fase3
+Normativa,"3,6",Tooltip,Agregar (nueva),IAGen,q69,implementado,fase3
 Normativa,"3,6",Recomendación,Agregar (nueva),IAGen,,pendiente,
 Licencia Social,"4,1",Tooltip,Modificar,Universal,q15,implementado,fase2
 Licencia Social,"4,1",Recomendación,Modificar,Universal,,pendiente,
@@ -61,11 +61,11 @@ Licencia Social,"4,2",Recomendación,Modificar,,,pendiente,
 Licencia Social,"4,3",Label,Modificar,Universal,q17,implementado,fase2
 Licencia Social,"4,3",Tooltip,Agregar (nuevo),Universal,,pendiente,
 Licencia Social,"4,3",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Licencia Social,"4,4",Label,Agregar (nuevo),Universal,,pendiente,
-Licencia Social,"4,4",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Licencia Social,"4,4",Label,Agregar (nuevo),Universal,q70,implementado,fase3
+Licencia Social,"4,4",Tooltip,Agregar (nuevo),Universal,q70,implementado,fase3
 Licencia Social,"4,4",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Licencia Social,"4,5",Label,Agregar (nuevo),Universal,,pendiente,
-Licencia Social,"4,5",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Licencia Social,"4,5",Label,Agregar (nuevo),Universal,q71,implementado,fase3
+Licencia Social,"4,5",Tooltip,Agregar (nuevo),Universal,q71,implementado,fase3
 Licencia Social,"4,5",Recomendación,Agregar (nuevo),Universal,,pendiente,
 Gobernanza,"5,1",Tooltip,Modificar,Universal,q19,implementado,fase2
 Gobernanza,"5,1",Recomendación,,,,pendiente,
@@ -104,54 +104,54 @@ Protección de datos,"6,8",Tooltip,Modificar,Universal,q33,implementado,fase2
 Protección de datos,"6,9",Label,Modificar,Universal,q34,implementado,fase2
 Protección de datos,"6,9",Tooltip,Modificar,Universal,q34,implementado,fase2
 Protección de datos,"6,9",Recomendación,Modificar,Universal,,pendiente,
-Protección de datos,6.10,Label,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,6.10,Tooltip,Agregar (nuevo),Universal,,pendiente,
+Protección de datos,6.10,Label,Agregar (nuevo),Universal,q72,implementado,fase3
+Protección de datos,6.10,Tooltip,Agregar (nuevo),Universal,q72,implementado,fase3
 Protección de datos,6.10,Recomendación,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,11",Label,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,11",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Protección de datos,"6,11",Label,Agregar (nuevo),Universal,q73,implementado,fase3
+Protección de datos,"6,11",Tooltip,Agregar (nuevo),Universal,q73,implementado,fase3
 Protección de datos,"6,11",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,12",Label,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,12",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Protección de datos,"6,12",Label,Agregar (nuevo),Universal,q74,implementado,fase3
+Protección de datos,"6,12",Tooltip,Agregar (nuevo),Universal,q74,implementado,fase3
 Protección de datos,"6,12",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,13",Label,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,13",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Protección de datos,"6,13",Label,Agregar (nuevo),Universal,q75,implementado,fase3
+Protección de datos,"6,13",Tooltip,Agregar (nuevo),Universal,q75,implementado,fase3
 Protección de datos,"6,13",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,14",Label,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,14",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Protección de datos,"6,14",Label,Agregar (nuevo),Universal,q76,implementado,fase3
+Protección de datos,"6,14",Tooltip,Agregar (nuevo),Universal,q76,implementado,fase3
 Protección de datos,"6,14",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,15",Label,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,15",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Protección de datos,"6,15",Label,Agregar (nuevo),Universal,q77,implementado,fase3
+Protección de datos,"6,15",Tooltip,Agregar (nuevo),Universal,q77,implementado,fase3
 Protección de datos,"6,15",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,16",Label,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,16",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Protección de datos,"6,16",Label,Agregar (nuevo),Universal,q78,implementado,fase3
+Protección de datos,"6,16",Tooltip,Agregar (nuevo),Universal,q78,implementado,fase3
 Protección de datos,"6,16",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,17",Label,Agregar (nuevo),IAGen,,pendiente,
-Protección de datos,"6,17",Tooltip,Agregar (nuevo),IAGen,,pendiente,
+Protección de datos,"6,17",Label,Agregar (nuevo),IAGen,q79,implementado,fase3
+Protección de datos,"6,17",Tooltip,Agregar (nuevo),IAGen,q79,implementado,fase3
 Protección de datos,"6,17",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Protección de datos,"6,18",Label,Agregar (nuevo),IAGen,,pendiente,
-Protección de datos,"6,18",Tooltip,Agregar (nuevo),IAGen,,pendiente,
+Protección de datos,"6,18",Label,Agregar (nuevo),IAGen,q80,implementado,fase3
+Protección de datos,"6,18",Tooltip,Agregar (nuevo),IAGen,q80,implementado,fase3
 Protección de datos,"6,18",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Protección de datos,"6,19",Label,Agregar (nuevo),IAGen,,pendiente,
-Protección de datos,"6,19",Tooltip,Agregar (nuevo),IAGen,,pendiente,
+Protección de datos,"6,19",Label,Agregar (nuevo),IAGen,q81,implementado,fase3
+Protección de datos,"6,19",Tooltip,Agregar (nuevo),IAGen,q81,implementado,fase3
 Protección de datos,"6,19",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Protección de datos,6.20,Label,Agregar (nuevo),Universal,,pendiente,
+Protección de datos,6.20,Label,Agregar (nuevo),Universal,q82,implementado,fase3
 Protección de datos,6.20,Recomendación,Agregar (nuevo),Universal,,pendiente,
 Ciberseguridad,"7,1",Tooltip,Agregar (nuevo),Universal,,pendiente,
 Ciberseguridad,"7,2",Label,Modificar,Universal,q36,implementado,fase2
 Ciberseguridad,"7,2",Tooltip,Modificar,Universal,q36,implementado,fase2
 Ciberseguridad,"7,2",Recomendación,Modificar,Universal,,pendiente,
-Ciberseguridad,"7,3",Label,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,3",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Ciberseguridad,"7,3",Label,Agregar (nuevo),Universal,q83,implementado,fase3
+Ciberseguridad,"7,3",Tooltip,Agregar (nuevo),Universal,q83,implementado,fase3
 Ciberseguridad,"7,3",Recomendación,Agregar (nuevo),Universal,,pendiente,
 Ciberseguridad,"7,4",Label,Modificar,Universal,q37,implementado,fase2
 Ciberseguridad,"7,4",Recomendación,Modificar,Universal,,pendiente,
 Ciberseguridad,"7,5",Label,Mantener,Universal,q37.1,pendiente,
 Ciberseguridad,"7,5",Recomendación,Modificar,Universal,,pendiente,
-Ciberseguridad,"7,12",Label condicionado,Agregar (nuevo),Universal,,pendiente,
+Ciberseguridad,"7,12",Label condicionado,Agregar (nuevo),Universal,q87,implementado,fase3
 Ciberseguridad,"7,12",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,13",Label condicionado,Agregar (nuevo),Universal,,pendiente,
+Ciberseguridad,"7,13",Label condicionado,Agregar (nuevo),Universal,q88,implementado,fase3
 Ciberseguridad,"7,13",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,14",Label condicionado,Agregar (nuevo),Universal,,pendiente,
+Ciberseguridad,"7,14",Label condicionado,Agregar (nuevo),Universal,q89,implementado,fase3
 Ciberseguridad,"7,14",Recomendación,Agregar (nuevo),Universal,,pendiente,
 Ciberseguridad,"7,6",Label,Modificar,Universal,q38,implementado,fase2
 Ciberseguridad,"7,6",Recomendación,Modificar,Universal,,pendiente,
@@ -159,25 +159,25 @@ Ciberseguridad,"7,7",Label,Modificar,IAGen,q39,implementado,fase2
 Ciberseguridad,"7,7",Recomendación,Modificar,IAGen,,pendiente,
 Ciberseguridad,"7,8",Label,Modificar,Universal,q39.1,implementado,fase2
 Ciberseguridad,"7,8",Recomendación,Modificar,Universal,,pendiente,
-Ciberseguridad,"7,9",Label,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,9",Tooltip,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,7.10,Label,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,7.10,Tooltip,Agregar (nuevo),Universal,,pendiente,
+Ciberseguridad,"7,9",Label,Agregar (nuevo),Universal,q84,implementado,fase3
+Ciberseguridad,"7,9",Tooltip,Agregar (nuevo),Universal,q84,implementado,fase3
+Ciberseguridad,7.10,Label,Agregar (nuevo),Universal,q85,implementado,fase3
+Ciberseguridad,7.10,Tooltip,Agregar (nuevo),Universal,q85,implementado,fase3
 Ciberseguridad,7.10,Recomendación,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,11",Label,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,11",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Ciberseguridad,"7,11",Label,Agregar (nuevo),Universal,q86,implementado,fase3
+Ciberseguridad,"7,11",Tooltip,Agregar (nuevo),Universal,q86,implementado,fase3
 Ciberseguridad,"7,11",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,16",Label,Agregar (nuevo),Universal,,pendiente,
+Ciberseguridad,"7,16",Label,Agregar (nuevo),Universal,q90,implementado,fase3
 Ciberseguridad,"7,16",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,16",Tooltip,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,17",Label,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,17",Tooltip,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,18",Label,Agregar (nuevo),IAGen,,pendiente,
-Ciberseguridad,"7,18",Tooltip,Agregar (nuevo),IAGen,,pendiente,
+Ciberseguridad,"7,16",Tooltip,Agregar (nuevo),Universal,q90,implementado,fase3
+Ciberseguridad,"7,17",Label,Agregar (nuevo),Universal,q91,implementado,fase3
+Ciberseguridad,"7,17",Tooltip,Agregar (nuevo),Universal,q91,implementado,fase3
+Ciberseguridad,"7,18",Label,Agregar (nuevo),IAGen,q92,implementado,fase3
+Ciberseguridad,"7,18",Tooltip,Agregar (nuevo),IAGen,q92,implementado,fase3
 Ciberseguridad,"7,18",Recomendación,Agregar (nuevo),IAGen,,pendiente,
 Equidad,"8,1",Tooltip,Modificar,Universal,q40,implementado,fase2
-Equidad,"8,2",Label condicionado,Agregar (nuevo),Universal,,pendiente,
-Equidad,"8,2",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Equidad,"8,2",Label condicionado,Agregar (nuevo),Universal,q93,implementado,fase3
+Equidad,"8,2",Tooltip,Agregar (nuevo),Universal,q93,implementado,fase3
 Equidad,"8,2",Recomendación,Agregar (nuevo),Universal,,pendiente,
 Equidad,"8,3",Label,Modificar,Universal,q42,implementado,fase2
 Equidad,"8,3",Tooltip,Modificar,Universal,q42,implementado,fase2
@@ -185,11 +185,11 @@ Equidad,"8,4",Label,Mantener,Universal,q43,pendiente,
 Equidad,"8,4",Tooltip,Modificar,Universal,q43,implementado,fase2
 Equidad,"8,5",Label,Modificar,Universal,q44,implementado,fase2
 Equidad,"8,5",Tooltip,Modificar,Universal,q44,implementado,fase2
-Equidad,"8,6",Label,Agregar (nuevo),IAGen,,pendiente,
+Equidad,"8,6",Label,Agregar (nuevo),IAGen,q94,implementado,fase3
 Equidad,"8,6",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Equidad,"8,6",Tooltip,Agregar (nuevo),IAGen,,pendiente,
-Equidad,"8,7",Label,Agregar (nuevo),IAGen,,pendiente,
-Equidad,"8,7",Tooltip,Agregar (nuevo),IAGen,,pendiente,
+Equidad,"8,6",Tooltip,Agregar (nuevo),IAGen,q94,implementado,fase3
+Equidad,"8,7",Label,Agregar (nuevo),IAGen,q95,implementado,fase3
+Equidad,"8,7",Tooltip,Agregar (nuevo),IAGen,q95,implementado,fase3
 Equidad,"8,7",Recomendación,Agregar (nuevo),IAGen,,pendiente,
 Transparencia,"9,1",Tooltip,Modificar,Universal,q45,implementado,fase2
 Transparencia,"9,1",Recomendación,Modificar,Universal,,pendiente,
@@ -225,15 +225,15 @@ Rendición de cuentas,"10,5",Recomendación,,,,pendiente,
 Rendición de cuentas,"10,6",Label,Modificar,Universal,q59,implementado,fase2
 Rendición de cuentas,"10,6",Tooltip,Agregar (nuevo),Universal,,pendiente,
 Rendición de cuentas,"10,6",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Rendición de cuentas,"10,7",Label,Agregar (nuevo),Universal,,pendiente,
-Rendición de cuentas,"10,7",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Rendición de cuentas,"10,7",Label,Agregar (nuevo),Universal,q96,implementado,fase3
+Rendición de cuentas,"10,7",Tooltip,Agregar (nuevo),Universal,q96,implementado,fase3
 Rendición de cuentas,"10,7",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Rendición de cuentas,"10,8",Label,Agregar (nuevo),IAGen,,pendiente,
+Rendición de cuentas,"10,8",Label,Agregar (nuevo),IAGen,q97,implementado,fase3
 Rendición de cuentas,"10,8",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Rendición de cuentas,"10,9",Label,Agregar (nuevo),IAGen,,pendiente,
+Rendición de cuentas,"10,9",Label,Agregar (nuevo),IAGen,q98,implementado,fase3
 Rendición de cuentas,"10,9",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Rendición de cuentas,10.10,Label,Agregar (nuevo),Universal,,pendiente,
-Rendición de cuentas,10.10,Tooltip,Agregar (nuevo),Universal,,pendiente,
+Rendición de cuentas,10.10,Label,Agregar (nuevo),Universal,q99,implementado,fase3
+Rendición de cuentas,10.10,Tooltip,Agregar (nuevo),Universal,q99,implementado,fase3
 Rendición de cuentas,10.10,Recomendación,Agregar (nuevo),Universal,,pendiente,
 Sostenibilidad,"11,1",Tooltip,Agregar (nuevo),Universal,,pendiente,
 Sostenibilidad,"11,1",Option,Agregar (nuevo),Universal,,pendiente,

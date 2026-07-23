@@ -159,6 +159,26 @@ const questions: Question[] = [
     scoreContribution: true,
     score: (answer) => answer === false ? 1.3 : 0
   },
+  {
+      id: "q60",
+      text: "¿El sistema de IA generativa ha sido adaptado o configurado para un uso institucional específico?",
+      type: "yesno",
+      dimension: "General",
+      stage: "Conceptualización y diseño",
+      info: "Un sistema de propósito general está disponible tal como fue desarrollado por un tercero, sin ajustes para el contexto institucional. Un sistema adaptado ha sido configurado, ajustado o entrenado para una tarea específica, como atención ciudadana, clasificación de documentos o apoyo a decisiones administrativas.",
+      track: "iagen",
+      scoreContribution: false
+    },
+  {
+      // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
+      id: "q61",
+      text: "¿Se utilizaron métricas específicas para seleccionar el modelo y se definieron umbrales de rendimiento aceptables para su despliegue?",
+      type: "yesno",
+      dimension: "General",
+      stage: "Conceptualización y diseño",
+      info: "Se refiere a indicadores técnicos objetivos (ej. AUC-ROC, matriz de confusión, error cuadrático medio) usados para comparar modelos candidatos y decidir si el rendimiento alcanzado es suficiente para operar en producción.",
+      scoreContribution: false
+    },
   { 
     id: "q8", 
     text: "¿Se ha considerado detenidamente las opciones no algorítmicas que pueden utilizarse para lograr el mismo objetivo?", 
@@ -218,6 +238,45 @@ const questions: Question[] = [
     },
     score: (answer) => answer === false ? 1.3 : 0
   },
+  {
+      id: "q62",
+      text: "¿Está documentado cómo se gestiona actualmente el problema que el sistema busca resolver?",
+      type: "yesno",
+      dimension: "Proporcionalidad",
+      stage: "Conceptualización y diseño",
+      info: "Documentar la situación actual significa describir cómo se realiza hoy el proceso: si es manual, semi-automatizado o apoyado en otras herramientas, y cuáles son sus principales limitaciones. Esto permite comparar el impacto del nuevo sistema frente al enfoque existente.",
+      scoreContribution: false
+    },
+  {
+      id: "q63",
+      text: "¿Se ha justificado el uso de IA generativa frente a sistemas algorítmicos más simples o tradicionales?",
+      type: "yesno",
+      dimension: "Proporcionalidad",
+      stage: "Conceptualización y diseño",
+      info: "Los sistemas determinísticos o analíticos tradicionales producen resultados predecibles a partir de reglas definidas. La IA generativa, en cambio, genera contenido nuevo con mayor variabilidad y menor predictibilidad. Esta pregunta busca verificar que la complejidad adicional de la IA generativa esté justificada por el problema que se quiere resolver.",
+      track: "iagen",
+      scoreContribution: false
+    },
+  {
+      // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
+      id: "q64",
+      text: "¿Están documentados los recursos computacionales y de hardware requeridos para el funcionamiento continuo del sistema?",
+      type: "yesno",
+      dimension: "Proporcionalidad",
+      stage: "Conceptualización y diseño",
+      info: "Consulta si existe un registro de la infraestructura técnica necesaria para operar el sistema de manera continua, como servidores, GPU/CPU, capacidad de almacenamiento o servicios en la nube utilizados",
+      scoreContribution: false
+    },
+  {
+      // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
+      id: "q65",
+      text: "¿Se ha evaluado el impacto medioambiental (estimación de huella de carbono o consumo energético) asociado al entrenamiento, prueba y operación del modelo algorítmico?",
+      type: "yesno",
+      dimension: "Proporcionalidad",
+      stage: "Conceptualización y diseño",
+      info: "Consulta si se ha medido o estimado el consumo de energía y la huella de carbono generados en alguna de las fases del ciclo de vida del modelo (entrenamiento, prueba u operación en producción). Esto permite dimensionar el costo ambiental asociado al uso del sistema de IA en la o las etapas evaluadas.",
+      scoreContribution: false
+    },
   { 
     id: "q13", 
     text: "¿Se implementa el algoritmo para la ejecución de una normativa específica?", 
@@ -238,6 +297,47 @@ const questions: Question[] = [
     scoreContribution: true,
     score: (answer) => answer === false ? 5.55 : 0
   },
+  {
+      id: "q66",
+      text: "¿Se han identificado los riesgos de infracción a la propiedad intelectual que puede generar el sistema?",
+      type: "yesno",
+      dimension: "Normativa",
+      stage: "Conceptualización y diseño",
+      info: "Los riesgos de infracción a la propiedad intelectual en sistemas de IA generativa pueden ocurrir cuando el modelo reproduce contenidos protegidos en sus outputs, fue entrenado con obras sin autorización, o genera resultados sustancialmente similares a obras existentes.",
+      track: "iagen",
+      scoreContribution: false
+    },
+  {
+      id: "q67",
+      text: "¿Se ha justificado que el uso de contenidos protegidos por derechos de autor es necesario y proporcional para cumplir la finalidad del sistema?",
+      type: "yesno",
+      dimension: "Normativa",
+      stage: "Conceptualización y diseño",
+      info: "El uso de contenidos protegidos es necesario cuando no existen alternativas equivalentes, como datasets abiertos, obras en dominio público o datos sintéticos. Es proporcional cuando el volumen y tipo de contenido usado no excede lo estrictamente requerido para la finalidad del sistema.",
+      track: "iagen",
+      scoreContribution: false
+    },
+  {
+      id: "q68",
+      text: "¿Se han adoptado medidas contractuales o de gobernanza para mitigar los riesgos de propiedad intelectual asociados al sistema?",
+      type: "yesno",
+      dimension: "Normativa",
+      stage: "Conceptualización y diseño",
+      info: "Las medidas contractuales para mitigar riesgos de PI son cláusulas o acuerdos que establecen obligaciones sobre licitud del uso de contenidos, indemnidad ante reclamos, auditoría de datasets y control sobre la reutilización de los outputs del sistema.",
+      track: "iagen",
+      scoreContribution: false
+    },
+  {
+      // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
+      id: "q69",
+      text: "¿Existe un procedimiento para recibir y gestionar reclamos por infracción de propiedad intelectual relacionados con el sistema?",
+      type: "yesno",
+      dimension: "Normativa",
+      stage: "Uso y monitoreo",
+      info: "Un procedimiento de gestión de reclamos de PI define quién recibe las denuncias de titulares de derechos, en qué plazo se evalúan, qué medidas correctivas pueden adoptarse y quién es responsable de ejecutarlas.",
+      track: "iagen",
+      scoreContribution: false
+    },
   { 
     id: "q15", 
     text: "¿El proyecto y/o sus objetivos están relacionados con temas de intenso debate público que podrían generar judicialización o peticiones administrativas?", 
@@ -284,6 +384,24 @@ const questions: Question[] = [
     },
     score: (answer) => answer === false ? 2.77 : 0
   },
+  {
+      id: "q70",
+      text: "¿Se han identificado los grupos de personas afectados directa o indirectamente por el sistema, incluyendo grupos en situación de vulnerabilidad?",
+      type: "yesno",
+      dimension: "Licencia Social",
+      stage: "Conceptualización y diseño",
+      info: "Los grupos afectados directamente son quienes interactúan con el sistema o sobre quienes toma decisiones. Los afectados indirectamente son quienes reciben consecuencias sin interactuar con él. Los grupos en situación de vulnerabilidad incluyen, por ejemplo, niños, personas mayores, personas con discapacidad, pueblos indígenas o migrantes.",
+      scoreContribution: false
+    },
+  {
+      id: "q71",
+      text: "¿El proyecto cuenta con presupuesto asignado para ejecutar los mecanismos de participación ciudadana?",
+      type: "yesno",
+      dimension: "Licencia Social",
+      stage: "Conceptualización y diseño",
+      info: "Los mecanismos de participación ciudadana son instancias formales para involucrar a actores clave o comunidades afectadas en el desarrollo o evaluación del sistema, como talleres, consultas, encuestas o mesas de trabajo. Sin presupuesto asignado, estas instancias difícilmente pueden ejecutarse.",
+      scoreContribution: false
+    },
   { 
     id: "q19",
     text: "¿Existe alguna unidad interna encargada de supervisar la gobernanza (operación, manejo, despliegue) de la solución desarrollada?",
@@ -479,6 +597,109 @@ const questions: Question[] = [
     score: (answer) => answer === false ? 1.01 : 0
   },
   {
+      id: "q72",
+      text: "¿Están identificadas las bases legales que habilitan el tratamiento de datos para cada finalidad del sistema?",
+      type: "yesno",
+      dimension: "Protección de datos",
+      stage: "Conceptualización y diseño",
+      info: "Verifique que cada finalidad del sistema tenga una base jurídica clara: consentimiento, cumplimiento de una obligación legal, ejecución de un contrato, interés legítimo u otra habilitante reconocida por la Ley N° 21.719.",
+      scoreContribution: false
+    },
+  {
+      id: "q73",
+      text: "¿Están definidos el volumen de datos tratados y los períodos de conservación?",
+      type: "yesno",
+      dimension: "Protección de datos",
+      stage: "Recolección y procesamiento de datos",
+      info: "El período de conservación es el tiempo durante el cual el sistema mantiene los datos antes de eliminarlos o anonimizarlos. Por ejemplo: un sistema puede conservar datos de usuarios durante 12 meses desde el último uso, o hasta que se cumpla la finalidad para la que fueron recopilados.",
+      scoreContribution: false
+    },
+  {
+      id: "q74",
+      text: "¿Existe un mecanismo accesible para que las personas puedan oponerse al tratamiento o impugnar una decisión del sistema?",
+      type: "yesno",
+      dimension: "Protección de datos",
+      stage: "Uso y monitoreo",
+      info: "Un mecanismo de oposición permite a una persona solicitar que el sistema deje de tratar sus datos. Un mecanismo de impugnación le permite cuestionar una decisión que el sistema tomó sobre ella y pedir que sea revisada por una persona.",
+      scoreContribution: false
+    },
+  {
+      id: "q75",
+      text: "¿Los plazos de conservación de los datos están justificados y documentados?",
+      type: "yesno",
+      dimension: "Protección de datos",
+      stage: "Recolección y procesamiento de datos",
+      info: "Los plazos de conservación son el tiempo definido durante el cual el sistema puede mantener los datos. Se consideran justificados cuando están vinculados a una finalidad específica y documentados cuando constan por escrito, diferenciando entre datos en uso activo, respaldo, auditoría o entrenamiento.",
+      scoreContribution: false
+    },
+  {
+      id: "q76",
+      text: "¿Existe un procedimiento formal para detectar, gestionar y notificar vulneraciones de seguridad que afecten datos personales?",
+      type: "yesno",
+      dimension: "Protección de datos",
+      stage: "Uso y monitoreo",
+      info: "Una vulneración de seguridad ocurre cuando datos personales son accedidos, filtrados, alterados o destruidos sin autorización. Un procedimiento formal define quién actúa, en qué plazo y a quién se notifica cuando esto ocurre.",
+      scoreContribution: false
+    },
+  {
+      id: "q77",
+      text: "¿Existe un aviso de privacidad específico para este sistema que informe a las personas sobre el tratamiento de sus datos?",
+      type: "yesno",
+      dimension: "Protección de datos",
+      stage: "Conceptualización y diseño",
+      info: "Un aviso de privacidad es un documento que informa a las personas qué datos se recopilan, para qué finalidad, quién los trata y cómo pueden ejercer sus derechos. Es específico del sistema cuando describe el tratamiento de datos de ese sistema en particular, no de la organización en general.",
+      scoreContribution: false
+    },
+  {
+      id: "q78",
+      text: "¿La organización cuenta con un delegado o responsable de protección de datos?",
+      type: "yesno",
+      dimension: "Protección de datos",
+      stage: "Conceptualización y diseño",
+      info: "El delegado o responsable de protección de datos es la persona designada dentro de la organización para supervisar que el tratamiento de datos personales cumpla con la normativa vigente y actuar como punto de contacto ante la Agencia de Protección de Datos.",
+      scoreContribution: false
+    },
+  {
+      id: "q79",
+      text: "¿Los resultados generados por el sistema pueden contener datos personales reales o inferidos?",
+      type: "yesno",
+      dimension: "Protección de datos",
+      stage: "Uso y monitoreo",
+      info: "Los resultados de un sistema de IA generativa pueden incluir datos personales de forma directa (por ejemplo, reproduciendo información de una persona real) o inferida (generando atributos sensibles a partir del contexto, aunque no estuvieran explícitamente en los datos de entrenamiento).",
+      track: "iagen",
+      scoreContribution: false
+    },
+  {
+      id: "q80",
+      text: "¿Se han implementado medidas para prevenir que los resultados del sistema revelen datos personales?",
+      type: "yesno",
+      dimension: "Protección de datos",
+      stage: "Uso y monitoreo",
+      info: "La filtración de datos personales en los resultados ocurre cuando el sistema revela información que no debería ser visible para quien recibe la respuesta, ya sea porque el modelo la memorizó durante el entrenamiento o porque el prompt permitió extraerla. Por ejemplo: filtrado de resultados, redacción automática de datos sensibles, restricciones según perfil de usuario, control de prompts o pruebas de fuga de datos (privacy leakage testing).",
+      track: "iagen",
+      scoreContribution: false
+    },
+  {
+      id: "q81",
+      text: "¿Los datos utilizados para el entrenamiento y prueba del sistema han sido anonimizados o seudonimizados?",
+      type: "yesno",
+      dimension: "Protección de datos",
+      stage: "Uso y monitoreo",
+      info: "La anonimización elimina de forma irreversible los identificadores que permiten reconocer a una persona en los datos. La seudonimización los reemplaza por un código o seudónimo, reduciendo el riesgo de identificación pero permitiendo revertir el proceso bajo condiciones controladas.",
+      track: "iagen",
+      scoreContribution: false
+    },
+  {
+      // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
+      id: "q82",
+      text: "¿Se cuenta con un proceso formal para registrar la procedencia de los datos (data provenance) que garantice la trazabilidad y legitimidad de las fuentes de informacion durante todo su ciclo de vida?",
+      type: "yesno",
+      dimension: "Protección de datos",
+      stage: "Recolección y procesamiento de datos",
+      info: "",
+      scoreContribution: false
+    },
+  {
     id: "q35",
     text: "¿Forma parte su organización de la administración del Estado ( Ministerios, las Delegaciones Presidenciales Regionales y  Provinciales, los Gobiernos Regionales, las Municipalidades, las Fuerzas Armadas, las Fuerzas de Orden y Seguridad Pública, las empresas públicas creadas por ley, y los órganos y servicios públicos creados para el cumplimiento de la función administrativa) o empresa del Estado en que éste tenga participación accionaria superior al 50% o mayoría en el directorio?", 
     type: "yesno",
@@ -549,6 +770,111 @@ const questions: Question[] = [
     score: (answer) => answer === false ? 1.58 : 0
   },
   {
+      // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
+      id: "q83",
+      text: "¿La organización cuenta con un responsable formal de ciberseguridad (CISO o rol equivalente)?",
+      type: "yesno",
+      dimension: "Ciberseguridad",
+      stage: "Conceptualización y diseño",
+      info: "El CISO (Chief Information Security Officer) es la persona responsable de definir, implementar y supervisar la estrategia de ciberseguridad institucional. En organizaciones que no tienen este cargo formalmente, puede corresponder a un rol equivalente con atribuciones similares dentro del área de TI u otra unidad.",
+      scoreContribution: false
+    },
+  {
+      id: "q84",
+      text: "¿El sistema algorítimico forma parte de los activos o servicios críticos de la organización?",
+      type: "yesno",
+      dimension: "Ciberseguridad",
+      stage: "Conceptualización y diseño",
+      info: "Un sistema es crítico si su falla o indisponibilidad afecta la continuidad operacional de la organización, compromete información sensible o impide el ejercicio de derechos fundamentales de las personas.",
+      scoreContribution: false
+    },
+  {
+      id: "q85",
+      text: "¿La organización ha sido designada como operador de importancia vital por la Agencia Nacional de Ciberseguridad?",
+      type: "yesno",
+      dimension: "Ciberseguridad",
+      stage: "Conceptualización y diseño",
+      info: "Los operadores de importancia vital están sujetos a deberes adicionales según la Ley Marco de Ciberseguridad, como la adopción de estándares específicos, certificación de planes de continuidad y reporte obligatorio de incidentes a la ANCI.",
+      scoreContribution: false
+    },
+  {
+      id: "q86",
+      text: "¿Existe alguna regulación sectorial en materia de ciberseguridad aplicable a la organización, además de la Ley Marco?",
+      type: "yesno",
+      dimension: "Ciberseguridad",
+      stage: "Conceptualización y diseño",
+      info: "Por ejemplo: normativas del sector financiero, salud, telecomunicaciones o energía. Algunos sectores tienen exigencias propias en materia de seguridad que se suman a la Ley Marco de Ciberseguridad.",
+      scoreContribution: false
+    },
+  {
+      id: "q87",
+      text: "¿El contrato con el proveedor establece la obligación de notificar incidentes de seguridad dentro de plazos definidos?",
+      type: "yesno",
+      dimension: "Ciberseguridad",
+      stage: "Conceptualización y diseño",
+      info: "",
+      dependsOn: {
+        questionId: "q37.1",
+        value: true
+      },
+      scoreContribution: false
+    },
+  {
+      id: "q88",
+      text: "¿El contrato con el proveedor contempla el derecho de la organización a realizar auditorías o verificaciones de cumplimiento?",
+      type: "yesno",
+      dimension: "Ciberseguridad",
+      stage: "Conceptualización y diseño",
+      info: "",
+      dependsOn: {
+        questionId: "q37.1",
+        value: true
+      },
+      scoreContribution: false
+    },
+  {
+      // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
+      id: "q89",
+      text: "¿El contrato con el proveedor exige notificación previa ante el uso de subproveedores e indica dónde se almacenan los datos?",
+      type: "yesno",
+      dimension: "Ciberseguridad",
+      stage: "Conceptualización y diseño",
+      info: "",
+      dependsOn: {
+        questionId: "q37.1",
+        value: true
+      },
+      scoreContribution: false
+    },
+  {
+      id: "q90",
+      text: "¿Existen planes de continuidad operacional que consideren este sistema?",
+      type: "yesno",
+      dimension: "Ciberseguridad",
+      stage: "Uso y monitoreo",
+      info: "Un plan de continuidad operacional define cómo la organización mantiene o recupera sus servicios ante una falla, ataque o desastre.",
+      scoreContribution: false
+    },
+  {
+      id: "q91",
+      text: "¿Existen protocolos formales para la detección, respuesta y notificación de incidentes de ciberseguridad?",
+      type: "yesno",
+      dimension: "Ciberseguridad",
+      stage: "Uso y monitoreo",
+      info: "Un protocolo de incidentes define qué hacer cuando se detecta una amenaza: quién actúa, en qué orden, a quién se notifica y en qué plazo.",
+      scoreContribution: false
+    },
+  {
+      id: "q92",
+      text: "¿Se han identificado dependencias de proveedores o modelos cuyos términos de uso limiten la transparencia, auditoría o reutilización de los resultados del sistema?",
+      type: "yesno",
+      dimension: "Ciberseguridad",
+      stage: "Conceptualización y diseño",
+      info: "Una dependencia problemática ocurre cuando los términos de uso de un proveedor o modelo impiden auditar cómo funciona el sistema, restringen la reutilización de sus resultados o generan una dependencia estructural que limita el control institucional sobre el sistema.",
+      track: "iagen",
+      scoreContribution: false
+    },
+  {
     id: "q40",
     text: "¿Utiliza el sistema datos que representen algunas de estas características: la raza o etnia, la nacionalidad, la situación socioeconómica, el idioma, la ideología u opinión política, la religión o creencia, la sindicación o participación en organizaciones gremiales o la falta de ellas, el estado civil, la edad, la filiación o información sobre  la enfermedades o discapacidades?. ", 
     type: "yesno",
@@ -597,6 +923,39 @@ const questions: Question[] = [
     scoreContribution: true,
     score: (answer) => answer === true ? 2.22 : 2.22
   },
+  {
+      id: "q93",
+      text: "Dado que el sistema utiliza esta característica, ¿existe una excepción normativa (por ejemplo, una medida de acción afirmativa) que justifique su uso, en lugar de constituir una discriminación arbitraria?",
+      type: "yesno",
+      dimension: "Equidad",
+      stage: "Conceptualización y diseño",
+      info: "La ley permite, en ciertos casos excepcionales, el uso de características como género, edad o situación socioeconómica cuando responde a una medida de acción afirmativa destinada a corregir una desigualdad existente (ej. cupos para grupos históricamente excluidos). Fuera de esos casos, su uso en decisiones automatizadas puede constituir discriminación arbitraria.",
+      dependsOn: {
+        questionId: "q40",
+        value: true
+      },
+      scoreContribution: false
+    },
+  {
+      id: "q94",
+      text: "¿Se han evaluado los outputs del sistema para detectar sesgos o estereotipos en el contenido que genera?",
+      type: "yesno",
+      dimension: "Equidad",
+      stage: "Uso y monitoreo",
+      info: "El sesgo generativo ocurre cuando un modelo reproduce o amplifica estereotipos en sus respuestas, aunque los datos de entrada no los contengan de forma explícita. Por ejemplo, asociar sistemáticamente ciertos roles o atributos a un género, etnia o grupo social determinado.",
+      track: "iagen",
+      scoreContribution: false
+    },
+  {
+      id: "q95",
+      text: "¿Se ha evaluado si el sistema representa de forma equitativa a distintos grupos de personas en los contenidos que genera?",
+      type: "yesno",
+      dimension: "Equidad",
+      stage: "Uso y monitoreo",
+      info: "La representación sesgada ocurre cuando el modelo subrepresenta, distorsiona o invisibiliza a ciertos grupos en sus respuestas, como mujeres, pueblos indígenas, personas mayores o migrantes, aunque no se les haya mencionado explícitamente en la consulta",
+      track: "iagen",
+      scoreContribution: false
+    },
   {
     id: "q45",
     text: "¿Se enmarca el sistema en alguna de las siguientes finalidades: educación, empleo, recursos humanos, servicios básicos, subsidios y ayuda económica, capacitación laboral, salud, seguridad pública, vivienda, protección social, autorizaciones o permisos administrativos?",
@@ -742,6 +1101,47 @@ const questions: Question[] = [
     scoreContribution: true,
     score: (answer) => answer === true ? 1.38 : 1.38
   },
+  {
+      id: "q96",
+      text: "¿Existe un expediente del sistema que centralice las evidencias de cumplimiento, pruebas, aprobaciones y cambios relevantes?",
+      type: "yesno",
+      dimension: "Rendición de cuentas",
+      stage: "Uso y monitoreo",
+      info: "El expediente del sistema es un repositorio centralizado que reúne las evidencias de cumplimiento del proyecto: evaluaciones de impacto, decisiones de diseño, pruebas realizadas, aprobaciones obtenidas, versiones y cambios relevantes. Es el registro que permite demostrar que el sistema fue desarrollado de forma responsable.",
+      scoreContribution: false
+    },
+  {
+      // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
+      id: "q97",
+      text: "¿Se ha establecido un procedimiento técnico o “botón de pánico” (acción correctiva) para suspender temporal o definitivamente la operación del sistema si se detectan impactos adversos graves?",
+      type: "yesno",
+      dimension: "Rendición de cuentas",
+      stage: "Uso y monitoreo",
+      info: "",
+      track: "iagen",
+      scoreContribution: false
+    },
+  {
+      // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
+      id: "q98",
+      text: "¿Existe un plan de respuesta a incidentes documentado que establezca los plazos, autoridades y canales para notificar a las partes afectadas ante un fallo crítico o comportamiento nocivo del algoritmo?",
+      type: "yesno",
+      dimension: "Rendición de cuentas",
+      stage: "Uso y monitoreo",
+      info: "",
+      track: "iagen",
+      scoreContribution: false
+    },
+  {
+      // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
+      id: "q99",
+      text: "¿Se ha elaborado y documentado formalmente un Plan de Tratamiento de Riesgos que asigne una acción concreta (mitigar, aceptar, transferir o evitar) a cada riesgo identificado?",
+      type: "yesno",
+      dimension: "Rendición de cuentas",
+      stage: "Conceptualización y diseño",
+      info: "Un Plan de Tratamiento de Riesgos formaliza la decisión de gestión frente a cada riesgo detectado en la evaluación, indicando si será reducido, aceptado, transferido a un tercero o evitado rediseñando el sistema",
+      scoreContribution: false
+    }
 ];
 
 const recommendations: Recommendation[] = [
