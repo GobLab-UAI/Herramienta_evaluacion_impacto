@@ -235,13 +235,13 @@ Rendición de cuentas,"10,9",Recomendación,Agregar (nuevo),IAGen,,pendiente,
 Rendición de cuentas,10.10,Label,Agregar (nuevo),Universal,q99,implementado,fase3
 Rendición de cuentas,10.10,Tooltip,Agregar (nuevo),Universal,q99,implementado,fase3
 Rendición de cuentas,10.10,Recomendación,Agregar (nuevo),Universal,,pendiente,
-Sostenibilidad,"11,1",Tooltip,Agregar (nuevo),Universal,,pendiente,
-Sostenibilidad,"11,1",Option,Agregar (nuevo),Universal,,pendiente,
+Sostenibilidad,"11,1",Tooltip,Agregar (nuevo),Universal,q100,implementado,fase4
+Sostenibilidad,"11,1",Option,Agregar (nuevo),Universal,q100,implementado,fase4
 Sostenibilidad,"11,1",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Sostenibilidad,"11,2",Label,Agregar (nuevo),Universal,,pendiente,
-Sostenibilidad,"11,2",Tooltip,Agregar (nuevo),Universal,,pendiente,
+Sostenibilidad,"11,2",Label,Agregar (nuevo),Universal,q101,implementado,fase4
+Sostenibilidad,"11,2",Tooltip,Agregar (nuevo),Universal,q101,implementado,fase4
 Sostenibilidad,"11,2",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Sostenibilidad,"11,2",Option,Agregar (nuevo),Universal,,pendiente,
+Sostenibilidad,"11,2",Option,Agregar (nuevo),Universal,q101,implementado,fase4
 Encuesta,1,Option,Agregar (nuevo),Obligatoria,,pendiente,
 Encuesta,2,Pregunta,Agregar (nuevo),Obligatoria,,pendiente,
 Encuesta,2,Option,Agregar (nuevo),Obligatoria,,pendiente,

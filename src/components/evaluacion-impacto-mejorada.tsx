@@ -67,7 +67,8 @@ type Recommendation = {
 
 const dimensions = [
   "General", "Proporcionalidad", "Normativa", "Licencia Social", "Gobernanza",
-  "Protección de datos", "Ciberseguridad", "Equidad", "Transparencia", "Rendición de cuentas"
+  "Protección de datos", "Ciberseguridad", "Equidad", "Transparencia", "Rendición de cuentas",
+  "Sostenibilidad"
 ]
 
 const questions: Question[] = [
@@ -1141,7 +1142,27 @@ const questions: Question[] = [
       stage: "Conceptualización y diseño",
       info: "Un Plan de Tratamiento de Riesgos formaliza la decisión de gestión frente a cada riesgo detectado en la evaluación, indicando si será reducido, aceptado, transferido a un tercero o evitado rediseñando el sistema",
       scoreContribution: false
-    }
+    },
+  {
+    // ENUNCIADO INFERIDO del tooltip (11,1 no trae Label en el documento) — revisar con Isidora
+    id: "q100",
+    text: "¿Se ha estimado el consumo energético y computacional del sistema durante su entrenamiento y operación?",
+    type: "yesno",
+    dimension: "Sostenibilidad",
+    stage: "Uso y monitoreo",
+    info: "Se refiere a la estimación del consumo de recursos energéticos y computacionales generados durante el entrenamiento del modelo y su uso continuo en producción (inferencia). Esto incluye el gasto eléctrico de los servidores o infraestructura en la nube utilizada",
+    scoreContribution: false
+  },
+  {
+    id: "q101",
+    text: "¿El sistema de IA contribuye a algún objetivo de sostenibilidad institucional (por ejemplo, optimización de recursos, reducción de papel o eficiencia energética)?",
+    type: "yesno",
+    dimension: "Sostenibilidad",
+    // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
+    stage: "Uso y monitoreo",
+    info: "",
+    scoreContribution: false
+  }
 ];
 
 const recommendations: Recommendation[] = [
