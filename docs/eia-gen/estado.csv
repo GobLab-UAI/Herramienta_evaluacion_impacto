@@ -242,35 +242,35 @@ Sostenibilidad,"11,2",Label,Agregar (nuevo),Universal,q101,implementado,fase4
 Sostenibilidad,"11,2",Tooltip,Agregar (nuevo),Universal,q101,implementado,fase4
 Sostenibilidad,"11,2",Recomendación,Agregar (nuevo),Universal,,pendiente,
 Sostenibilidad,"11,2",Option,Agregar (nuevo),Universal,q101,implementado,fase4
-Encuesta,1,Option,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,2,Pregunta,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,2,Option,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,2,Tooltip,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,3,Pregunta,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,3,Option,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,3,Tooltip,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,4,Pregunta,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,4,Option,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,4,Tooltip,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,5,Pregunta,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,5,Option,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,5,Tooltip,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,6,Pregunta,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,6,Option,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,6,Tooltip,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,7,Pregunta,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,7,Option,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,7,Tooltip,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,8,Pregunta,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,8,Option,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,8,Tooltip,Agregar (nuevo),Obligatoria,,pendiente,
-Encuesta,9,Pregunta,Agregar (nuevo),No obligatoria,,pendiente,
-Encuesta,9,Tooltip,Agregar (nuevo),No obligatoria,,pendiente,
-Encuesta,9,Option,Agregar (nuevo),No obligatoria,,pendiente,
-Encuesta,9,Placeholder,Agregar (nuevo),No obligatoria,,pendiente,
-Encuesta,10,Pregunta,Agregar (nuevo),No obligatoria,,pendiente,
-Encuesta,10,Option,Agregar (nuevo),No obligatoria,,pendiente,
-Encuesta,10,Placeholder,Agregar (nuevo),No obligatoria,,pendiente,
-Encuesta,11,Pregunta,Agregar (nuevo),No obligatoria,,pendiente,
-Encuesta,11,Option,Agregar (nuevo),No obligatoria,,pendiente,
-Encuesta,11,Tooltip,Agregar (nuevo),No obligatoria,,pendiente,
+Encuesta,1,Option,Agregar (nuevo),Obligatoria,,omitida,fase6
+Encuesta,2,Pregunta,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,2,Option,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,2,Tooltip,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,3,Pregunta,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,3,Option,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,3,Tooltip,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,4,Pregunta,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,4,Option,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,4,Tooltip,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,5,Pregunta,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,5,Option,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,5,Tooltip,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,6,Pregunta,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,6,Option,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,6,Tooltip,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,7,Pregunta,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,7,Option,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,7,Tooltip,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,8,Pregunta,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,8,Option,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,8,Tooltip,Agregar (nuevo),Obligatoria,,implementado,fase6
+Encuesta,9,Pregunta,Agregar (nuevo),No obligatoria,,implementado,fase6
+Encuesta,9,Tooltip,Agregar (nuevo),No obligatoria,,implementado,fase6
+Encuesta,9,Option,Agregar (nuevo),No obligatoria,,implementado,fase6
+Encuesta,9,Placeholder,Agregar (nuevo),No obligatoria,,implementado,fase6
+Encuesta,10,Pregunta,Agregar (nuevo),No obligatoria,,implementado,fase6
+Encuesta,10,Option,Agregar (nuevo),No obligatoria,,implementado,fase6
+Encuesta,10,Placeholder,Agregar (nuevo),No obligatoria,,implementado,fase6
+Encuesta,11,Pregunta,Agregar (nuevo),No obligatoria,,implementado,fase6
+Encuesta,11,Option,Agregar (nuevo),No obligatoria,,implementado,fase6
+Encuesta,11,Tooltip,Agregar (nuevo),No obligatoria,,implementado,fase6

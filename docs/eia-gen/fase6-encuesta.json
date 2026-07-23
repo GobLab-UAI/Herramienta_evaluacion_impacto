@@ -1,0 +1,77 @@
+[
+ {
+  "id": "1",
+  "option": "Texto abierto"
+ },
+ {
+  "id": "2",
+  "pregunta": "En general, ¿qué tan fácil le resultó usar esta herramienta de evaluación de impacto algorítmico?",
+  "cond": "Obligatoria",
+  "option": "Escala 1-7  1 = Muy difícil de usar  7 = Muy fácil de usar",
+  "tooltip": "Evalúe su experiencia global con la plataforma: qué tan intuitiva fue la navegación, si entendió qué se esperaba en cada paso y si pudo completar la evaluación sin mayor dificultad."
+ },
+ {
+  "id": "3",
+  "pregunta": "¿En qué medida la herramienta le indicó claramente qué debía hacer en cada etapa de la evaluación?",
+  "cond": "Obligatoria",
+  "option": "Escala 1-7  1 = Nunca supe qué se esperaba de mí 7 = Siempre tuve claro qué hacer",
+  "tooltip": "Evalúe si la plataforma le orientó en cada paso: si las instrucciones eran claras, si supo cómo avanzar y qué se esperaba de usted antes de pasar a la siguiente sección."
+ },
+ {
+  "id": "4",
+  "pregunta": "¿En qué medida la herramienta facilitó la participación de personas con distintos perfiles (técnicos y no técnicos) dentro de su equipo?",
+  "cond": "Obligatoria",
+  "option": "Escala 1-7  1 = No facilitó la participación en absoluto 7 = Facílito muy bien la colaboración",
+  "tooltip": "Considere si la herramienta permitió que tanto perfiles técnicos (analistas, informáticos) como no técnicos (jefes de servicio, profesionales de gestión) pudieran participar activamente en la evaluación del proyecto."
+ },
+ {
+  "id": "5",
+  "pregunta": "¿En qué medida las preguntas de la herramienta son adecuadas para evaluar el impacto algorítmico un proyecto de IA o ciencia de datos en el contexto de su institución?",
+  "cond": "Obligatoria",
+  "option": "Escala 1-7  1 = Muy inadecuadas 7 = muy adecuadas",
+  "tooltip": "Evalúe si las preguntas abordaron los temas correctos (problema institucional, datos disponibles, ética, etc.) y si le resultaron útiles para pensar en su proyecto específico. ¿Sintió que la herramienta le preguntó lo que realmente importaba?"
+ },
+ {
+  "id": "6",
+  "pregunta": "¿Qué tan claro y comprensible le resultó el lenguaje utilizado en las preguntas de la herramienta?",
+  "cond": "Obligatoria",
+  "option": "Escala 1-7  1 = Muy confuso o técnico  7 = muy claro y comprensible",
+  "tooltip": "Evalúe si las preguntas y sus descripciones estaban escritas en un lenguaje accesible para equipos mixtos (técnicos y no técnicos). ¿Necesitó buscar definiciones o pedir ayuda para entender qué se preguntaba?"
+ },
+ {
+  "id": "7",
+  "pregunta": "¿Qué tan claras y comprensibles le resultaron las recomendaciones entregadas en el documento de la evaluación?",
+  "cond": "Obligatoria",
+  "option": "Escala 1-7  1 = Muy confusa o difíciles de entender  7 = Muy claras y comprensibles",
+  "tooltip": "Al finalizar la evaluación, la herramienta genera automáticamente un conjunto de recomendaciones basadas en sus respuestas. Evalúe si esas recomendaciones fueron fáciles de entender y si su equipo comprendió qué se le estaba sugiriendo mejorar o profundizar."
+ },
+ {
+  "id": "8",
+  "pregunta": "¿Recomendaría esta herramienta a otros equipos de servicios públicos que estén iniciando proyectos de IA o ciencia de datos?",
+  "cond": "Obligatoria",
+  "option": "Si/No",
+  "tooltip": "Considere si la herramienta le aportó valor real en el proceso de formulación: ¿estructuró mejor el proyecto?, ¿facilitó el trabajo del equipo?, ¿lo usaría de nuevo?"
+ },
+ {
+  "id": "9",
+  "pregunta": "¿Considera que hay algún tema o pregunta importante que la herramienta no abordó?",
+  "cond": "No obligatoria",
+  "tooltip": "Piense en los aspectos de su proyecto que no encontraron espacio en ninguna sección de la herramienta. ¿Hubo algo relevante que no pudo documentar?",
+  "option": "Si/No Sí: texto abierto",
+  "placeholder": "En zona de texto abierto: Describa brevemente el tema o pregunta que faltó (ej.: \"No había espacio para describir el presupuesto estimado del proyecto\")."
+ },
+ {
+  "id": "10",
+  "pregunta": "Si desea agregar algún comentario, sugerencia o crítica sobre la herramienta, puede hacerlo aquí.",
+  "cond": "No obligatoria",
+  "option": "Texto abierto",
+  "placeholder": "Este espacio es libre. Puede comentar sobre aspectos positivos, dificultades que encontró, ideas para mejorar la plataforma, o cualquier otra observación que no haya podido expresar en las preguntas anteriores."
+ },
+ {
+  "id": "11",
+  "pregunta": "¿Le interesa recibir información sobre servicios de acompañamiento para la revisión ética y técnica de su proyecto?",
+  "cond": "No obligatoria",
+  "option": "Si/no  si Sí: campos de nombre, apellido y correo electrónico",
+  "tooltip": "GobLab UAI ofrece servicios de consultoría para apoyar la mitigación de riesgos éticos en proyectos de IA en el sector público. Si marca \"Sí\", un profesional del equipo se pondrá en contacto con usted."
+ }
+]

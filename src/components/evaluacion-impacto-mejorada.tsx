@@ -14,8 +14,7 @@ import { I, LogoUAIGobLab } from '@/components/civic-icons'
 import { toast } from '@/hooks/use-toast'
 import { FeedbackPill } from '@/components/FeedbackPill'
 import { QuestionFeedback, FlaggedLabel, type FlagState } from '@/components/QuestionFeedback'
-import { sendFeedback } from '@/lib/feedback'
-import { trackFeedbackSubmit } from '@/lib/analytics'
+import { SatisfactionSurvey } from '@/components/SatisfactionSurvey'
 //import jsPDF from 'jspdf'
 //import * as XLSX from 'xlsx'
 //import html2pdf from 'html2pdf.js'
@@ -1863,11 +1862,6 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   const [totalScore, setTotalScore] = useState(0)
   const [scoreByDimension, setScoreByDimension] = useState<Record<string, number>>({});
   const [activeTab, setActiveTab] = useState<'resumen' | 'recomendaciones' | 'feedback'>('resumen')
-  const [fbRating, setFbRating] = useState(0)
-  const [fbCategory, setFbCategory] = useState('')
-  const [fbNote, setFbNote] = useState('')
-  const [fbSending, setFbSending] = useState(false)
-  const [fbSent, setFbSent] = useState(false)
   // Marcas 👍/👎 por pregunta. Van en su propia clave de localStorage para no
   // tocar el payload de respuestas que alimenta el scoring y el PDF.
   const [flags, setFlags] = useState<Record<string, FlagState>>({})
@@ -2123,30 +2117,6 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
       }
       localStorage.setItem(`evaluationData_${userEmail}`, JSON.stringify(dataToSave))
       toast({ title: 'Evaluación guardada', description: 'Tu progreso quedó guardado en este navegador.' })
-    }
-  }
-
-  const sendToolFeedback = async () => {
-    if (!fbNote.trim()) return
-    setFbSending(true)
-    try {
-      const category = fbCategory || 'Comentario general'
-      await sendFeedback({
-        category,
-        text: fbRating ? `[${fbRating}/5] ${fbNote}` : fbNote,
-        email: userEmail || undefined,
-        context: { pantalla: 'resultados', progreso: progress },
-      })
-      trackFeedbackSubmit(category, 'resultados')
-      setFbSent(true)
-    } catch (err) {
-      toast({
-        variant: 'destructive',
-        title: 'No se pudo enviar',
-        description: err instanceof Error ? err.message : 'Error desconocido',
-      })
-    } finally {
-      setFbSending(false)
     }
   }
 
@@ -2861,114 +2831,26 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
 
           {/* ── Pestaña: Evalúa esta herramienta ── */}
           {activeTab === 'feedback' && (
-            <div className="eia-two-col" style={{ padding: '40px', display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: 28, alignContent: 'start' }}>
-              {fbSent ? (
-                <div style={{ gridColumn: '1/-1', background: T.rosePaper, border: `1px solid ${T.roseLight}`, borderRadius: 16, padding: '48px 40px', textAlign: 'center' }}>
-                  <div style={{ fontSize: 44, marginBottom: 16 }}>🌸</div>
-                  <h2 style={{ fontFamily: SERIF, fontWeight: 500, fontSize: 32, letterSpacing: -0.8, margin: '0 0 12px', color: T.burgundy }}>¡Gracias por tu feedback!</h2>
-                  <p style={{ fontSize: 15, color: T.ink60, maxWidth: 460, margin: '0 auto', lineHeight: 1.6 }}>
-                    Tu opinión nos ayuda a mejorar la herramienta para todos los equipos del sector público.
+            <div style={{ padding: '40px' }}>
+              <SatisfactionSurvey email={userEmail || undefined} progreso={progress} />
+
+              <div className="eia-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, maxWidth: 720, marginTop: 24 }}>
+                <div style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '18px 22px' }}>
+                  <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 1.5, color: T.burgundy, marginBottom: 10 }}>¿QUIERES MÁS?</div>
+                  <p style={{ fontSize: 13, color: T.ink80, margin: '0 0 12px', lineHeight: 1.6 }}>
+                    Si quieres presentar tu caso como <strong>Experiencia Destacada</strong> de uso de IA responsable en el sector público, inscríbete en el piloto.
+                  </p>
+                  <a href="https://algoritmospublicos.cl/quiero_participar" target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: T.burgundy, fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 5, textDecoration: 'none' }}>
+                    algoritmospublicos.cl <I.arrow />
+                  </a>
+                </div>
+                <div style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '18px 22px' }}>
+                  <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 1.5, color: T.burgundy, marginBottom: 8 }}>FINANCIAMIENTO</div>
+                  <p style={{ fontSize: 12, color: T.ink60, margin: 0, lineHeight: 1.6 }}>
+                    Esta investigación es realizada por GobLab UAI con el apoyo de ANID/Subdirección de Investigación Aplicada IT25I0161.
                   </p>
                 </div>
-              ) : (
-                <>
-                  <div>
-                    <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 2, color: T.burgundy, marginBottom: 12 }}>PASO 4 DE 4</div>
-                    <h2 style={{ fontFamily: SERIF, fontWeight: 500, fontSize: 34, letterSpacing: -0.8, margin: '0 0 12px', lineHeight: 1.1 }}>
-                      Evalúa esta<br /><em style={{ color: T.burgundy }}>herramienta</em>.
-                    </h2>
-                    <p style={{ fontSize: 14, color: T.ink60, lineHeight: 1.65, margin: '0 0 28px', maxWidth: 440 }}>
-                      Tu opinión es clave para mejorar la EIA. Cuéntanos cómo fue tu experiencia completando la evaluación.
-                    </p>
-
-                    <div style={{ marginBottom: 20 }}>
-                      <span style={{ fontSize: 12, fontWeight: 600, color: T.ink80, display: 'block', marginBottom: 10 }}>¿Qué tan útil fue la herramienta?</span>
-                      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-                        {[1, 2, 3, 4, 5].map(n => (
-                          <button
-                            key={n}
-                            type="button"
-                            onClick={() => setFbRating(n)}
-                            aria-label={`${n} de 5`}
-                            style={{ width: 46, height: 46, borderRadius: 12, border: `1.5px solid ${fbRating >= n ? T.burgundy : T.roseLight}`, background: fbRating >= n ? T.burgundy : '#fff', color: fbRating >= n ? '#fff' : T.ink60, fontSize: 19, cursor: 'pointer', transition: 'all .15s', fontFamily: 'inherit' }}
-                          >★</button>
-                        ))}
-                        {fbRating > 0 && (
-                          <span style={{ fontSize: 13, color: T.burgundy, fontWeight: 600, marginLeft: 4 }}>
-                            {['', 'Poco útil', 'Algo útil', 'Útil', 'Muy útil', 'Excelente'][fbRating]}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    <div style={{ marginBottom: 16 }}>
-                      <label htmlFor="fb-cat" style={{ fontSize: 12, fontWeight: 600, color: T.ink80, display: 'block', marginBottom: 6 }}>Categoría</label>
-                      <div style={{ position: 'relative' }}>
-                        <select
-                          id="fb-cat"
-                          value={fbCategory}
-                          onChange={e => setFbCategory(e.target.value)}
-                          style={{ ...inputBase, appearance: 'none', WebkitAppearance: 'none', paddingRight: 38, cursor: 'pointer', borderColor: fbCategory ? T.burgundy : T.roseLight, background: fbCategory ? T.rosePaper : '#fff', color: fbCategory ? T.ink : T.ink60 }}
-                        >
-                          <option value="" disabled>Selecciona una categoría…</option>
-                          {['Comentario general', 'Sugerencia de mejora', 'Reporte de error', 'Pregunta', 'Otro'].map(op => (
-                            <option key={op} value={op}>{op}</option>
-                          ))}
-                        </select>
-                        <div style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: T.burgundy }}>
-                          <I.chevron />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div style={{ marginBottom: 20 }}>
-                      <label htmlFor="fb-note" style={{ fontSize: 12, fontWeight: 600, color: T.ink80, display: 'block', marginBottom: 6 }}>
-                        Comentario <span style={{ fontWeight: 400, color: T.ink60 }}>(requerido)</span>
-                      </label>
-                      <textarea
-                        id="fb-note"
-                        value={fbNote}
-                        onChange={e => setFbNote(e.target.value)}
-                        placeholder="Cuéntanos tu experiencia, qué mejorarías o qué encontraste confuso…"
-                        style={{ ...inputBase, minHeight: 100, resize: 'vertical', background: T.rosePaper, borderColor: fbNote ? T.burgundy : T.roseLight }}
-                      />
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={sendToolFeedback}
-                      disabled={!fbNote.trim() || fbSending}
-                      style={{ width: '100%', background: fbNote.trim() ? T.burgundy : T.ink20, color: '#fff', border: 'none', borderRadius: 10, padding: 14, fontSize: 14, fontWeight: 700, cursor: fbNote.trim() && !fbSending ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, fontFamily: 'inherit', transition: 'background .2s' }}
-                    >
-                      {fbSending ? 'Enviando…' : <>Enviar feedback <I.arrow /></>}
-                    </button>
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                    <div style={{ background: T.rosePaper, border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '20px 22px' }}>
-                      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 1.5, color: T.burgundy, marginBottom: 12 }}>POR QUÉ IMPORTA</div>
-                      <p style={{ fontSize: 13, color: T.ink80, margin: 0, lineHeight: 1.65 }}>
-                        La EIA es una herramienta en constante mejora. Cada comentario se analiza para ajustar preguntas, ejemplos y recomendaciones. Tu experiencia construye una mejor herramienta para todos los equipos del sector público.
-                      </p>
-                    </div>
-                    <div style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '20px 22px' }}>
-                      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 1.5, color: T.burgundy, marginBottom: 10 }}>¿QUIERES MÁS?</div>
-                      <p style={{ fontSize: 13, color: T.ink80, margin: '0 0 12px', lineHeight: 1.6 }}>
-                        Si quieres presentar tu caso como <strong>Experiencia Destacada</strong> de uso de IA responsable en el sector público, inscríbete en el piloto.
-                      </p>
-                      <a href="https://algoritmospublicos.cl/quiero_participar" target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: T.burgundy, fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 5, textDecoration: 'none' }}>
-                        algoritmospublicos.cl <I.arrow />
-                      </a>
-                    </div>
-                    <div style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '18px 22px' }}>
-                      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 1.5, color: T.burgundy, marginBottom: 8 }}>FINANCIAMIENTO</div>
-                      <p style={{ fontSize: 12, color: T.ink60, margin: 0, lineHeight: 1.6 }}>
-                        Esta investigación es realizada por GobLab UAI con el apoyo de ANID/Subdirección de Investigación Aplicada IT25I0161.
-                      </p>
-                    </div>
-                  </div>
-                </>
-              )}
+              </div>
             </div>
           )}
 
