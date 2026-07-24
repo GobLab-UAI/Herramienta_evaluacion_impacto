@@ -41,6 +41,15 @@ comment on table public.tool_survey is
 alter table public.tool_survey enable row level security;
 
 -- La herramienta escribe con la anon key; solo se permite insertar.
+--
+-- A propósito NO se crea política de SELECT: la tabla guarda datos de contacto
+-- (p11_nombre / p11_apellido / p11_correo) y no debe poder leerse con la anon
+-- key. Para analizar los resultados usa el panel de Supabase o una service
+-- role key, que no pasan por RLS.
+--
+-- Consecuencia esperada: un SELECT con anon devuelve vacío aunque haya filas.
+-- Para verificar que la escritura funciona sin poder leer:
+--   node scripts/eia-gen/check-supabase.mjs --write
 drop policy if exists "anon puede insertar encuestas" on public.tool_survey;
 create policy "anon puede insertar encuestas"
   on public.tool_survey for insert to anon with check (true);
