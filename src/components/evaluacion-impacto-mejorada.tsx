@@ -365,7 +365,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Licencia Social", 
     stage: "Conceptualización y diseño",
-    info: " ",
+    info: "Los mecanismos de comunicación son iniciativas que informan a las comunidades sobre la existencia, el propósito y el funcionamiento del sistema, como talleres, publicaciones, consultas públicas o materiales explicativos dirigidos a los grupos afectados.",
     scoreContribution: true,
     score: (answer) => answer === false ? 2.77 : 0
     
@@ -705,7 +705,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
-    info: " ",
+    info: "Por ejemplo: ministerios, delegaciones presidenciales, gobiernos regionales, municipalidades, fuerzas armadas, fuerzas de orden y seguridad pública, empresas públicas creadas por ley, u organismos creados para cumplir funciones administrativas del Estado.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.58 : 0
   },
@@ -1007,6 +1007,7 @@ const questions: Question[] = [
     type: "yesnoNA",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
+    info: "El código fuente es el conjunto de instrucciones que define cómo funciona el sistema. Contar con él permite a la organización auditar, modificar o mantener el sistema de forma independiente del desarrollador externo.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.58 : 0
    
@@ -1017,6 +1018,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
+    info: "Un mecanismo de reporte es cualquier canal formal que permite a usuarios o personas afectadas comunicar problemas, errores o impactos no previstos del sistema, como un formulario, una mesa de ayuda o un correo institucional designado.",
     scoreContribution: true,
     score: (answer) => answer === false ? 1.58 : 0
   },
@@ -1097,7 +1099,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Rendición de cuentas",
     stage: "Uso y monitoreo",
-    info: "",
+    info: "La documentación técnica y de gestión incluye registros como minutas, actas, decisiones de diseño, versiones del sistema y evaluaciones realizadas. Resguardarla permite justificar las decisiones del proyecto ante auditorías o fiscalizaciones externas.",
     scoreContribution: true,
     score: (answer) => answer === true ? 1.38 : 1.38
   },

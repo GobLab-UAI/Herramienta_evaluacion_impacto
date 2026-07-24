@@ -1,276 +1,290 @@
-hoja,doc_id,tipo,accion,condicion,qid,estado,commit
-BIF,BIF_Q1,Tooltip,Agregar (nuevo),Universal,qGen,implementado,fase1
-BIF,BIF_Q1,Option,Agregar (nuevo),Universal,qGen,implementado,fase1
-General,"1,1",Tooltip,Modificar,Universal,,pendiente,
-General,"1,2",Label,Mantener,Universal,q2,pendiente,
-General,"1,2",Tooltip,Modificar,Universal,q2,implementado,fase2
-General,"1,3",Label,Mantener,Universal,q3,pendiente,
-General,"1,3",Tooltip,Modificar,Universal,q3,implementado,fase2
-General,"1,4",Label,Modificar,Universal,q4,implementado,fase2
-General,"1,4",Tooltip,Modificar,Universal,q4,implementado,fase2
-General,"1,5",Label,Mantener,Universal,q5,pendiente,
-General,"1,6",Label,Modificar,IAGen,q6,implementado,fase2
-General,"1,6",Tooltip,Modificar,IAGen,q6,implementado,fase2
-General,"1,7",Label,Modificar,Universal,q7,implementado,fase2
-General,"1,7",Tooltip,Mantener,Universal,,pendiente,
-General,"1,8",Label,Agregar (nueva),IAGen,q60,implementado,fase3
-General,"1,8",Tooltip,Agregar (nueva),IAGen,q60,implementado,fase3
-General,"1,9",Label,Agregar (nueva),Universal,q61,implementado,fase3
-General,"1,9",Tooltip,Agregar (nueva),Universal,q61,implementado,fase3
-General,"1,9",Recoemndacion,Agregar (nueva),Universal,,pendiente,
-Proporcionalidad,"2,1",Tooltip,Modificar,Universal,q8,implementado,fase2
-Proporcionalidad,"2,2",Label,Modificar,Universal,q9,implementado,fase2
-Proporcionalidad,"2,3",Label,Modificar,Universal,q10,implementado,fase2
-Proporcionalidad,"2,3",Tooltip,Modificar,Universal,q10,implementado,fase2
-Proporcionalidad,"2,4",Label,Modificar,Universal,q11,implementado,fase2
-Proporcionalidad,"2,4",Tooltip,Modificar,Universal,q11,implementado,fase2
-Proporcionalidad,"2,4",Recomendación,Modificar,Universal,,pendiente,
-Proporcionalidad,"2,5",Label,Agregar (nuevo),Universal,q62,implementado,fase3
-Proporcionalidad,"2,5",Tooltip,Agregar (nuevo),Universal,q62,implementado,fase3
-Proporcionalidad,"2,5",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Proporcionalidad,"2,6",Label,Agregar (nuevo),IAGen,q63,implementado,fase3
-Proporcionalidad,"2,6",Tooltip,Agregar (nuevo),IAGen,q63,implementado,fase3
-Proporcionalidad,"2,6",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Proporcionalidad,"2,7",Label,Agregar (nuevo),Universal,q64,implementado,fase3
-Proporcionalidad,"2,7",Tooltip,Agregar (nuevo),Universal,q64,implementado,fase3
-Proporcionalidad,"2,7",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Proporcionalidad,"2,8",Label,Agregar (nuevo),Universal,q65,implementado,fase3
-Proporcionalidad,"2,8",Tooltip,Agregar (nuevo),Universal,q65,implementado,fase3
-Proporcionalidad,"2,8",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Normativa,"3,1",Tooltip,Modificar,Universal,q13,implementado,fase2
-Normativa,"3,1",Recomendación,Agregar (nueva),Universal,,pendiente,
-Normativa,"3,2",Label,Modificar,Universal,q14,implementado,fase2
-Normativa,"3,2",Tooltip,Modificar,Universal,q14,implementado,fase2
-Normativa,"3,3",Label,Agregar (nueva),IAGen,q66,implementado,fase3
-Normativa,"3,3",Tooltip,Agregar (nueva),IAGen,q66,implementado,fase3
-Normativa,"3,3",Recomendación,Agregar (nueva),IAGen,,pendiente,
-Normativa,"3,4",Label,Agregar (nueva),IAGen,q67,implementado,fase3
-Normativa,"3,4",Tooltip,Agregar (nueva),IAGen,q67,implementado,fase3
-Normativa,"3,4",Recomendación,Agregar (nueva),IAGen,,pendiente,
-Normativa,"3,5",Label,Agregar (nueva),IAGen,q68,implementado,fase3
-Normativa,"3,5",Tooltip,Agregar (nueva),IAGen,q68,implementado,fase3
-Normativa,"3,5",Recomendación,Agregar (nueva),IAGen,,pendiente,
-Normativa,"3,6",Label,Agregar (nueva),IAGen,q69,implementado,fase3
-Normativa,"3,6",Tooltip,Agregar (nueva),IAGen,q69,implementado,fase3
-Normativa,"3,6",Recomendación,Agregar (nueva),IAGen,,pendiente,
-Licencia Social,"4,1",Tooltip,Modificar,Universal,q15,implementado,fase2
-Licencia Social,"4,1",Recomendación,Modificar,Universal,,pendiente,
-Licencia Social,"4,2",Label,Mantener,Universal,q16,pendiente,
-Licencia Social,"4,2",Tooltip,Mantener,Universal,,pendiente,
-Licencia Social,"4,2",Recomendación,Modificar,,,pendiente,
-Licencia Social,"4,3",Label,Modificar,Universal,q17,implementado,fase2
-Licencia Social,"4,3",Tooltip,Agregar (nuevo),Universal,,pendiente,
-Licencia Social,"4,3",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Licencia Social,"4,4",Label,Agregar (nuevo),Universal,q70,implementado,fase3
-Licencia Social,"4,4",Tooltip,Agregar (nuevo),Universal,q70,implementado,fase3
-Licencia Social,"4,4",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Licencia Social,"4,5",Label,Agregar (nuevo),Universal,q71,implementado,fase3
-Licencia Social,"4,5",Tooltip,Agregar (nuevo),Universal,q71,implementado,fase3
-Licencia Social,"4,5",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Gobernanza,"5,1",Tooltip,Modificar,Universal,q19,implementado,fase2
-Gobernanza,"5,1",Recomendación,,,,pendiente,
-Gobernanza,"5,2",Label,Modificar,Universal,q20,implementado,fase2
-Gobernanza,"5,2",Tooltip,Modificar,Universal,q20,implementado,fase2
-Gobernanza,"5,2",Recomendación,,,,pendiente,
-Gobernanza,"5,3",Label,Mantener,Universal,q21,pendiente,
-Gobernanza,"5,3",Tooltip,Modificar,Universal,q21,implementado,fase2
-Gobernanza,"5,3",Recomendación,,,,pendiente,
-Gobernanza,"5,4",Label,Modificar,Universal,q22,implementado,fase2
-Gobernanza,"5,4",Tooltip,Modificar,Universal,q22,implementado,fase2
-Gobernanza,"5,4",Recomendación,Modificar,,,pendiente,
-Gobernanza,"5,5",Label,Modificar,Universal,q23,implementado,fase2
-Gobernanza,"5,5",Tooltip,Modificar,Universal,q23,implementado,fase2
-Gobernanza,"5,5",Recomendación,Modificar,Universal,,pendiente,
-Protección de datos,"6,1",Tooltip,Modificar,Universal,q24,implementado,fase2
-Protección de datos,"6,2",Label,Modificar,Universal,q27,implementado,fase2
-Protección de datos,"6,2",Tooltip,Modificar,Universal,q27,implementado,fase2
-Protección de datos,"6,3",Label,Modificar,Universal,q28,implementado,fase2
-Protección de datos,"6,3",Tooltip,Modificar,Universal,q28,implementado,fase2
-Protección de datos,"6,4",Label,Modificar,Universal,q28.1,implementado,fase2
-Protección de datos,"6,4",Recomendación,Modificar,Universal,,pendiente,
-Protección de datos,"6,5",Label,Mantener,Universal,q29,pendiente,
-Protección de datos,"6,5",Tooltip,Modificar,Universal,q29,implementado,fase2
-Protección de datos,"6,5",Tooltip,Modificar,Universal,q29,implementado,fase2
-Protección de datos,"6,6",Label,Modificar,Universal,q31,implementado,fase2
-Protección de datos,"6,6",Tooltip,Modificar,Universal,q31,implementado,fase2
-Protección de datos,"6,6",Recomendación,Modificar,Universal,,pendiente,
-Protección de datos,"6,7",Label,Modificar,Universal,q32,implementado,fase2
-Protección de datos,"6,7",Tooltip,Modificar,Universal,q32,implementado,fase2
-Protección de datos,"6,7",Recomendación,Modificar,Universal,,pendiente,
-Protección de datos,"6,7",Option,Modificar,Universal,,pendiente,
-Protección de datos,"6,8",Label,Modificar,Universal,q33,implementado,fase2
-Protección de datos,"6,8",Recomendación,Modificar,Universal,,pendiente,
-Protección de datos,"6,8",Tooltip,Modificar,Universal,q33,implementado,fase2
-Protección de datos,"6,9",Label,Modificar,Universal,q34,implementado,fase2
-Protección de datos,"6,9",Tooltip,Modificar,Universal,q34,implementado,fase2
-Protección de datos,"6,9",Recomendación,Modificar,Universal,,pendiente,
-Protección de datos,6.10,Label,Agregar (nuevo),Universal,q72,implementado,fase3
-Protección de datos,6.10,Tooltip,Agregar (nuevo),Universal,q72,implementado,fase3
-Protección de datos,6.10,Recomendación,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,11",Label,Agregar (nuevo),Universal,q73,implementado,fase3
-Protección de datos,"6,11",Tooltip,Agregar (nuevo),Universal,q73,implementado,fase3
-Protección de datos,"6,11",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,12",Label,Agregar (nuevo),Universal,q74,implementado,fase3
-Protección de datos,"6,12",Tooltip,Agregar (nuevo),Universal,q74,implementado,fase3
-Protección de datos,"6,12",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,13",Label,Agregar (nuevo),Universal,q75,implementado,fase3
-Protección de datos,"6,13",Tooltip,Agregar (nuevo),Universal,q75,implementado,fase3
-Protección de datos,"6,13",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,14",Label,Agregar (nuevo),Universal,q76,implementado,fase3
-Protección de datos,"6,14",Tooltip,Agregar (nuevo),Universal,q76,implementado,fase3
-Protección de datos,"6,14",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,15",Label,Agregar (nuevo),Universal,q77,implementado,fase3
-Protección de datos,"6,15",Tooltip,Agregar (nuevo),Universal,q77,implementado,fase3
-Protección de datos,"6,15",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,16",Label,Agregar (nuevo),Universal,q78,implementado,fase3
-Protección de datos,"6,16",Tooltip,Agregar (nuevo),Universal,q78,implementado,fase3
-Protección de datos,"6,16",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Protección de datos,"6,17",Label,Agregar (nuevo),IAGen,q79,implementado,fase3
-Protección de datos,"6,17",Tooltip,Agregar (nuevo),IAGen,q79,implementado,fase3
-Protección de datos,"6,17",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Protección de datos,"6,18",Label,Agregar (nuevo),IAGen,q80,implementado,fase3
-Protección de datos,"6,18",Tooltip,Agregar (nuevo),IAGen,q80,implementado,fase3
-Protección de datos,"6,18",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Protección de datos,"6,19",Label,Agregar (nuevo),IAGen,q81,implementado,fase3
-Protección de datos,"6,19",Tooltip,Agregar (nuevo),IAGen,q81,implementado,fase3
-Protección de datos,"6,19",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Protección de datos,6.20,Label,Agregar (nuevo),Universal,q82,implementado,fase3
-Protección de datos,6.20,Recomendación,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,1",Tooltip,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,2",Label,Modificar,Universal,q36,implementado,fase2
-Ciberseguridad,"7,2",Tooltip,Modificar,Universal,q36,implementado,fase2
-Ciberseguridad,"7,2",Recomendación,Modificar,Universal,,pendiente,
-Ciberseguridad,"7,3",Label,Agregar (nuevo),Universal,q83,implementado,fase3
-Ciberseguridad,"7,3",Tooltip,Agregar (nuevo),Universal,q83,implementado,fase3
-Ciberseguridad,"7,3",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,4",Label,Modificar,Universal,q37,implementado,fase2
-Ciberseguridad,"7,4",Recomendación,Modificar,Universal,,pendiente,
-Ciberseguridad,"7,5",Label,Mantener,Universal,q37.1,pendiente,
-Ciberseguridad,"7,5",Recomendación,Modificar,Universal,,pendiente,
-Ciberseguridad,"7,12",Label condicionado,Agregar (nuevo),Universal,q87,implementado,fase3
-Ciberseguridad,"7,12",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,13",Label condicionado,Agregar (nuevo),Universal,q88,implementado,fase3
-Ciberseguridad,"7,13",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,14",Label condicionado,Agregar (nuevo),Universal,q89,implementado,fase3
-Ciberseguridad,"7,14",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,6",Label,Modificar,Universal,q38,implementado,fase2
-Ciberseguridad,"7,6",Recomendación,Modificar,Universal,,pendiente,
-Ciberseguridad,"7,7",Label,Modificar,IAGen,q39,implementado,fase2
-Ciberseguridad,"7,7",Recomendación,Modificar,IAGen,,pendiente,
-Ciberseguridad,"7,8",Label,Modificar,Universal,q39.1,implementado,fase2
-Ciberseguridad,"7,8",Recomendación,Modificar,Universal,,pendiente,
-Ciberseguridad,"7,9",Label,Agregar (nuevo),Universal,q84,implementado,fase3
-Ciberseguridad,"7,9",Tooltip,Agregar (nuevo),Universal,q84,implementado,fase3
-Ciberseguridad,7.10,Label,Agregar (nuevo),Universal,q85,implementado,fase3
-Ciberseguridad,7.10,Tooltip,Agregar (nuevo),Universal,q85,implementado,fase3
-Ciberseguridad,7.10,Recomendación,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,11",Label,Agregar (nuevo),Universal,q86,implementado,fase3
-Ciberseguridad,"7,11",Tooltip,Agregar (nuevo),Universal,q86,implementado,fase3
-Ciberseguridad,"7,11",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,16",Label,Agregar (nuevo),Universal,q90,implementado,fase3
-Ciberseguridad,"7,16",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Ciberseguridad,"7,16",Tooltip,Agregar (nuevo),Universal,q90,implementado,fase3
-Ciberseguridad,"7,17",Label,Agregar (nuevo),Universal,q91,implementado,fase3
-Ciberseguridad,"7,17",Tooltip,Agregar (nuevo),Universal,q91,implementado,fase3
-Ciberseguridad,"7,18",Label,Agregar (nuevo),IAGen,q92,implementado,fase3
-Ciberseguridad,"7,18",Tooltip,Agregar (nuevo),IAGen,q92,implementado,fase3
-Ciberseguridad,"7,18",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Equidad,"8,1",Tooltip,Modificar,Universal,q40,implementado,fase2
-Equidad,"8,2",Label condicionado,Agregar (nuevo),Universal,q93,implementado,fase3
-Equidad,"8,2",Tooltip,Agregar (nuevo),Universal,q93,implementado,fase3
-Equidad,"8,2",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Equidad,"8,3",Label,Modificar,Universal,q42,implementado,fase2
-Equidad,"8,3",Tooltip,Modificar,Universal,q42,implementado,fase2
-Equidad,"8,4",Label,Mantener,Universal,q43,pendiente,
-Equidad,"8,4",Tooltip,Modificar,Universal,q43,implementado,fase2
-Equidad,"8,5",Label,Modificar,Universal,q44,implementado,fase2
-Equidad,"8,5",Tooltip,Modificar,Universal,q44,implementado,fase2
-Equidad,"8,6",Label,Agregar (nuevo),IAGen,q94,implementado,fase3
-Equidad,"8,6",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Equidad,"8,6",Tooltip,Agregar (nuevo),IAGen,q94,implementado,fase3
-Equidad,"8,7",Label,Agregar (nuevo),IAGen,q95,implementado,fase3
-Equidad,"8,7",Tooltip,Agregar (nuevo),IAGen,q95,implementado,fase3
-Equidad,"8,7",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Transparencia,"9,1",Tooltip,Modificar,Universal,q45,implementado,fase2
-Transparencia,"9,1",Recomendación,Modificar,Universal,,pendiente,
-Transparencia,"9,2",Label,Modificar,Universal,q47,implementado,fase2
-Transparencia,"9,2",Tooltip,Modificar,Universal,q47,implementado,fase2
-Transparencia,"9,2",Recomendación,Modificar,Universal,,pendiente,
-Transparencia,"9,3",Label,Modificar,Universal,q48,implementado,fase2
-Transparencia,"9,3",Tooltip,Modificar,Universal,q48,implementado,fase2
-Transparencia,"9,3",Recomendación,Modificar,Universal,,pendiente,
-Transparencia,"9,4",Label,Mantener,Universal,q49,pendiente,
-Transparencia,"9,4",Tooltip,Modificar,Universal,q49,implementado,fase2
-Transparencia,"9,4",Recomendación,Modificar,Universal,,pendiente,
-Transparencia,"9,5",Label condicionado,Modificar,Universal,q50,implementado,fase2
-Transparencia,"9,5",Tooltip,Agregar (nuevo),Universal,,pendiente,
-Transparencia,"9,5",Recomendación,Modificar,Universal,,pendiente,
-Transparencia,"9,6",Label,Modificar,Universal,q51,implementado,fase2
-Transparencia,"9,6",Tooltip,Agregar (nuevo),Universal,,pendiente,
-Transparencia,"9,6",Recomendación,Modificar,Universal,,pendiente,
-Rendición de cuentas,"10,1",Tooltip,Mantener,Universal,,pendiente,
-Rendición de cuentas,"10,2",Label,Modificar,Universal,q53,implementado,fase2
-Rendición de cuentas,"10,2",Tooltip,Modificar,Universal,q53,implementado,fase2
-Rendición de cuentas,"10,2",Recomendación,Modificar,Universal,,pendiente,
-Rendición de cuentas,"10,3",Label,Modificar,Universal,q54,implementado,fase2
-Rendición de cuentas,"10,3",Tooltip,Modificar,Universal,q54,implementado,fase2
-Rendición de cuentas,"10,3",Recomendación,Modificar,Universal,,pendiente,
-Rendición de cuentas,"10,4",Label,Eliminar,Universal,q55,implementado,fase2
-Rendición de cuentas,"10,4",Label,Mantener,Universal,q55,pendiente,
-Rendición de cuentas,"10,4",Tooltip,Modificar,Universal,q56,implementado,fase2
-Rendición de cuentas,"10,4",Recomendación,Modificar,Universal,,pendiente,
-Rendición de cuentas,"10,5",Label,Modificar,Universal,q58,implementado,fase2
-Rendición de cuentas,"10,5",Tooltip,Modificar,Universal,q58,implementado,fase2
-Rendición de cuentas,"10,5",Recomendación,,,,pendiente,
-Rendición de cuentas,"10,6",Label,Modificar,Universal,q59,implementado,fase2
-Rendición de cuentas,"10,6",Tooltip,Agregar (nuevo),Universal,,pendiente,
-Rendición de cuentas,"10,6",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Rendición de cuentas,"10,7",Label,Agregar (nuevo),Universal,q96,implementado,fase3
-Rendición de cuentas,"10,7",Tooltip,Agregar (nuevo),Universal,q96,implementado,fase3
-Rendición de cuentas,"10,7",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Rendición de cuentas,"10,8",Label,Agregar (nuevo),IAGen,q97,implementado,fase3
-Rendición de cuentas,"10,8",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Rendición de cuentas,"10,9",Label,Agregar (nuevo),IAGen,q98,implementado,fase3
-Rendición de cuentas,"10,9",Recomendación,Agregar (nuevo),IAGen,,pendiente,
-Rendición de cuentas,10.10,Label,Agregar (nuevo),Universal,q99,implementado,fase3
-Rendición de cuentas,10.10,Tooltip,Agregar (nuevo),Universal,q99,implementado,fase3
-Rendición de cuentas,10.10,Recomendación,Agregar (nuevo),Universal,,pendiente,
-Sostenibilidad,"11,1",Tooltip,Agregar (nuevo),Universal,q100,implementado,fase4
-Sostenibilidad,"11,1",Option,Agregar (nuevo),Universal,q100,implementado,fase4
-Sostenibilidad,"11,1",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Sostenibilidad,"11,2",Label,Agregar (nuevo),Universal,q101,implementado,fase4
-Sostenibilidad,"11,2",Tooltip,Agregar (nuevo),Universal,q101,implementado,fase4
-Sostenibilidad,"11,2",Recomendación,Agregar (nuevo),Universal,,pendiente,
-Sostenibilidad,"11,2",Option,Agregar (nuevo),Universal,q101,implementado,fase4
-Encuesta,1,Option,Agregar (nuevo),Obligatoria,,omitida,fase6
-Encuesta,2,Pregunta,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,2,Option,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,2,Tooltip,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,3,Pregunta,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,3,Option,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,3,Tooltip,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,4,Pregunta,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,4,Option,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,4,Tooltip,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,5,Pregunta,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,5,Option,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,5,Tooltip,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,6,Pregunta,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,6,Option,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,6,Tooltip,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,7,Pregunta,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,7,Option,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,7,Tooltip,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,8,Pregunta,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,8,Option,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,8,Tooltip,Agregar (nuevo),Obligatoria,,implementado,fase6
-Encuesta,9,Pregunta,Agregar (nuevo),No obligatoria,,implementado,fase6
-Encuesta,9,Tooltip,Agregar (nuevo),No obligatoria,,implementado,fase6
-Encuesta,9,Option,Agregar (nuevo),No obligatoria,,implementado,fase6
-Encuesta,9,Placeholder,Agregar (nuevo),No obligatoria,,implementado,fase6
-Encuesta,10,Pregunta,Agregar (nuevo),No obligatoria,,implementado,fase6
-Encuesta,10,Option,Agregar (nuevo),No obligatoria,,implementado,fase6
-Encuesta,10,Placeholder,Agregar (nuevo),No obligatoria,,implementado,fase6
-Encuesta,11,Pregunta,Agregar (nuevo),No obligatoria,,implementado,fase6
-Encuesta,11,Option,Agregar (nuevo),No obligatoria,,implementado,fase6
-Encuesta,11,Tooltip,Agregar (nuevo),No obligatoria,,implementado,fase6
+hoja,doc_id,tipo,accion,estado
+Bifurcación (BIF),BIF_Q1,Label,Agregar (nuevo),Implementado
+Bifurcación (BIF),BIF_Q1,Tooltip,Agregar (nuevo),Implementado
+Bifurcación (BIF),BIF_Q1,Option,Agregar (nuevo),Implementado
+1. General,"1,1",Label,Mantener,Implementado
+1. General,"1,1",Tooltip,Modificar,Implementado
+1. General,"1,2",Label,Mantener,Implementado
+1. General,"1,2",Tooltip,Modificar,Implementado
+1. General,"1,3",Label,Mantener,Implementado
+1. General,"1,3",Tooltip,Modificar,Implementado
+1. General,"1,4",Label,Modificar,Implementado
+1. General,"1,4",Tooltip,Modificar,Implementado
+1. General,"1,5",Label,Mantener,Implementado
+1. General,"1,6",Label,Modificar,Implementado
+1. General,"1,6",Tooltip,Modificar,Implementado
+1. General,"1,7",Label,Modificar,Implementado
+1. General,"1,7",Tooltip,Mantener,Implementado
+1. General,"1,8",Label,Agregar (nueva),Implementado
+1. General,"1,8",Tooltip,Agregar (nueva),Implementado
+1. General,"1,9",Label,Agregar (nueva),Implementado
+1. General,"1,9",Tooltip,Agregar (nueva),Implementado
+1. General,"1,9",Recoemndacion,Agregar (nueva),Implementado
+2. Proporcionalidad,"2,1",Label,Modificar,Implementado
+2. Proporcionalidad,"2,1",Tooltip,Modificar,Implementado
+2. Proporcionalidad,"2,2",Label,Modificar,Implementado
+2. Proporcionalidad,"2,3",Label,Modificar,Implementado
+2. Proporcionalidad,"2,3",Tooltip,Modificar,Implementado
+2. Proporcionalidad,"2,4",Label,Modificar,Implementado
+2. Proporcionalidad,"2,4",Tooltip,Modificar,Implementado
+2. Proporcionalidad,"2,4",Recomendación,Modificar,Por implementar
+2. Proporcionalidad,"2,5",Label,Agregar (nuevo),Implementado
+2. Proporcionalidad,"2,5",Tooltip,Agregar (nuevo),Implementado
+2. Proporcionalidad,"2,5",Recomendación,Agregar (nuevo),Por implementar
+2. Proporcionalidad,"2,6",Label,Agregar (nuevo),Implementado
+2. Proporcionalidad,"2,6",Tooltip,Agregar (nuevo),Implementado
+2. Proporcionalidad,"2,6",Recomendación,Agregar (nuevo),Por implementar
+2. Proporcionalidad,"2,7",Label,Agregar (nuevo),Implementado
+2. Proporcionalidad,"2,7",Tooltip,Agregar (nuevo),Implementado
+2. Proporcionalidad,"2,7",Recomendación,Agregar (nuevo),Por implementar
+2. Proporcionalidad,"2,8",Label,Agregar (nuevo),Implementado
+2. Proporcionalidad,"2,8",Tooltip,Agregar (nuevo),Implementado
+2. Proporcionalidad,"2,8",Recomendación,Agregar (nuevo),Por implementar
+3. Normativa,"3,1",Label,Modificar,Implementado
+3. Normativa,"3,1",Tooltip,Modificar,Implementado
+3. Normativa,"3,1",Recomendación,Agregar (nueva),Por implementar
+3. Normativa,"3,2",Label,Modificar,Implementado
+3. Normativa,"3,2",Tooltip,Modificar,Implementado
+3. Normativa,"3,3",Label,Agregar (nueva),Implementado
+3. Normativa,"3,3",Tooltip,Agregar (nueva),Implementado
+3. Normativa,"3,3",Recomendación,Agregar (nueva),Por implementar
+3. Normativa,"3,4",Label,Agregar (nueva),Implementado
+3. Normativa,"3,4",Tooltip,Agregar (nueva),Implementado
+3. Normativa,"3,4",Recomendación,Agregar (nueva),Por implementar
+3. Normativa,"3,5",Label,Agregar (nueva),Implementado
+3. Normativa,"3,5",Tooltip,Agregar (nueva),Implementado
+3. Normativa,"3,5",Recomendación,Agregar (nueva),Por implementar
+3. Normativa,"3,6",Label,Agregar (nueva),Implementado
+3. Normativa,"3,6",Tooltip,Agregar (nueva),Implementado
+3. Normativa,"3,6",Recomendación,Agregar (nueva),Por implementar
+4. Licencia Social,"4,1",Label,Modificar,Implementado
+4. Licencia Social,"4,1",Tooltip,Modificar,Implementado
+4. Licencia Social,"4,1",Recomendación,Modificar,Por implementar
+4. Licencia Social,"4,2",Label,Mantener,Implementado
+4. Licencia Social,"4,2",Tooltip,Mantener,Implementado
+4. Licencia Social,"4,2",Recomendación,Modificar,Por implementar
+4. Licencia Social,"4,3",Label,Modificar,Implementado
+4. Licencia Social,"4,3",Tooltip,Agregar (nuevo),Implementado
+4. Licencia Social,"4,3",Recomendación,Agregar (nuevo),Por implementar
+4. Licencia Social,"4,4",Label,Agregar (nuevo),Implementado
+4. Licencia Social,"4,4",Tooltip,Agregar (nuevo),Implementado
+4. Licencia Social,"4,4",Recomendación,Agregar (nuevo),Por implementar
+4. Licencia Social,"4,5",Label,Agregar (nuevo),Implementado
+4. Licencia Social,"4,5",Tooltip,Agregar (nuevo),Implementado
+4. Licencia Social,"4,5",Recomendación,Agregar (nuevo),Por implementar
+5. Gobernanza,"5,1",Label,Mantener,Implementado
+5. Gobernanza,"5,1",Tooltip,Modificar,Implementado
+5. Gobernanza,"5,1",Recomendación,,Por implementar
+5. Gobernanza,"5,2",Label,Modificar,Implementado
+5. Gobernanza,"5,2",Tooltip,Modificar,Implementado
+5. Gobernanza,"5,2",Recomendación,,Por implementar
+5. Gobernanza,"5,3",Label,Mantener,Implementado
+5. Gobernanza,"5,3",Tooltip,Modificar,Implementado
+5. Gobernanza,"5,3",Recomendación,,Por implementar
+5. Gobernanza,"5,4",Label,Modificar,Implementado
+5. Gobernanza,"5,4",Tooltip,Modificar,Implementado
+5. Gobernanza,"5,4",Recomendación,Modificar,Por implementar
+5. Gobernanza,"5,5",Label,Modificar,Implementado
+5. Gobernanza,"5,5",Tooltip,Modificar,Implementado
+5. Gobernanza,"5,5",Recomendación,Modificar,Por implementar
+6. Protección de datos,"6,1",Label,Mantener,Implementado
+6. Protección de datos,"6,1",Tooltip,Modificar,Implementado
+6. Protección de datos,"6,2",Label,Modificar,Implementado
+6. Protección de datos,"6,2",Tooltip,Modificar,Implementado
+6. Protección de datos,"6,3",Label,Modificar,Implementado
+6. Protección de datos,"6,3",Tooltip,Modificar,Implementado
+6. Protección de datos,"6,4",Label,Modificar,Implementado
+6. Protección de datos,"6,4",Recomendación,Modificar,Por implementar
+6. Protección de datos,"6,5",Label,Mantener,Implementado
+6. Protección de datos,"6,5",Tooltip,Modificar,Implementado
+6. Protección de datos,"6,5",Tooltip,Modificar,Implementado
+6. Protección de datos,"6,6",Label,Modificar,Implementado
+6. Protección de datos,"6,6",Tooltip,Modificar,Implementado
+6. Protección de datos,"6,6",Recomendación,Modificar,Por implementar
+6. Protección de datos,"6,7",Label,Modificar,Implementado
+6. Protección de datos,"6,7",Tooltip,Modificar,Implementado
+6. Protección de datos,"6,7",Recomendación,Modificar,Por implementar
+6. Protección de datos,"6,7",Option,Modificar,Implementado
+6. Protección de datos,"6,8",Label,Modificar,Implementado
+6. Protección de datos,"6,8",Recomendación,Modificar,Por implementar
+6. Protección de datos,"6,8",Tooltip,Modificar,Implementado
+6. Protección de datos,"6,9",Label,Modificar,Implementado
+6. Protección de datos,"6,9",Tooltip,Modificar,Implementado
+6. Protección de datos,"6,9",Recomendación,Modificar,Por implementar
+6. Protección de datos,6.10,Label,Agregar (nuevo),Implementado
+6. Protección de datos,6.10,Tooltip,Agregar (nuevo),Implementado
+6. Protección de datos,6.10,Recomendación,Agregar (nuevo),Por implementar
+6. Protección de datos,"6,11",Label,Agregar (nuevo),Implementado
+6. Protección de datos,"6,11",Tooltip,Agregar (nuevo),Implementado
+6. Protección de datos,"6,11",Recomendación,Agregar (nuevo),Por implementar
+6. Protección de datos,"6,12",Label,Agregar (nuevo),Implementado
+6. Protección de datos,"6,12",Tooltip,Agregar (nuevo),Implementado
+6. Protección de datos,"6,12",Recomendación,Agregar (nuevo),Por implementar
+6. Protección de datos,"6,13",Label,Agregar (nuevo),Implementado
+6. Protección de datos,"6,13",Tooltip,Agregar (nuevo),Implementado
+6. Protección de datos,"6,13",Recomendación,Agregar (nuevo),Por implementar
+6. Protección de datos,"6,14",Label,Agregar (nuevo),Implementado
+6. Protección de datos,"6,14",Tooltip,Agregar (nuevo),Implementado
+6. Protección de datos,"6,14",Recomendación,Agregar (nuevo),Por implementar
+6. Protección de datos,"6,15",Label,Agregar (nuevo),Implementado
+6. Protección de datos,"6,15",Tooltip,Agregar (nuevo),Implementado
+6. Protección de datos,"6,15",Recomendación,Agregar (nuevo),Por implementar
+6. Protección de datos,"6,16",Label,Agregar (nuevo),Implementado
+6. Protección de datos,"6,16",Tooltip,Agregar (nuevo),Implementado
+6. Protección de datos,"6,16",Recomendación,Agregar (nuevo),Por implementar
+6. Protección de datos,"6,17",Label,Agregar (nuevo),Implementado
+6. Protección de datos,"6,17",Tooltip,Agregar (nuevo),Implementado
+6. Protección de datos,"6,17",Recomendación,Agregar (nuevo),Por implementar
+6. Protección de datos,"6,18",Label,Agregar (nuevo),Implementado
+6. Protección de datos,"6,18",Tooltip,Agregar (nuevo),Implementado
+6. Protección de datos,"6,18",Recomendación,Agregar (nuevo),Por implementar
+6. Protección de datos,"6,19",Label,Agregar (nuevo),Implementado
+6. Protección de datos,"6,19",Tooltip,Agregar (nuevo),Implementado
+6. Protección de datos,"6,19",Recomendación,Agregar (nuevo),Por implementar
+6. Protección de datos,6.20,Label,Agregar (nuevo),Implementado
+6. Protección de datos,6.20,Recomendación,Agregar (nuevo),Por implementar
+7. Ciberseguridad,"7,1",Label,Modificar,Implementado
+7. Ciberseguridad,"7,1",Tooltip,Agregar (nuevo),Implementado
+7. Ciberseguridad,"7,2",Label,Modificar,Implementado
+7. Ciberseguridad,"7,2",Tooltip,Modificar,Implementado
+7. Ciberseguridad,"7,2",Recomendación,Modificar,Por implementar
+7. Ciberseguridad,"7,3",Label,Agregar (nuevo),Implementado
+7. Ciberseguridad,"7,3",Tooltip,Agregar (nuevo),Implementado
+7. Ciberseguridad,"7,3",Recomendación,Agregar (nuevo),Por implementar
+7. Ciberseguridad,"7,4",Label,Modificar,Implementado
+7. Ciberseguridad,"7,4",Recomendación,Modificar,Por implementar
+7. Ciberseguridad,"7,5",Label,Mantener,Implementado
+7. Ciberseguridad,"7,5",Recomendación,Modificar,Por implementar
+7. Ciberseguridad,"7,12",Label condicionado,Agregar (nuevo),Implementado
+7. Ciberseguridad,"7,12",Recomendación,Agregar (nuevo),Por implementar
+7. Ciberseguridad,"7,13",Label condicionado,Agregar (nuevo),Implementado
+7. Ciberseguridad,"7,13",Recomendación,Agregar (nuevo),Por implementar
+7. Ciberseguridad,"7,14",Label condicionado,Agregar (nuevo),Implementado
+7. Ciberseguridad,"7,14",Recomendación,Agregar (nuevo),Por implementar
+7. Ciberseguridad,"7,6",Label,Modificar,Implementado
+7. Ciberseguridad,"7,6",Recomendación,Modificar,Por implementar
+7. Ciberseguridad,"7,7",Label,Modificar,Implementado
+7. Ciberseguridad,"7,7",Recomendación,Modificar,Por implementar
+7. Ciberseguridad,"7,8",Label,Modificar,Implementado
+7. Ciberseguridad,"7,8",Recomendación,Modificar,Por implementar
+7. Ciberseguridad,"7,9",Label,Agregar (nuevo),Implementado
+7. Ciberseguridad,,Recomendación,Agregar (nuevo),Por implementar
+7. Ciberseguridad,"7,9",Tooltip,Agregar (nuevo),Implementado
+7. Ciberseguridad,7.10,Label,Agregar (nuevo),Implementado
+7. Ciberseguridad,7.10,Tooltip,Agregar (nuevo),Implementado
+7. Ciberseguridad,7.10,Recomendación,Agregar (nuevo),Por implementar
+7. Ciberseguridad,"7,11",Label,Agregar (nuevo),Implementado
+7. Ciberseguridad,"7,11",Tooltip,Agregar (nuevo),Implementado
+7. Ciberseguridad,"7,11",Recomendación,Agregar (nuevo),Por implementar
+7. Ciberseguridad,"7,16",Label,Agregar (nuevo),Implementado
+7. Ciberseguridad,"7,16",Recomendación,Agregar (nuevo),Por implementar
+7. Ciberseguridad,"7,16",Tooltip,Agregar (nuevo),Implementado
+7. Ciberseguridad,"7,17",Label,Agregar (nuevo),Implementado
+7. Ciberseguridad,"7,17",Tooltip,Agregar (nuevo),Implementado
+7. Ciberseguridad,"7,18",Label,Agregar (nuevo),Implementado
+7. Ciberseguridad,"7,18",Tooltip,Agregar (nuevo),Implementado
+7. Ciberseguridad,"7,18",Recomendación,Agregar (nuevo),Por implementar
+8. Equidad,"8,1",Label,Modificar,Implementado
+8. Equidad,"8,1",Tooltip,Modificar,Implementado
+8. Equidad,"8,2",Label condicionado,Agregar (nuevo),Implementado
+8. Equidad,"8,2",Tooltip,Agregar (nuevo),Implementado
+8. Equidad,"8,2",Recomendación,Agregar (nuevo),Por implementar
+8. Equidad,"8,3",Label,Modificar,Implementado
+8. Equidad,"8,3",Tooltip,Modificar,Implementado
+8. Equidad,"8,4",Label,Mantener,Implementado
+8. Equidad,"8,4",Tooltip,Modificar,Implementado
+8. Equidad,"8,5",Label,Modificar,Implementado
+8. Equidad,"8,5",Tooltip,Modificar,Implementado
+8. Equidad,"8,6",Label,Agregar (nuevo),Implementado
+8. Equidad,"8,6",Recomendación,Agregar (nuevo),Por implementar
+8. Equidad,"8,6",Tooltip,Agregar (nuevo),Implementado
+8. Equidad,"8,7",Label,Agregar (nuevo),Implementado
+8. Equidad,"8,7",Tooltip,Agregar (nuevo),Implementado
+8. Equidad,"8,7",Recomendación,Agregar (nuevo),Por implementar
+9. Transparencia,"9,1",Label,Modificar,Implementado
+9. Transparencia,"9,1",Tooltip,Modificar,Implementado
+9. Transparencia,"9,1",Recomendación,Modificar,Por implementar
+9. Transparencia,"9,2",Label,Modificar,Implementado
+9. Transparencia,"9,2",Tooltip,Modificar,Implementado
+9. Transparencia,"9,2",Recomendación,Modificar,Por implementar
+9. Transparencia,"9,3",Label,Modificar,Implementado
+9. Transparencia,"9,3",Tooltip,Modificar,Implementado
+9. Transparencia,"9,3",Recomendación,Modificar,Por implementar
+9. Transparencia,"9,4",Label,Mantener,Implementado
+9. Transparencia,"9,4",Tooltip,Modificar,Implementado
+9. Transparencia,"9,4",Recomendación,Modificar,Por implementar
+9. Transparencia,"9,5",Label condicionado,Modificar,Implementado
+9. Transparencia,"9,5",Tooltip,Agregar (nuevo),Implementado
+9. Transparencia,"9,5",Recomendación,Modificar,Por implementar
+9. Transparencia,"9,6",Label,Modificar,Implementado
+9. Transparencia,"9,6",Tooltip,Agregar (nuevo),Implementado
+9. Transparencia,"9,6",Recomendación,Modificar,Por implementar
+10. Rendición de cuentas,"10,1",Label,Modificar,Implementado
+10. Rendición de cuentas,"10,1",Tooltip,Mantener,Implementado
+10. Rendición de cuentas,"10,2",Label,Modificar,Implementado
+10. Rendición de cuentas,"10,2",Tooltip,Modificar,Implementado
+10. Rendición de cuentas,"10,2",Recomendación,Modificar,Por implementar
+10. Rendición de cuentas,"10,3",Label,Modificar,Implementado
+10. Rendición de cuentas,"10,3",Tooltip,Modificar,Implementado
+10. Rendición de cuentas,"10,3",Recomendación,Modificar,Por implementar
+10. Rendición de cuentas,"10,4",Label,Eliminar,Implementado
+10. Rendición de cuentas,"10,4",Label,Mantener,Implementado
+10. Rendición de cuentas,"10,4",Tooltip,Modificar,Implementado
+10. Rendición de cuentas,"10,4",Recomendación,Modificar,Por implementar
+10. Rendición de cuentas,"10,5",Label,Modificar,Implementado
+10. Rendición de cuentas,"10,5",Tooltip,Modificar,Implementado
+10. Rendición de cuentas,"10,5",Recomendación,,Por implementar
+10. Rendición de cuentas,"10,6",Label,Modificar,Implementado
+10. Rendición de cuentas,"10,6",Tooltip,Agregar (nuevo),Implementado
+10. Rendición de cuentas,"10,6",Recomendación,Agregar (nuevo),Por implementar
+10. Rendición de cuentas,"10,7",Label,Agregar (nuevo),Implementado
+10. Rendición de cuentas,"10,7",Tooltip,Agregar (nuevo),Implementado
+10. Rendición de cuentas,"10,7",Recomendación,Agregar (nuevo),Por implementar
+10. Rendición de cuentas,"10,8",Label,Agregar (nuevo),Implementado
+10. Rendición de cuentas,"10,8",Recomendación,Agregar (nuevo),Por implementar
+10. Rendición de cuentas,"10,9",Label,Agregar (nuevo),Implementado
+10. Rendición de cuentas,"10,9",Recomendación,Agregar (nuevo),Por implementar
+10. Rendición de cuentas,10.10,Label,Agregar (nuevo),Implementado
+10. Rendición de cuentas,10.10,Tooltip,Agregar (nuevo),Implementado
+10. Rendición de cuentas,10.10,Recomendación,Agregar (nuevo),Por implementar
+11. Sostenibilidad ambiental,"11,1",Label,Agregar (nuevo),Implementado
+11. Sostenibilidad ambiental,"11,1",Tooltip,Agregar (nuevo),Implementado
+11. Sostenibilidad ambiental,"11,1",Option,Agregar (nuevo),Implementado
+11. Sostenibilidad ambiental,"11,1",Recomendación,Agregar (nuevo),Por implementar
+11. Sostenibilidad ambiental,"11,2",Label,Agregar (nuevo),Implementado
+11. Sostenibilidad ambiental,"11,2",Tooltip,Agregar (nuevo),Implementado
+11. Sostenibilidad ambiental,"11,2",Recomendación,Agregar (nuevo),Por implementar
+11. Sostenibilidad ambiental,"11,2",Option,Agregar (nuevo),Implementado
+Encuesta de satisfacción,1,Pregunta,Agregar (nuevo),Pendiente
+Encuesta de satisfacción,1,Option,Agregar (nuevo),Pendiente
+Encuesta de satisfacción,2,Pregunta,Agregar (nuevo),Implementado
+Encuesta de satisfacción,2,Option,Agregar (nuevo),Implementado
+Encuesta de satisfacción,2,Tooltip,Agregar (nuevo),Implementado
+Encuesta de satisfacción,3,Pregunta,Agregar (nuevo),Implementado
+Encuesta de satisfacción,3,Option,Agregar (nuevo),Implementado
+Encuesta de satisfacción,3,Tooltip,Agregar (nuevo),Implementado
+Encuesta de satisfacción,4,Pregunta,Agregar (nuevo),Implementado
+Encuesta de satisfacción,4,Option,Agregar (nuevo),Implementado
+Encuesta de satisfacción,4,Tooltip,Agregar (nuevo),Implementado
+Encuesta de satisfacción,5,Pregunta,Agregar (nuevo),Implementado
+Encuesta de satisfacción,5,Option,Agregar (nuevo),Implementado
+Encuesta de satisfacción,5,Tooltip,Agregar (nuevo),Implementado
+Encuesta de satisfacción,6,Pregunta,Agregar (nuevo),Implementado
+Encuesta de satisfacción,6,Option,Agregar (nuevo),Implementado
+Encuesta de satisfacción,6,Tooltip,Agregar (nuevo),Implementado
+Encuesta de satisfacción,7,Pregunta,Agregar (nuevo),Implementado
+Encuesta de satisfacción,7,Option,Agregar (nuevo),Implementado
+Encuesta de satisfacción,7,Tooltip,Agregar (nuevo),Implementado
+Encuesta de satisfacción,8,Pregunta,Agregar (nuevo),Implementado
+Encuesta de satisfacción,8,Option,Agregar (nuevo),Implementado
+Encuesta de satisfacción,8,Tooltip,Agregar (nuevo),Implementado
+Encuesta de satisfacción,9,Pregunta,Agregar (nuevo),Implementado
+Encuesta de satisfacción,9,Tooltip,Agregar (nuevo),Implementado
+Encuesta de satisfacción,9,Option,Agregar (nuevo),Implementado
+Encuesta de satisfacción,9,Placeholder,Agregar (nuevo),Implementado
+Encuesta de satisfacción,10,Pregunta,Agregar (nuevo),Implementado
+Encuesta de satisfacción,10,Option,Agregar (nuevo),Implementado
+Encuesta de satisfacción,10,Placeholder,Agregar (nuevo),Implementado
+Encuesta de satisfacción,11,Pregunta,Agregar (nuevo),Implementado
+Encuesta de satisfacción,11,Option,Agregar (nuevo),Implementado
+Encuesta de satisfacción,11,Tooltip,Agregar (nuevo),Implementado

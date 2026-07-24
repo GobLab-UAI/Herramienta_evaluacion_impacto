@@ -1,275 +1,315 @@
-Implementado (fase1)
-Implementado (fase1)
+### Bifurcación (BIF)  (3 filas)
+Implementado
+Implementado
+Implementado
+
+### 1. General  (18 filas)
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+
+### 2. Proporcionalidad  (20 filas)
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+
+### 3. Normativa  (17 filas)
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+
+### 4. Licencia Social  (15 filas)
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+
+### 5. Gobernanza  (15 filas)
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+
+### 6. Protección de datos  (56 filas)
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Por implementar
+
+### 7. Ciberseguridad  (41 filas)
+Implementado
+Implementado
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Por implementar
+Implementado
+Por implementar
+Implementado
+Por implementar
+Implementado
+Por implementar
+Implementado
+Por implementar
+Implementado
+Por implementar
+Implementado
+Por implementar
+Implementado
+Por implementar
+Implementado
+Por implementar
+Implementado
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Por implementar
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Por implementar
+
+### 8. Equidad  (17 filas)
+Implementado
+Implementado
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Implementado
+Por implementar
+
+### 9. Transparencia  (18 filas)
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+
+### 10. Rendición de cuentas  (28 filas)
+Implementado
+Implementado
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+Por implementar
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+
+### 11. Sostenibilidad ambiental  (8 filas)
+Implementado
+Implementado
+Implementado
+Por implementar
+Implementado
+Implementado
+Por implementar
+Implementado
+
+### Encuesta de satisfacción  (33 filas)
+Pendiente
+Pendiente
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
+Implementado
 
-
-Implementado (fase2)
-
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase2)
-
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase2)
-
-Implementado (fase3)
-Implementado (fase3)
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase2)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase2)
-
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase2)
-
-
-
-
-Implementado (fase2)
-
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase2)
-
-Implementado (fase2)
-Implementado (fase2)
-
-
-Implementado (fase2)
-
-Implementado (fase2)
-Implementado (fase2)
-
-Implementado (fase2)
-Implementado (fase2)
-
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase2)
-
-
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase2)
-
-Implementado (fase2)
-Implementado (fase2)
-
-
-Implementado (fase2)
-
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase2)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-
-
-Implementado (fase2)
-Implementado (fase2)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase2)
-
-
-
-Implementado (fase3)
-
-Implementado (fase3)
-
-Implementado (fase3)
-
-Implementado (fase2)
-
-Implementado (fase2)
-
-Implementado (fase2)
-
-Implementado (fase3)
-Implementado (fase3)
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-Implementado (fase3)
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase2)
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase2)
-Implementado (fase2)
-
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase2)
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase2)
-
-Implementado (fase2)
-Implementado (fase2)
-
-Implementado (fase2)
-Implementado (fase2)
-
-
-Implementado (fase2)
-
-Implementado (fase2)
-
-
-Implementado (fase2)
-
-
-
-Implementado (fase2)
-Implementado (fase2)
-
-Implementado (fase2)
-Implementado (fase2)
-
-Implementado (fase2)
-
-Implementado (fase2)
-
-Implementado (fase2)
-Implementado (fase2)
-
-Implementado (fase2)
-
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase3)
-
-Implementado (fase3)
-
-Implementado (fase3)
-Implementado (fase3)
-
-Implementado (fase4)
-Implementado (fase4)
-
-Implementado (fase4)
-Implementado (fase4)
-
-Implementado (fase4)
-Omitida (sin enunciado)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
-Implementado (fase6)
