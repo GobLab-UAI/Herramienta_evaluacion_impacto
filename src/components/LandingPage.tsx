@@ -20,7 +20,7 @@ const DIMS = [
   { n: '08', title: 'Equidad' },
   { n: '09', title: 'Transparencia' },
   { n: '10', title: 'Rendición · de cuentas' },
-  { n: '11', title: 'Sostenibilidad' },
+  { n: '11', title: 'Sostenibilidad · ambiental' },
 ]
 
 function LogoHerramientas({ scale = 0.7 }: { scale?: number }) {

@@ -67,7 +67,7 @@ type Recommendation = {
 const dimensions = [
   "General", "Proporcionalidad", "Normativa", "Licencia Social", "Gobernanza",
   "Protección de datos", "Ciberseguridad", "Equidad", "Transparencia", "Rendición de cuentas",
-  "Sostenibilidad"
+  "Sostenibilidad ambiental"
 ]
 
 const questions: Question[] = [
@@ -1147,7 +1147,7 @@ const questions: Question[] = [
     id: "q100",
     text: "¿Se ha estimado el consumo energético y computacional del sistema durante su entrenamiento y operación?",
     type: "yesno",
-    dimension: "Sostenibilidad",
+    dimension: "Sostenibilidad ambiental",
     stage: "Uso y monitoreo",
     info: "Se refiere a la estimación del consumo de recursos energéticos y computacionales generados durante el entrenamiento del modelo y su uso continuo en producción (inferencia). Esto incluye el gasto eléctrico de los servidores o infraestructura en la nube utilizada",
     scoreContribution: false
@@ -1156,7 +1156,7 @@ const questions: Question[] = [
     id: "q101",
     text: "¿El sistema de IA contribuye a algún objetivo de sostenibilidad institucional (por ejemplo, optimización de recursos, reducción de papel o eficiencia energética)?",
     type: "yesno",
-    dimension: "Sostenibilidad",
+    dimension: "Sostenibilidad ambiental",
     // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
     stage: "Uso y monitoreo",
     info: "",
