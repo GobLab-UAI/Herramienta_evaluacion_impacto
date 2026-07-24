@@ -16,7 +16,14 @@ import { SURVEY, type SurveyItem } from '@/data/survey'
 
 type Answers = Record<string, string>
 
-export function SatisfactionSurvey({ email, progreso }: { email?: string; progreso: number }) {
+export function SatisfactionSurvey({ email, progreso, onSent, embedded = false }: {
+  email?: string
+  progreso: number
+  /** Se dispara tras un envío exitoso (para marcarla como respondida). */
+  onSent?: () => void
+  /** true dentro del modal: omite el encabezado y el ancho máximo propios. */
+  embedded?: boolean
+}) {
   const [ans, setAns] = useState<Answers>({})
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
@@ -57,6 +64,7 @@ export function SatisfactionSurvey({ email, progreso }: { email?: string; progre
       })
       trackFeedbackSubmit('encuesta', 'resultados')
       setSent(true)
+      onSent?.()
     } catch (err) {
       toast({
         variant: 'destructive',
@@ -81,14 +89,18 @@ export function SatisfactionSurvey({ email, progreso }: { email?: string; progre
   }
 
   return (
-    <div style={{ gridColumn: '1/-1', maxWidth: 720 }}>
-      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 2, color: T.burgundy, marginBottom: 12 }}>PASO 4 DE 4</div>
-      <h2 style={{ fontFamily: 'var(--font-fraunces), Georgia, serif', fontWeight: 500, fontSize: 34, letterSpacing: -0.8, margin: '0 0 12px', lineHeight: 1.1 }}>
-        Evalúa esta<br /><em style={{ color: T.burgundy }}>herramienta</em>.
-      </h2>
-      <p style={{ fontSize: 14, color: T.ink60, lineHeight: 1.65, margin: '0 0 28px', maxWidth: 520 }}>
-        Tu opinión es clave para mejorar la EIA. Toma menos de dos minutos.
-      </p>
+    <div style={embedded ? undefined : { gridColumn: '1/-1', maxWidth: 720 }}>
+      {!embedded && (
+        <>
+          <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 2, color: T.burgundy, marginBottom: 12 }}>PASO 4 DE 4</div>
+          <h2 style={{ fontFamily: 'var(--font-fraunces), Georgia, serif', fontWeight: 500, fontSize: 34, letterSpacing: -0.8, margin: '0 0 12px', lineHeight: 1.1 }}>
+            Evalúa esta<br /><em style={{ color: T.burgundy }}>herramienta</em>.
+          </h2>
+          <p style={{ fontSize: 14, color: T.ink60, lineHeight: 1.65, margin: '0 0 28px', maxWidth: 520 }}>
+            Tu opinión es clave para mejorar la EIA. Toma menos de dos minutos.
+          </p>
+        </>
+      )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
         {SURVEY.map(q => <Question key={q.id} q={q} ans={ans} set={set} />)}

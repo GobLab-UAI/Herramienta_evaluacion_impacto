@@ -1864,6 +1864,9 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
   const [totalScore, setTotalScore] = useState(0)
   const [scoreByDimension, setScoreByDimension] = useState<Record<string, number>>({});
   const [activeTab, setActiveTab] = useState<'resumen' | 'recomendaciones' | 'feedback'>('resumen')
+  // La encuesta se pide una sola vez, al primer intento de descargar el PDF.
+  const [surveySent, setSurveySent] = useState(false)
+  const [surveyModal, setSurveyModal] = useState(false)
   // Marcas 👍/👎 por pregunta. Van en su propia clave de localStorage para no
   // tocar el payload de respuestas que alimenta el scoring y el PDF.
   const [flags, setFlags] = useState<Record<string, FlagState>>({})
@@ -1952,6 +1955,8 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
       } catch {
         // Marcas corruptas: se ignoran, no deben impedir usar la herramienta.
       }
+
+      if (localStorage.getItem(`surveySent_${userEmail}`) === '1') setSurveySent(true)
     }
   }, [userEmail, router])
 
@@ -2308,6 +2313,31 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
     return <div>Loading...</div>
   }
   
+  /**
+   * Descarga del informe. La primera vez intercepta el clic para pedir la
+   * encuesta de satisfacción; una vez respondida (o si se omite), descarga.
+   * Nunca bloquea: omitir el popup también descarga el PDF.
+   */
+  const handleExportClick = () => {
+    if (!surveySent) {
+      setActiveTab('feedback')
+      setSurveyModal(true)
+      return
+    }
+    exportToPDF()
+  }
+
+  const marcarEncuestaEnviada = () => {
+    setSurveySent(true)
+    if (userEmail) localStorage.setItem(`surveySent_${userEmail}`, '1')
+  }
+
+  const cerrarEncuestaYDescargar = () => {
+    setSurveyModal(false)
+    // Pequeño respiro para que el modal se desmonte antes de generar el PDF.
+    setTimeout(() => exportToPDF(), 150)
+  }
+
   const exportToPDF = () => {
     trackToolExport('pdf')
     if (tableRef.current) {
@@ -2740,7 +2770,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                   <div style={{ fontSize: 13, color: T.ink60 }}>PDF con diagnóstico completo, nivel de impacto y recomendaciones por etapa.</div>
                 </div>
                 <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                  <button onClick={exportToPDF} style={{ ...solidBtn, padding: '12px 26px', fontSize: 14 }}>
+                  <button onClick={handleExportClick} style={{ ...solidBtn, padding: '12px 26px', fontSize: 14 }}>
                     <I.download /> Descargar informe PDF
                   </button>
                   <button onClick={() => setShowResults(false)} style={{ ...ghostBtn, padding: '12px 20px', fontSize: 14 }}>
@@ -2824,7 +2854,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
               })}
 
               <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 4, paddingBottom: 16 }}>
-                <button onClick={exportToPDF} style={{ ...solidBtn, padding: '13px 30px', fontSize: 14 }}>
+                <button onClick={handleExportClick} style={{ ...solidBtn, padding: '13px 30px', fontSize: 14 }}>
                   <I.download /> Descargar informe PDF completo
                 </button>
               </div>
@@ -2834,7 +2864,11 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
           {/* ── Pestaña: Evalúa esta herramienta ── */}
           {activeTab === 'feedback' && (
             <div style={{ padding: '40px' }}>
-              <SatisfactionSurvey email={userEmail || undefined} progreso={progress} />
+              <SatisfactionSurvey
+                email={userEmail || undefined}
+                progreso={progress}
+                onSent={marcarEncuestaEnviada}
+              />
 
               <div className="eia-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, maxWidth: 720, marginTop: 24 }}>
                 <div style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '18px 22px' }}>
@@ -3033,6 +3067,58 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
             }
         }
       />
+
+      {/* Encuesta al primer intento de descarga. Omitirla también descarga. */}
+      {surveyModal && (
+        <div
+          style={{ position: 'fixed', inset: 0, background: 'rgba(10,10,10,.45)', zIndex: 120, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: 20, overflowY: 'auto' }}
+          onClick={cerrarEncuestaYDescargar}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{ background: '#fff', borderRadius: 16, padding: '26px 28px', width: '100%', maxWidth: 640, margin: 'auto', boxShadow: '0 24px 64px rgba(0,0,0,.2)' }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 16 }}>
+              <div>
+                <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 2, color: T.burgundy, marginBottom: 8 }}>ANTES DE DESCARGAR</div>
+                <h2 style={{ fontFamily: SERIF, fontWeight: 500, fontSize: 26, letterSpacing: -0.6, margin: '0 0 8px', lineHeight: 1.15 }}>
+                  Evalúa esta <em style={{ color: T.burgundy }}>herramienta</em>.
+                </h2>
+                <p style={{ fontSize: 13, color: T.ink60, lineHeight: 1.6, margin: 0 }}>
+                  Tu opinión es clave para mejorar la EIA. Toma menos de dos minutos y solo te la pedimos esta vez.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={cerrarEncuestaYDescargar}
+                aria-label="Omitir y descargar"
+                style={{ width: 26, height: 26, borderRadius: 99, border: `1px solid ${T.roseLight}`, background: '#fff', color: T.ink60, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}
+              >
+                <I.close width={13} height={13} />
+              </button>
+            </div>
+
+            <SatisfactionSurvey
+              embedded
+              email={userEmail || undefined}
+              progreso={progress}
+              onSent={() => {
+                marcarEncuestaEnviada()
+                // Cierra y descarga tras mostrar brevemente el agradecimiento.
+                setTimeout(cerrarEncuestaYDescargar, 1400)
+              }}
+            />
+
+            <button
+              type="button"
+              onClick={cerrarEncuestaYDescargar}
+              style={{ marginTop: 16, background: 'none', border: 'none', color: T.ink60, fontSize: 12.5, cursor: 'pointer', fontFamily: 'inherit', textDecoration: 'underline' }}
+            >
+              Omitir y descargar el informe
+            </button>
+          </div>
+        </div>
+      )}
 
       <style jsx>{`
         @media (max-width: 560px) {
