@@ -68,12 +68,41 @@ export async function sendFeedback(opts: {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       feedback_type: opts.category,
+      // El contexto va incrustado en el texto (legible en la tabla) y además
+      // como objeto, para que la API lo guarde en columnas consultables.
       description: buildDescription(opts.text, opts.context),
       email: opts.email || 'anonimo@goblab.cl',
       organization: opts.organization || '',
+      context: opts.context ?? null,
     }),
   })
 
   const data = await res.json().catch(() => ({ success: false, error: 'Respuesta inválida' }))
   if (!data.success) throw new Error(data.error || 'No se pudo enviar el feedback')
+}
+
+/**
+ * Envía la encuesta de satisfacción a `tool_survey`, con una columna por
+ * pregunta. `texto` es la versión legible que la API usa como respaldo si la
+ * tabla todavía no existe.
+ */
+export async function sendSurvey(opts: {
+  respuestas: Record<string, string>
+  texto: string
+  email?: string
+  progreso?: number
+}): Promise<void> {
+  const res = await fetch('/api/survey', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      respuestas: opts.respuestas,
+      texto: opts.texto,
+      email: opts.email || null,
+      progreso: opts.progreso,
+    }),
+  })
+
+  const data = await res.json().catch(() => ({ success: false, error: 'Respuesta inválida' }))
+  if (!data.success) throw new Error(data.error || 'No se pudo enviar la encuesta')
 }

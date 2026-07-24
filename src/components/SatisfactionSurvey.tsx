@@ -10,7 +10,7 @@ import { useState } from 'react'
 import { toast } from '@/hooks/use-toast'
 import { T, MONO, inputBase } from '@/lib/civic'
 import { I } from '@/components/civic-icons'
-import { sendFeedback, FEEDBACK_TYPES } from '@/lib/feedback'
+import { sendSurvey } from '@/lib/feedback'
 import { trackFeedbackSubmit } from '@/lib/analytics'
 import { SURVEY, type SurveyItem } from '@/data/survey'
 
@@ -56,11 +56,11 @@ export function SatisfactionSurvey({ email, progreso, onSent, embedded = false }
         }
         return []
       })
-      await sendFeedback({
-        category: FEEDBACK_TYPES.comentario,
-        text: `ENCUESTA DE SATISFACCIÓN\n${lineas.join('\n')}`,
+      await sendSurvey({
+        respuestas: ans,
+        texto: `ENCUESTA DE SATISFACCIÓN\n${lineas.join('\n')}`,
         email,
-        context: { pantalla: 'encuesta', progreso },
+        progreso,
       })
       trackFeedbackSubmit('encuesta', 'resultados')
       setSent(true)
