@@ -2466,8 +2466,8 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
           {/* Sidebar de dimensiones */}
           <aside className="eia-aside" style={{ background: '#fff', borderRight: `1px solid ${T.roseLight}`, position: 'sticky', top: 0, alignSelf: 'start', maxHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             <div style={{ padding: '14px 14px 10px', borderBottom: `1px solid ${T.roseLight}` }}>
-              <div style={{ fontSize: 10, fontFamily: MONO, letterSpacing: 1, color: T.ink60, marginBottom: 4 }}>SISTEMA EN EVALUACIÓN</div>
-              <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1.3 }}>{projectName}</div>
+              <div style={{ fontSize: 11, fontFamily: MONO, letterSpacing: 1, color: T.ink60, marginBottom: 4 }}>SISTEMA EN EVALUACIÓN</div>
+              <div style={{ fontSize: 14.5, fontWeight: 600, lineHeight: 1.35 }}>{projectName}</div>
             </div>
             <nav style={{ flex: 1, overflow: 'auto', padding: 8 }}>
               {dimensions.map((dim, i) => {
@@ -2486,22 +2486,22 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                     }}
                   >
                     <span style={{
-                      width: 22, height: 22, borderRadius: 99, flexShrink: 0, display: 'flex',
-                      alignItems: 'center', justifyContent: 'center', fontSize: 9, fontWeight: 700,
+                      width: 25, height: 25, borderRadius: 99, flexShrink: 0, display: 'flex',
+                      alignItems: 'center', justifyContent: 'center', fontSize: 10.5, fontWeight: 700,
                       fontFamily: MONO, transition: 'all .15s',
                       background: active || done ? T.rose : 'transparent',
                       color: active || done ? '#fff' : T.ink40,
                       border: !active && !done ? `1.5px solid ${T.ink20}` : 'none',
-                    }}>{done ? <I.check width={11} height={11} /> : String(i + 1).padStart(2, '0')}</span>
-                    <span style={{ flex: 1, fontSize: 12, fontWeight: active ? 600 : 400, lineHeight: 1.3 }}>{dim}</span>
-                    <span style={{ fontSize: 10, fontFamily: MONO, color: active ? T.roseLight : T.ink40 }}>
+                    }}>{done ? <I.check width={13} height={13} /> : String(i + 1).padStart(2, '0')}</span>
+                    <span style={{ flex: 1, fontSize: 14, fontWeight: active ? 600 : 400, lineHeight: 1.35 }}>{dim}</span>
+                    <span style={{ fontSize: 11.5, fontFamily: MONO, color: active ? T.roseLight : T.ink40 }}>
                       {dimensionProgress(dim)}%
                     </span>
                   </button>
                 )
               })}
             </nav>
-            <div style={{ padding: '12px 14px', borderTop: `1px solid ${T.roseLight}`, fontSize: 11, color: T.ink60, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div style={{ padding: '12px 14px', borderTop: `1px solid ${T.roseLight}`, fontSize: 12.5, color: T.ink60, display: 'flex', alignItems: 'center', gap: 6 }}>
               <span style={{ color: T.burgundy, display: 'inline-flex' }}><I.lock /></span> Auto-guardado local
             </div>
           </aside>
@@ -2670,7 +2670,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
             <div className="eia-two-col" style={{ padding: '28px 40px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18, alignContent: 'start' }}>
 
               <div style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '20px 22px' }}>
-                <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 10 }}>Perfil por dimensión</div>
+                <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 10 }}>Perfil por dimensión</div>
                 <svg viewBox="0 0 380 340" style={{ width: '100%', height: 260 }}>
                   {(() => {
                     const CX = 190, CY = 165, R = 118, n = dimensions.length
@@ -2697,7 +2697,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                           const a = (i / n) * Math.PI * 2 - Math.PI / 2
                           const r = R + 22
                           return (
-                            <text key={i} x={CX + Math.cos(a) * r} y={CY + Math.sin(a) * r} textAnchor="middle" dominantBaseline="middle" fill={T.ink60} fontFamily={MONO} fontSize="9" fontWeight="600">
+                            <text key={i} x={CX + Math.cos(a) * r} y={CY + Math.sin(a) * r} textAnchor="middle" dominantBaseline="middle" fill={T.ink60} fontFamily={MONO} fontSize="11" fontWeight="600">
                               {String(i + 1).padStart(2, '0')}
                             </text>
                           )
@@ -2709,15 +2709,15 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
               </div>
 
               <div style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '20px 22px' }}>
-                <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 12 }}>Puntaje por dimensión</div>
+                <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>Puntaje por dimensión</div>
                 {normalized.map((d, i) => (
-                  <div key={d.dim} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '7px 0', borderBottom: i < normalized.length - 1 ? `1px dashed ${T.roseLight}` : 'none' }}>
-                    <span style={{ fontFamily: MONO, fontSize: 10, color: T.burgundy, width: 20, flexShrink: 0 }}>{String(i + 1).padStart(2, '0')}</span>
-                    <span style={{ flex: 1, fontSize: 13, fontWeight: 500, minWidth: 0 }}>{d.dim}</span>
-                    <div style={{ width: 70, height: 5, background: T.paperDeep, borderRadius: 3, overflow: 'hidden', flexShrink: 0 }}>
+                  <div key={d.dim} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 0', borderBottom: i < normalized.length - 1 ? `1px dashed ${T.roseLight}` : 'none' }}>
+                    <span style={{ fontFamily: MONO, fontSize: 11.5, color: T.burgundy, width: 22, flexShrink: 0 }}>{String(i + 1).padStart(2, '0')}</span>
+                    <span style={{ flex: 1, fontSize: 14.5, fontWeight: 500, minWidth: 0 }}>{d.dim}</span>
+                    <div style={{ width: 70, height: 6, background: T.paperDeep, borderRadius: 3, overflow: 'hidden', flexShrink: 0 }}>
                       <div style={{ width: `${d.pct}%`, height: '100%', background: d.pct > 60 ? T.burgundy : T.rose, transition: 'width .5s' }} />
                     </div>
-                    <span style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, color: d.pct > 60 ? T.burgundy : T.rose, width: 26, textAlign: 'right', flexShrink: 0 }}>{d.pct}</span>
+                    <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 700, color: d.pct > 60 ? T.burgundy : T.rose, width: 28, textAlign: 'right', flexShrink: 0 }}>{d.pct}</span>
                   </div>
                 ))}
               </div>
@@ -2726,13 +2726,13 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
               <div style={{ gridColumn: '1/-1', background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '22px 26px', display: 'flex', gap: 28, alignItems: 'center', flexWrap: 'wrap' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
                   <Thermometer score={totalScore} minScore={18.32} maxScore={100} dimensions={scoreByDimension} />
-                  <div style={{ fontSize: 13, marginTop: 8, color: T.ink60 }}>
+                  <div style={{ fontSize: 14.5, marginTop: 8, color: T.ink60 }}>
                     Puntuación total: <strong style={{ color: T.burgundy }}>{totalScore.toFixed(2)}%</strong>
                   </div>
                 </div>
                 <div style={{ flex: 1, minWidth: 260 }}>
                   <div style={{ fontFamily: SERIF, fontSize: 22, color: impactColor, marginBottom: 10 }}>{impactLevel}</div>
-                  <p style={{ fontSize: 13, color: T.ink80, lineHeight: 1.65, margin: '0 0 12px' }}>
+                  <p style={{ fontSize: 14.5, color: T.ink80, lineHeight: 1.65, margin: '0 0 12px' }}>
                     Un nivel de impacto alto o muy alto <strong>NO</strong> implica que el proyecto deba descartarse, sino que es importante analizar con mayor <strong>profundidad</strong> las áreas identificadas. La evaluación señala aspectos que aún no están suficientemente considerados, lo que representa oportunidades para <strong>fortalecer tu proyecto</strong> y minimizar posibles riesgos.
                   </p>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -2742,10 +2742,10 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                       ['Alto impacto', '45,55 – 72,77%', T.rose],
                       ['Impacto muy alto', '72,78 – 100%', T.burgundy],
                     ] as const).map(([label, range, color]) => (
-                      <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 12, color: label === impactLevel ? T.ink : T.ink60, fontWeight: label === impactLevel ? 600 : 400 }}>
+                      <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 13.5, color: label === impactLevel ? T.ink : T.ink60, fontWeight: label === impactLevel ? 600 : 400 }}>
                         <span style={{ width: 9, height: 9, borderRadius: 99, background: color, flexShrink: 0 }} />
                         <span style={{ flex: 1 }}>{label}</span>
-                        <span style={{ fontFamily: MONO, fontSize: 11 }}>{range}</span>
+                        <span style={{ fontFamily: MONO, fontSize: 12.5 }}>{range}</span>
                       </div>
                     ))}
                   </div>
@@ -2754,9 +2754,9 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
 
               {/* Información general */}
               <div style={{ gridColumn: '1/-1', background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '20px 24px' }}>
-                <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 12 }}>Información general</div>
+                <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>Información general</div>
                 {getGeneralInfo().map((info, i) => (
-                  <div key={i} style={{ display: 'flex', gap: 16, padding: '9px 0', borderBottom: i < 3 ? `1px dashed ${T.roseLight}` : 'none', fontSize: 13 }}>
+                  <div key={i} style={{ display: 'flex', gap: 16, padding: '9px 0', borderBottom: i < 3 ? `1px dashed ${T.roseLight}` : 'none', fontSize: 14.5 }}>
                     <span style={{ width: '38%', color: T.ink60, flexShrink: 0 }}>{info.question}</span>
                     <span style={{ flex: 1, color: T.ink }}>{info.answer || '—'}</span>
                   </div>
