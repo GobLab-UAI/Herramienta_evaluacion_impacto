@@ -2332,6 +2332,13 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
     if (userEmail) localStorage.setItem(`surveySent_${userEmail}`, '1')
   }
 
+  /** Tras responder la encuesta: descarga el informe y lleva a las recomendaciones. */
+  const cerrarEncuestaYVerRecomendaciones = () => {
+    setSurveyModal(false)
+    setActiveTab('recomendaciones')
+    setTimeout(() => exportToPDF(), 150)
+  }
+
   const cerrarEncuestaYDescargar = () => {
     setSurveyModal(false)
     // Pequeño respiro para que el modal se desmonte antes de generar el PDF.
@@ -2773,6 +2780,9 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                   <button onClick={handleExportClick} style={{ ...solidBtn, padding: '12px 26px', fontSize: 14 }}>
                     <I.download /> Descargar informe PDF
                   </button>
+                  <button onClick={() => setActiveTab('recomendaciones')} style={{ ...ghostBtn, padding: '12px 20px', fontSize: 14 }}>
+                    Ver recomendaciones <I.arrow />
+                  </button>
                   <button onClick={() => setShowResults(false)} style={{ ...ghostBtn, padding: '12px 20px', fontSize: 14 }}>
                     Volver a la evaluación
                   </button>
@@ -2864,6 +2874,14 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
           {/* ── Pestaña: Evalúa esta herramienta ── */}
           {activeTab === 'feedback' && (
             <div style={{ padding: '40px' }}>
+              <button
+                onClick={() => setActiveTab('recomendaciones')}
+                style={{ ...ghostBtn, marginBottom: 20 }}
+              >
+                <span style={{ transform: 'rotate(180deg)', display: 'inline-flex' }}><I.arrow /></span>
+                Volver a las recomendaciones
+              </button>
+
               <SatisfactionSurvey
                 email={userEmail || undefined}
                 progreso={progress}
@@ -3104,8 +3122,9 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
               progreso={progress}
               onSent={() => {
                 marcarEncuestaEnviada()
-                // Cierra y descarga tras mostrar brevemente el agradecimiento.
-                setTimeout(cerrarEncuestaYDescargar, 1400)
+                // Muestra brevemente el agradecimiento, descarga y deja al
+                // usuario en las recomendaciones, que es el paso siguiente.
+                setTimeout(cerrarEncuestaYVerRecomendaciones, 1400)
               }}
             />
 
