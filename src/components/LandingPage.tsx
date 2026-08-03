@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { T, SERIF, MONO } from '@/lib/civic'
 import { I, LogoUAIGobLab } from '@/components/civic-icons'
 import { FeedbackPill } from '@/components/FeedbackPill'
+import { CONTEXTOS, CONTEXTO_DEFAULT, type Contexto } from '@/lib/contexto'
 
 /* ── 11 dimensiones (mismas y en el mismo orden que el cuestionario) ─── */
 const DIMS = [
@@ -156,6 +157,7 @@ export function LandingPage() {
   const [origin, setOrigin] = useState('')
   const [subscribe, setSubscribe] = useState(false)
   const [starting, setStarting] = useState(false)
+  const [contexto, setContexto] = useState<Contexto>(CONTEXTO_DEFAULT)
 
   const router = useRouter()
   const VERSION = process.env.NEXT_PUBLIC_VERSION || '5.0.0'
@@ -180,7 +182,7 @@ export function LandingPage() {
     }
     trackToolStart()
     setStarting(false)
-    router.push(`/evaluacion?email=${encodeURIComponent(email)}`)
+    router.push(`/evaluacion?email=${encodeURIComponent(email)}&contexto=${contexto}`)
   }
 
   const fieldStyle: React.CSSProperties = {
@@ -262,7 +264,39 @@ export function LandingPage() {
       <section className="eia-form-grid" style={{ padding: '32px 40px', background: T.rosePaper, flex: 1 }}>
 
         <form onSubmit={handleStart} style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 16, padding: '26px 28px', alignSelf: 'start' }}>
-          <div style={{ fontSize: 17, fontWeight: 600, marginBottom: 20 }}>Comienza tu evaluación</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 14, marginBottom: 20 }}>
+            <div style={{ fontSize: 17, fontWeight: 600 }}>Comienza tu evaluación</div>
+
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 600, color: T.ink80, marginBottom: 6, textAlign: 'right' }}>
+                Elige el contexto para el que quieres responder
+              </div>
+              <div role="group" aria-label="Contexto de la evaluación" style={{ display: 'inline-flex', border: `1.5px solid ${T.roseLight}`, borderRadius: 10, overflow: 'hidden' }}>
+                {CONTEXTOS.map((c, i) => {
+                  const on = contexto === c.id
+                  return (
+                    <button
+                      key={c.id}
+                      type="button"
+                      onClick={() => setContexto(c.id)}
+                      aria-pressed={on}
+                      style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 6,
+                        padding: '8px 14px', fontSize: 13, fontWeight: on ? 700 : 500,
+                        fontFamily: 'inherit', cursor: 'pointer', border: 'none',
+                        borderLeft: i > 0 ? `1.5px solid ${T.roseLight}` : 'none',
+                        background: on ? T.burgundy : '#fff',
+                        color: on ? '#fff' : T.ink80,
+                        transition: 'all .15s',
+                      }}
+                    >
+                      <span aria-hidden>{c.icon}</span> {c.short}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
 
           <div style={{ marginBottom: 14 }}>
             <label htmlFor="email" style={{ fontSize: 12, fontWeight: 600, color: T.ink80, display: 'block', marginBottom: 5 }}>Correo electrónico</label>

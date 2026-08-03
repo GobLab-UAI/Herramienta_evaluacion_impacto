@@ -15,6 +15,7 @@ import { toast } from '@/hooks/use-toast'
 import { FeedbackPill } from '@/components/FeedbackPill'
 import { QuestionFeedback, FlaggedLabel, type FlagState } from '@/components/QuestionFeedback'
 import { SatisfactionSurvey } from '@/components/SatisfactionSurvey'
+import { CONTEXTOS, labelContexto, normalizarContexto, resolverTexto, type Contexto, type TextoPorContexto } from '@/lib/contexto'
 //import jsPDF from 'jspdf'
 //import * as XLSX from 'xlsx'
 //import html2pdf from 'html2pdf.js'
@@ -40,6 +41,13 @@ export type Question = {
   // Recorrido al que pertenece la pregunta tras la bifurcación de IA generativa.
   // 'universal' (por defecto) se muestra siempre; 'iagen' solo si qGen === true.
   track?: 'universal' | 'iagen'
+  // Contexto normativo. Si se define, la pregunta solo se muestra en ese
+  // contexto (p. ej. una pregunta específica de la ley chilena). Sin definir,
+  // aplica a ambos. Ver src/lib/contexto.ts.
+  soloContexto?: Contexto
+  // Sobrescrituras de texto/tooltip/opciones por contexto. Lo no definido
+  // hereda el valor base. Hoy vacío: ambos contextos comparten contenido.
+  overrides?: Partial<Record<Contexto, { text?: string; info?: string; options?: Option[] }>>
   dependsOn?: {
     questionId: string
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,8 +61,9 @@ type Condition = (answer: boolean | string | null) => boolean;
 
 type Recommendation = {
   questionId: string;
+  // El texto puede variar por contexto (string o mapa por contexto).
   recommendations: Array<{
-    text: string;
+    text: TextoPorContexto;
     condition: Condition;
     resource?: {
       text: string
@@ -1851,15 +1860,18 @@ const maxScoreByDimension: Record<string, number> = (() => {
 
 type EvaluacionImpactoProps = {
   initialEmail?: string
+  initialContexto?: string
 }
 
-export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoProps) {
+export default function EvaluacionImpacto({ initialEmail, initialContexto }: EvaluacionImpactoProps) {
   const [answers, setAnswers] = useState<Record<string, Answer>>({})
   const [openTooltipId, setOpenTooltipId] = useState<string | null>(null);
   const [showResults, setShowResults] = useState(false)
   const [progress, setProgress] = useState(0)
   const [currentDimension, setCurrentDimension] = useState(dimensions[0])
   const [userEmail] = useState<string | null>(initialEmail ?? null)
+  // Contexto normativo bajo el que se responde (Chile / internacional).
+  const [contexto] = useState<Contexto>(normalizarContexto(initialContexto))
   const [selectedRecommendations, setSelectedRecommendations] = useState<Record<string, boolean>>({})
   const [totalScore, setTotalScore] = useState(0)
   const [scoreByDimension, setScoreByDimension] = useState<Record<string, number>>({});
@@ -1891,7 +1903,17 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
     return Math.max(rawScore, MIN_SCORE);
   }
 
+  // Aplica las sobrescrituras del contexto activo (texto, tooltip, opciones).
+  // Hoy no hay overrides cargados, así que devuelve la pregunta tal cual.
+  const forContexto = (question: Question): Question => {
+    const o = question.overrides?.[contexto]
+    return o ? { ...question, ...o } : question
+  }
+
   const shouldShowQuestion = (question: Question, answers: Record<string, Answer>): boolean => {
+    // Contexto: una pregunta marcada para un solo contexto no aparece en el otro.
+    if (question.soloContexto && question.soloContexto !== contexto) return false;
+
     // Bifurcación IAGen: las preguntas del recorrido 'iagen' solo se muestran
     // si el usuario respondió que el sistema incorpora IA generativa (qGen).
     // Es ortogonal a dependsOn: una pregunta puede exigir ambas condiciones.
@@ -2049,9 +2071,10 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
           return rec.condition(answer)
         })
         .map(rec => ({
-          text: rec.text,
+          // Resuelve el texto según el contexto activo (string o mapa por contexto).
+          text: resolverTexto(rec.text, contexto),
           resource: rec.resource,
-          question: question.text,
+          question: forContexto(question).text,
           questionNumber: questionNumber,
           answer: formatAnswer(answer),
           stage: question.stage
@@ -2372,6 +2395,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
         <img src="/images/logo-goblab-uai.png" alt="Logo Derecho" style="height: 40px; margin-right: 10px;" />
         <div style="flex-grow: 1; text-align: center; font-size: 14px; font-weight: bold;">
           Evaluación de Impacto Algorítmico
+          <div style="font-size: 10px; font-weight: normal; color: #7A3B48; margin-top: 2px;">${labelContexto(contexto)}</div>
         </div>
         <img src="/images/herramientas.png" alt="Logo Izquierdo" style="height: 40px; margin-left: 10px;" />
         
@@ -2454,6 +2478,13 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
             <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 1.5, color: T.ink60 }}>HERRAMIENTA</div>
             <div style={{ fontSize: 14, fontWeight: 600, marginTop: 1 }}>Evaluación de Impacto Algorítmico</div>
           </div>
+          <span
+            title={`Estás respondiendo bajo el ${labelContexto(contexto).toLowerCase()}`}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 12px', borderRadius: 99, background: T.rosePaper, border: `1px solid ${T.roseLight}`, color: T.burgundy, fontSize: 12, fontWeight: 600 }}
+          >
+            <span aria-hidden>{CONTEXTOS.find(c => c.id === contexto)?.icon}</span>
+            {labelContexto(contexto)}
+          </span>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
@@ -2540,18 +2571,21 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
             </div>
 
             <form onSubmit={e => e.preventDefault()} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-              {visibleInDim.map((question, qIndex) => (
+              {visibleInDim.map((question, qIndex) => {
+                // Texto, tooltip y opciones ya resueltos para el contexto activo.
+                const q = forContexto(question)
+                return (
                 <div key={question.id} style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 12, padding: '18px 20px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12, gap: 12 }}>
                     <label htmlFor={question.id} style={{ fontSize: 14, fontWeight: 500, color: T.ink, lineHeight: 1.45 }}>
                       <span style={{ fontFamily: MONO, fontSize: 12, color: T.burgundy, marginRight: 6 }}>
                         {dimIndex + 1}.{qIndex + 1}
                       </span>
-                      {question.text}
+                      {q.text}
                       {flags[question.id] === 'down' && <FlaggedLabel />}
                     </label>
 
-                    {question.info?.trim() && (
+                    {q.info?.trim() && (
                       <div style={{ position: 'relative', flexShrink: 0 }}>
                         <button
                           type="button"
@@ -2576,7 +2610,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                               <I.close width={14} height={14} />
                             </button>
                             <div style={{ fontSize: 13, color: T.ink80, lineHeight: 1.6, paddingRight: 14 }}>
-                              {question.info?.split('\n').map((paragraph, i) => {
+                              {q.info?.split('\n').map((paragraph, i) => {
                                 const parts = paragraph.split(/(\*\*[^*]+\*\*)/)
                                 return (
                                   <p key={i} style={{ margin: '0 0 8px', textAlign: 'justify' }}>
@@ -2594,7 +2628,7 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                       </div>
                     )}
                   </div>
-                  {renderQuestionInput(question)}
+                  {renderQuestionInput(q)}
 
                   <QuestionFeedback
                     questionId={question.id}
@@ -2610,7 +2644,8 @@ export default function EvaluacionImpacto({ initialEmail }: EvaluacionImpactoPro
                     }}
                   />
                 </div>
-              ))}
+                )
+              })}
             </form>
 
           </main>

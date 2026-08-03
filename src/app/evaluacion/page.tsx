@@ -8,8 +8,9 @@ import EvaluacionImpacto from '../../components/evaluacion-impacto-mejorada';
 function EvaluacionContent() {
   const searchParams = useSearchParams();
   const email = searchParams.get('email');
+  const contexto = searchParams.get('contexto');
 
-  return <EvaluacionImpacto initialEmail={email || undefined} />;
+  return <EvaluacionImpacto initialEmail={email || undefined} initialContexto={contexto || undefined} />;
 }
 
 function LoadingSpinner() {
