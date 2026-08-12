@@ -229,7 +229,7 @@ const questions: Question[] = [
     info: "Los casos similares son implementaciones previas de sistemas algorítmicos con objetivos o contextos parecidos al de este proyecto. Revisarlos permite anticipar riesgos, errores comunes y buenas prácticas. Puede explorar ejemplos en algorítmicospublicos.cl",
     overrides: {
       internacional: {
-        info: "Los casos similares son implementaciones previas de sistemas algorítmicos con objetivos o contextos parecidos al de este proyecto. Revisarlos permite anticipar riesgos, errores comunes y buenas prácticas. Como ejemplo, en el caso de Chile está el repositorio algoritmospublicos.cl que puede servir de base."
+        info: "Los casos similares son implementaciones previas de sistemas algorítmicos con objetivos o contextos parecidos al de este proyecto. Revisarlos permite anticipar riesgos, errores comunes y buenas prácticas. Busque registros o repositorios públicos de sistemas algorítmicos de su país o región que puedan servir de referencia."
       }
     },
     scoreContribution: true,
@@ -244,7 +244,8 @@ const questions: Question[] = [
     info: "Los derechos fundamentales son garantías reconocidas por la Constitución que el Estado debe respetar y proteger, como la privacidad, la igualdad ante la ley, la no discriminación o el debido proceso. El impacto puede ser directo (el sistema toma decisiones que los afectan) o indirecto (el sistema influye en procesos que los afectan)..",
     overrides: {
       internacional: {
-        text: "¿La aplicación del sistema podría afectar derechos fundamentales reconocidos por la Constitución de su país?"
+        text: "¿La aplicación del sistema podría afectar derechos fundamentales reconocidos por la Constitución de su país?",
+        info: "Los derechos fundamentales son garantías reconocidas por la Constitución o el marco de derechos fundamentales de su país (así como por los tratados internacionales de derechos humanos aplicables) que el Estado debe respetar y proteger, como la privacidad, la igualdad ante la ley, la no discriminación o el debido proceso. El impacto puede ser directo (el sistema toma decisiones que los afectan) o indirecto (el sistema influye en procesos que los afectan)."
       }
     },
     scoreContribution: true,
@@ -308,6 +309,11 @@ const questions: Question[] = [
     dimension: "Normativa", 
     stage: "Conceptualización y diseño",
     info: "Una normativa tiene impacto directo cuando el sistema debe cumplirla obligatoriamente: por ejemplo, la Ley de Protección de Datos Personales si el sistema trata datos personales, o la Ley Marco de Ciberseguridad si gestiona infraestructura crítica. No incluye políticas públicas nacionales ni lineamientos estratégicos genéricos.",
+    overrides: {
+      internacional: {
+        info: "Una normativa tiene impacto directo cuando el sistema debe cumplirla obligatoriamente: por ejemplo, la normativa de protección de datos vigente en su país si el sistema trata datos personales, o la normativa de ciberseguridad si gestiona infraestructura crítica. No incluye políticas públicas nacionales ni lineamientos estratégicos genéricos."
+      }
+    },
     scoreContribution: true,
     score: (answer) => answer === false ? 5.55 : 0
   },
@@ -507,6 +513,11 @@ const questions: Question[] = [
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
     info: "En Chile, la Ley N° 19.628, sobre Protección de la Vida Privada, define los datos sensibles como  aquellos que se refieren a las características físicas o morales de las personas o a hechos o circunstancias de su vida privada o intimidad, tales como los hábitos personales, el origen racial, las ideologías y opiniones políticas, las creencias o convicciones religiosas, los estados de salud físicos o psíquicos y la vida sexual, etc. Estos datos, por su naturaleza, requieren de una protección especial y no pueden ser tratados sin consentimiento del titular, salvo en casos excepcionales autorizados por la ley.",
+    overrides: {
+      internacional: {
+        info: "Los datos sensibles o especialmente protegidos son aquellos que revelan aspectos íntimos de una persona, como el origen racial o étnico, las opiniones políticas, las creencias religiosas o filosóficas, la afiliación sindical, los datos de salud, la vida u orientación sexual, o los datos genéticos y biométricos. Por su naturaleza requieren una protección reforzada y, en la mayoría de las jurisdicciones, no pueden tratarse sin el consentimiento del titular salvo excepciones previstas por la ley. Revise cómo los define la normativa de protección de datos vigente en su país."
+      }
+    },
     scoreContribution: true,
     dependsOn: {
       questionId: "q24",
@@ -600,7 +611,7 @@ const questions: Question[] = [
     info: "Marque Sí si el sistema corresponde a al menos uno de estos casos:  a) Elaboración de perfiles o decisiones automatizadas que produzcan efectos jurídicos significativos sobre las personas. b) Tratamiento masivo de datos a gran escala. c) Monitoreo sistemático de espacios de acceso público. d) Tratamiento de datos sensibles bajo hipótesis de excepción del consentimiento.  Estos casos obligan a realizar una Evaluación de Impacto según el RGPD (Art. 35.3 y Art. 9) y representan riesgos éticos críticos.",
     overrides: {
       internacional: {
-        info: "Marque Sí si el sistema corresponde a al menos uno de estos casos:\na) Elaboración de perfiles o decisiones automatizadas que produzcan efectos jurídicos significativos sobre las personas.\nb) Tratamiento masivo de datos a gran escala.\nc) Monitoreo sistemático de espacios de acceso público.\nd) Tratamiento de datos sensibles bajo hipótesis de excepción del consentimiento.\nEstos casos obligan a realizar una Evaluación de Impacto según el Reglamento General de Protección de Datos de la Unión Europea y representan riesgos éticos críticos."
+        info: "Marque Sí si el sistema corresponde a al menos uno de estos casos:\na) Elaboración de perfiles o decisiones automatizadas que produzcan efectos jurídicos significativos sobre las personas.\nb) Tratamiento masivo de datos a gran escala.\nc) Monitoreo sistemático de espacios de acceso público.\nd) Tratamiento de datos sensibles bajo hipótesis de excepción del consentimiento.\nEn muchas jurisdicciones estos casos obligan a realizar una Evaluación de Impacto en Protección de Datos; revise si la normativa de protección de datos vigente en su país lo exige. Representan riesgos éticos críticos."
       }
     },
     scoreContribution: true,
@@ -868,7 +879,7 @@ const questions: Question[] = [
       overrides: {
         internacional: {
           text: "¿Existe alguna regulación sectorial en materia de ciberseguridad aplicable a la organización, además de la ley de ciberseguridad de su país?",
-          info: "Por ejemplo: normativas del sector financiero, salud, telecomunicaciones o energía. Algunos sectores tienen exigencias propias en materia de seguridad que se suman a la Ley de Ciberseguridad de su país."
+          info: "Por ejemplo: normativas del sector financiero, salud, telecomunicaciones o energía. Algunos sectores tienen exigencias propias en materia de seguridad que se suman a la normativa de ciberseguridad vigente en su país."
         }
       },
       scoreContribution: false
