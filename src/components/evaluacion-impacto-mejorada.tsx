@@ -199,7 +199,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Proporcionalidad", 
     stage: "Conceptualización y diseño",
-    info: "Las alternativas no algorítmicas son soluciones que no requieren automatización, como el rediseño de procesos, la reorganización de equipos o el uso de herramientas manuales. Esta pregunta busca verificar que el uso de IA no sea la primera opción sin haber considerado otras. Por ejemplo: rediseño de procesos, reorganización de equipos u opciones manuales",
+    info: "Las alternativas no algorítmicas son soluciones que no requieren automatización, como el rediseño de procesos, la reorganización de equipos o el uso de herramientas manuales. Esta pregunta busca verificar que el uso de IA no sea la primera opción sin haber considerado otras. Por ejemplo: uso de base de datos, herramientas de automatización y otras.",
     scoreContribution: true,
     score: (answer) => answer === false ? 1.3 : 0
   },
@@ -225,6 +225,11 @@ const questions: Question[] = [
     dimension: "Proporcionalidad", 
     stage: "Conceptualización y diseño",
     info: "Los casos similares son implementaciones previas de sistemas algorítmicos con objetivos o contextos parecidos al de este proyecto. Revisarlos permite anticipar riesgos, errores comunes y buenas prácticas. Puede explorar ejemplos en algorítmicospublicos.cl",
+    overrides: {
+      internacional: {
+        info: "Los casos similares son implementaciones previas de sistemas algorítmicos con objetivos o contextos parecidos al de este proyecto. Revisarlos permite anticipar riesgos, errores comunes y buenas prácticas. Como ejemplo, en el caso de Chile está el repositorio algoritmospublicos.cl que puede servir de base."
+      }
+    },
     scoreContribution: true,
     score: (answer) => answer === false ? 1.3 : 0
   },
@@ -235,6 +240,11 @@ const questions: Question[] = [
     dimension: "Proporcionalidad",
     stage: "Conceptualización y diseño",
     info: "Los derechos fundamentales son garantías reconocidas por la Constitución que el Estado debe respetar y proteger, como la privacidad, la igualdad ante la ley, la no discriminación o el debido proceso. El impacto puede ser directo (el sistema toma decisiones que los afectan) o indirecto (el sistema influye en procesos que los afectan)..",
+    overrides: {
+      internacional: {
+        text: "¿La aplicación del sistema podría afectar derechos fundamentales reconocidos por la Constitución de su país?"
+      }
+    },
     scoreContribution: true,
     score: (answer) => answer === true ? 1.3 : 0
   },
@@ -263,7 +273,7 @@ const questions: Question[] = [
     },
   {
       id: "q63",
-      text: "¿Se ha justificado el uso de IA generativa frente a sistemas algorítmicos más simples o tradicionales?",
+      text: "¿Se ha justificado el uso de IA generativa frente a sistemas algorítmicos tradicionales como Machine Learning y otros?",
       type: "yesno",
       dimension: "Proporcionalidad",
       stage: "Conceptualización y diseño",
