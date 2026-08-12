@@ -308,6 +308,12 @@ const questions: Question[] = [
     dimension: "Normativa", 
     stage: "Conceptualización y diseño",
     info: "Por ejemplo: un sistema algorítmico que calcula automáticamente si una persona cumple los requisitos de un beneficio según la ley, o que asigna sanciones según un reglamento. No se refiere a si la ley obliga a usar un sistema algorítmico.",
+    overrides: {
+      internacional: {
+        text: "¿El sistema algorítmico se utiliza para aplicar o ejecutar una normativa específica vigente de su país?",
+        info: "Una normativa tiene impacto directo cuando el sistema debe cumplirla obligatoriamente: por ejemplo, si en su país existen leyes como Protección de datos personales, de ciberseguridad o similares."
+      }
+    },
     scoreContribution: true,
     score: (answer) => answer === true ? 5.55 : 0
   },
@@ -329,6 +335,11 @@ const questions: Question[] = [
       stage: "Conceptualización y diseño",
       info: "Los riesgos de infracción a la propiedad intelectual en sistemas de IA generativa pueden ocurrir cuando el modelo reproduce contenidos protegidos en sus outputs, fue entrenado con obras sin autorización, o genera resultados sustancialmente similares a obras existentes.",
       track: "iagen",
+      overrides: {
+        internacional: {
+          text: "¿Se han identificado los riesgos de infracción a la propiedad intelectual que puede generar el sistema de acuerdo a la normativa vigente en su país?"
+        }
+      },
       scoreContribution: false
     },
   {
@@ -487,6 +498,11 @@ const questions: Question[] = [
     dimension: "Protección de datos", 
     stage: "Conceptualización y diseño",
     info: "Por ejemplo: nombres, RUT, correos, direcciones, registros de salud o cualquier dato que permita identificar a una persona, usado en cualquier etapa del sistema (según Ley N° 19.628 y Ley 21.719 de Protección de Datos Personales).",
+    overrides: {
+      internacional: {
+        info: "Por ejemplo: nombres, número de identificación nacional (p. ej. DNI, RUT, SSN u otro equivalente), correos, direcciones, registros de salud o cualquier dato que permita identificar a una persona, usado en cualquier etapa del sistema (según la normativa de protección de datos personales aplicable en la jurisdicción correspondiente)."
+      }
+    },
     scoreContribution: true,
     score: (answer) => answer === true ? 1.01 : 0
   },
@@ -535,6 +551,11 @@ const questions: Question[] = [
     dimension: "Protección de datos", 
     stage: "Recolección y procesamiento de datos",
     info: "Por ejemplo: datos provenientes de otros servicios públicos, proveedores, plataformas de datos abiertos u organismos internacionales.",
+    overrides: {
+      internacional: {
+        info: "Por ejemplo: datos provenientes de otras instituciones públicas de su país, proveedores, plataformas de datos abiertos u organismos internacionales."
+      }
+    },
     scoreContribution: true,
     score: (answer) => answer === true ? 1.01 : 0
   },
@@ -583,6 +604,11 @@ const questions: Question[] = [
     dimension: "Protección de datos",
     stage: "Recolección y procesamiento de datos",
     info: "Marque Sí si el sistema corresponde a al menos uno de estos casos:  a) Elaboración de perfiles o decisiones automatizadas que produzcan efectos jurídicos significativos sobre las personas. b) Tratamiento masivo de datos a gran escala. c) Monitoreo sistemático de espacios de acceso público. d) Tratamiento de datos sensibles bajo hipótesis de excepción del consentimiento.  Estos casos obligan a realizar una Evaluación de Impacto según el RGPD (Art. 35.3 y Art. 9) y representan riesgos éticos críticos.",
+    overrides: {
+      internacional: {
+        info: "Marque Sí si el sistema corresponde a al menos uno de estos casos:\na) Elaboración de perfiles o decisiones automatizadas que produzcan efectos jurídicos significativos sobre las personas.\nb) Tratamiento masivo de datos a gran escala.\nc) Monitoreo sistemático de espacios de acceso público.\nd) Tratamiento de datos sensibles bajo hipótesis de excepción del consentimiento.\nEstos casos obligan a realizar una Evaluación de Impacto según el Reglamento General de Protección de Datos de la Unión Europea y representan riesgos éticos críticos."
+      }
+    },
     scoreContribution: true,
     score: (answer) => answer === true ? 1.01 : 0
   },
@@ -627,6 +653,11 @@ const questions: Question[] = [
       dimension: "Protección de datos",
       stage: "Conceptualización y diseño",
       info: "Verifique que cada finalidad del sistema tenga una base jurídica clara: consentimiento, cumplimiento de una obligación legal, ejecución de un contrato, interés legítimo u otra habilitante reconocida por la Ley N° 21.719.",
+      overrides: {
+        internacional: {
+          info: "Verifique que cada finalidad del sistema tenga una base jurídica clara: consentimiento, cumplimiento de una obligación legal, ejecución de un contrato, interés legítimo u otra habilitante reconocida por la normativa vigente en su país."
+        }
+      },
       scoreContribution: false
     },
   {
@@ -681,6 +712,11 @@ const questions: Question[] = [
       dimension: "Protección de datos",
       stage: "Conceptualización y diseño",
       info: "El delegado o responsable de protección de datos es la persona designada dentro de la organización para supervisar que el tratamiento de datos personales cumpla con la normativa vigente y actuar como punto de contacto ante la Agencia de Protección de Datos.",
+      overrides: {
+        internacional: {
+          info: "El delegado o responsable de protección de datos es la persona designada dentro de la organización para supervisar que el tratamiento de datos personales cumpla con la normativa vigente y actuar como punto de contacto ante la Agencia de Protección de Datos u organismo similar vigente en su país."
+        }
+      },
       scoreContribution: false
     },
   {
@@ -730,6 +766,12 @@ const questions: Question[] = [
     dimension: "Ciberseguridad", 
     stage: "Recolección y procesamiento de datos",
     info: "Por ejemplo: ministerios, delegaciones presidenciales, gobiernos regionales, municipalidades, fuerzas armadas, fuerzas de orden y seguridad pública, empresas públicas creadas por ley, u organismos creados para cumplir funciones administrativas del Estado.",
+    overrides: {
+      internacional: {
+        text: "¿La empresa u organización pública forma parte de la administración del Estado o es una empresa pública con participación estatal superior al 50% o mayoría en el directorio?",
+        info: "Por ejemplo: organismos creados para cumplir funciones administrativas del Estado, organismos o instituciones pertenecientes al Estado."
+      }
+    },
     scoreContribution: true,
     score: (answer) => answer === true ? 1.58 : 0
   },
@@ -828,6 +870,12 @@ const questions: Question[] = [
       dimension: "Ciberseguridad",
       stage: "Conceptualización y diseño",
       info: "Por ejemplo: normativas del sector financiero, salud, telecomunicaciones o energía. Algunos sectores tienen exigencias propias en materia de seguridad que se suman a la Ley Marco de Ciberseguridad.",
+      overrides: {
+        internacional: {
+          text: "¿Existe alguna regulación sectorial en materia de ciberseguridad aplicable a la organización, además de la ley de ciberseguridad de su país?",
+          info: "Por ejemplo: normativas del sector financiero, salud, telecomunicaciones o energía. Algunos sectores tienen exigencias propias en materia de seguridad que se suman a la Ley de Ciberseguridad de su país."
+        }
+      },
       scoreContribution: false
     },
   {
@@ -934,6 +982,11 @@ const questions: Question[] = [
     dimension: "Equidad", 
     stage: "Recolección y procesamiento de datos",
     info: "Un algoritmo desarrollado en otro país puede requerir adaptaciones normativas, socioculturales o contextuales para su aplicación local",
+    overrides: {
+      internacional: {
+        text: "¿El algoritmo fue desarrollado originalmente fuera del país o jurisdicción de implementación o para un contexto distinto al propuesto?"
+      }
+    },
     scoreContribution: true,
     score: (answer) => answer === true ? 2.22 : 0
   },
@@ -997,6 +1050,11 @@ const questions: Question[] = [
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
     info:"Informar a los titulares significa comunicar de forma clara y oportuna que un sistema de IA participa en el proceso de decisión que los afecta. Esta obligación está establecida en la Ley de Protección de Datos Personales.",
+    overrides: {
+      internacional: {
+        info: "Informar a los titulares significa comunicar de forma clara y oportuna que un sistema de IA participa en el proceso de decisión que los afecta."
+      }
+    },
     scoreContribution: true,
     score: (answer) => answer === false ? 1.58 : 0
   },
