@@ -475,6 +475,16 @@ const questions: Question[] = [
     },
     score: (answer) => answer === true ? 2.22 : 0
   },
+  {
+      id: "q102",
+      text: "¿Su país cuenta con una normativa vigente sobre Ley de Protección de Datos?",
+      type: "yesno",
+      dimension: "Protección de datos",
+      stage: "Conceptualización y diseño",
+      soloContexto: "internacional",
+      info: "Indique si en su país existe una ley de protección de datos personales vigente. Si responde \"No\", puede omitir el resto de esta dimensión y continuar con la siguiente.",
+      scoreContribution: false
+    },
   { 
     id: "q24", 
     text: "¿El sistema utiliza o ha utilizado datos personales en alguna etapa de su ciclo de vida?", 
@@ -839,6 +849,16 @@ const questions: Question[] = [
       scoreContribution: false
     },
   {
+      id: "q85",
+      text: "¿La organización ha sido designada como operador de importancia vital por la Agencia Nacional de Ciberseguridad?",
+      type: "yesno",
+      dimension: "Ciberseguridad",
+      stage: "Conceptualización y diseño",
+      soloContexto: "chile",
+      info: "Los operadores de importancia vital están sujetos a deberes adicionales según la Ley Marco de Ciberseguridad, como la adopción de estándares específicos, certificación de planes de continuidad y reporte obligatorio de incidentes a la ANCI.",
+      scoreContribution: false
+    },
+  {
       id: "q86",
       text: "¿Existe alguna regulación sectorial en materia de ciberseguridad aplicable a la organización, además de la Ley Marco?",
       type: "yesno",
@@ -850,6 +870,19 @@ const questions: Question[] = [
           text: "¿Existe alguna regulación sectorial en materia de ciberseguridad aplicable a la organización, además de la ley de ciberseguridad de su país?",
           info: "Por ejemplo: normativas del sector financiero, salud, telecomunicaciones o energía. Algunos sectores tienen exigencias propias en materia de seguridad que se suman a la Ley de Ciberseguridad de su país."
         }
+      },
+      scoreContribution: false
+    },
+  {
+      id: "q103",
+      text: "En caso afirmativo, ¿existen cláusulas contractuales o procesos de evaluación que garanticen que el proveedor del sistema se alinea estrictamente con los objetivos de desarrollo responsable de IA de la organización?",
+      type: "yesno",
+      dimension: "Ciberseguridad",
+      stage: "Conceptualización y diseño",
+      info: "",
+      dependsOn: {
+        questionId: "q37.1",
+        value: true
       },
       scoreContribution: false
     },
@@ -919,6 +952,33 @@ const questions: Question[] = [
       stage: "Conceptualización y diseño",
       info: "Una dependencia problemática ocurre cuando los términos de uso de un proveedor o modelo impiden auditar cómo funciona el sistema, restringen la reutilización de sus resultados o generan una dependencia estructural que limita el control institucional sobre el sistema.",
       track: "iagen",
+      scoreContribution: false
+    },
+  {
+      id: "q104",
+      text: "¿Ha identificado y documentado los impactos en individuos y sociedad ante un fallo técnico masivo o error algorítmico crítico?",
+      type: "yesno",
+      dimension: "Ciberseguridad",
+      stage: "Conceptualización y diseño",
+      info: "Se refiere a los efectos, directos o indirectos, que un fallo masivo o error crítico del sistema podría tener sobre las personas afectadas y su entorno (ej. denegación indebida de un beneficio, discriminación, exposición de datos, daño reputacional).",
+      scoreContribution: false
+    },
+  {
+      id: "q105",
+      text: "¿Cuenta con un plan de contingencia que permita intervención humana ante un fallo técnico masivo o error algorítmico crítico?",
+      type: "yesno",
+      dimension: "Ciberseguridad",
+      stage: "Conceptualización y diseño",
+      info: "Un plan de contingencia humana define quién interviene, qué acciones se ejecutan y en qué plazo, cuando el sistema falla o se comporta de forma crítica, permitiendo recuperar el control humano sobre el proceso.",
+      scoreContribution: false
+    },
+  {
+      id: "q106",
+      text: "¿Ha identificado escenarios de mal uso razonablemente previsible del sistema y las medidas para prevenirlos?",
+      type: "yesno",
+      dimension: "Ciberseguridad",
+      stage: "Conceptualización y diseño",
+      info: "El mal uso previsible corresponde a formas de uso distintas a las previstas en el diseño del sistema, pero que son razonablemente esperables (ej. uso fuera del contexto original, manipulación deliberada de los datos de entrada). La pregunta identifica esos escenarios y las medidas que los previenen.",
       scoreContribution: false
     },
   {
@@ -1080,6 +1140,15 @@ const questions: Question[] = [
     score: (answer) => answer === false ? 1.58 : 0
   },
   {
+      id: "q107",
+      text: "¿Se garantiza que la información sobre el funcionamiento del sistema sea comprensible para personas sin conocimientos técnicos?",
+      type: "yesno",
+      dimension: "Transparencia",
+      stage: "Recolección y procesamiento de datos",
+      info: "Exige que las explicaciones sobre el sistema sean accesibles para audiencias no especializadas, no solo técnicamente correctas. [Ref. ISO/IEC 42005:2025, cl. 6.8.2 (Anexo C, taxonomía de daños y beneficios)]",
+      scoreContribution: false
+    },
+  {
     id: "q52",
     text: "Indique las principales características del sistema", 
     type: "multiselect",
@@ -1209,6 +1278,24 @@ const questions: Question[] = [
       dimension: "Rendición de cuentas",
       stage: "Conceptualización y diseño",
       info: "Consulta si existe un registro de la infraestructura técnica necesaria para operar el sistema de manera continua, como servidores, GPU/CPU, capacidad de almacenamiento o servicios en la nube utilizados",
+      scoreContribution: false
+    },
+  {
+      id: "q108",
+      text: "¿Se han definido mecanismos de detección y corrección de deriva de datos (data drift) durante la operación del sistema?",
+      type: "yesno",
+      dimension: "Rendición de cuentas",
+      stage: "Conceptualización y diseño",
+      info: "La deriva de datos (data drift) es el cambio progresivo en las características estadísticas de los datos que recibe el sistema en operación, respecto a los datos con que fue entrenado. Los mecanismos de detección monitorean ese cambio; los de corrección ajustan el sistema para mantener su rendimiento.",
+      scoreContribution: false
+    },
+  {
+      id: "q109",
+      text: "¿Se han definido criterios que determinen cuándo esta evaluación de impacto debe invalidarse y realizarse una nueva?",
+      type: "yesno",
+      dimension: "Rendición de cuentas",
+      stage: "Conceptualización y diseño",
+      info: "Se han definido los cambios en el sistema, los datos o el entorno legal que obligarían a repetir esta evaluación de impacto.",
       scoreContribution: false
     },
   {
@@ -2031,6 +2118,20 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
     // si el usuario respondió que el sistema incorpora IA generativa (qGen).
     // Es ortogonal a dependsOn: una pregunta puede exigir ambas condiciones.
     if (question.track === 'iagen' && answers['qGen'] !== true) return false;
+
+    // Salto condicional D6 (solo contexto internacional): si la organización
+    // declara que su país NO tiene Ley de Protección de Datos vigente (q102 = No),
+    // se oculta el resto de la dimensión "Protección de datos". Al quedar fuera de
+    // las preguntas visibles, tampoco puntúa. En contexto Chile q102 no se muestra,
+    // answers['q102'] queda indefinido y esta regla no se activa.
+    if (
+      contexto === 'internacional' &&
+      question.dimension === 'Protección de datos' &&
+      question.id !== 'q102' &&
+      answers['q102'] === false
+    ) {
+      return false;
+    }
 
     if (!question.dependsOn) return true;
 
