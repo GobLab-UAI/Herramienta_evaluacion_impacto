@@ -125,16 +125,21 @@ const questions: Question[] = [
   },
   {
     id: "q4",
-    text: "¿Cuáles son las principales razones para automatizar este proceso?", 
+    text: "¿Cuáles son las principales razones para implementar este sistema de IA o ciencia de datos?",
     type: "multiselect",
-    dimension: "General", 
+    dimension: "General",
     stage: "Conceptualización y diseño",
-    info: "Seleccione todas las alternativas que apliquen:  Enfoques innovadores: el sistema introduce una forma nueva de abordar el problema que no existía antes.  Tareas fuera del alcance humano: el volumen, velocidad o complejidad de la tarea excede lo que una persona puede realizar en un tiempo razonable.  Reducción de costos: el sistema permite ejecutar un proceso existente con menos recursos.  Mejora de la calidad de las decisiones: el sistema reduce errores, sesgos o inconsistencias respecto al proceso actual.",
+    info: "Seleccione todas las alternativas que apliquen:\n**Automatización de tareas:** el sistema ejecuta un proceso que antes requería intervención humana directa.\n**Enfoques innovadores:** el sistema introduce una forma nueva de abordar el problema que no existía antes.\n**Tareas fuera del alcance humano:** el volumen, velocidad o complejidad de la tarea excede lo que una persona puede realizar en un tiempo razonable.\n**Reducción de costos:** el sistema permite ejecutar un proceso existente con menos recursos.\n**Mejora de la calidad de las decisiones:** el sistema reduce errores, sesgos o inconsistencias respecto al proceso actual.\n**Apoyo a la toma de decisiones:** el sistema entrega información, análisis o recomendaciones que orientan a una persona, sin reemplazar su juicio final.\n**Creación de nuevo contenido:** el sistema genera texto, imágenes, audio, código u otro material que antes debía producirse manualmente.\n**Ampliación de capacidades profesionales:** el sistema potencia el trabajo de las personas, permitiéndoles realizar tareas para las que no contaban con la experticia o herramientas necesarias.\n**Apoyo a la creatividad:** el sistema asiste en la generación de ideas, variantes o soluciones creativas dentro de un proceso.",
     options: [
-      { value: "Utilizar enfoques innovadores", label: "Utilizar enfoques innovadores" },
-      { value: "El sistema realiza tareas que los humanos no podrían realizar en un periodo de tiempo razonable", label: "El sistema realiza tareas que los humanos no podrían realizar en un periodo de tiempo razonable" },
-      { value: "Reducción de los costos de un programa existente", label: "Reducción de los costos de un programa existente" },
-      { value: "Mejorar la calidad general de las decisiones", label: "Mejorar la calidad general de las decisiones" }
+      { value: "Automatización de tareas", label: "Automatización de tareas" },
+      { value: "Enfoques innovadores", label: "Enfoques innovadores" },
+      { value: "Tareas fuera del alcance humano", label: "Tareas fuera del alcance humano" },
+      { value: "Reducción de costos", label: "Reducción de costos" },
+      { value: "Mejora de la calidad de las decisiones", label: "Mejora de la calidad de las decisiones" },
+      { value: "Apoyo a la toma de decisiones", label: "Apoyo a la toma de decisiones" },
+      { value: "Creación de nuevo contenido", label: "Creación de nuevo contenido" },
+      { value: "Ampliación de capacidades profesionales", label: "Ampliación de capacidades profesionales" },
+      { value: "Apoyo a la creatividad", label: "Apoyo a la creatividad" }
     ],
     scoreContribution: false
   },
