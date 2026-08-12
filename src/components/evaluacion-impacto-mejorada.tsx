@@ -65,6 +65,8 @@ type Recommendation = {
   recommendations: Array<{
     text: TextoPorContexto;
     condition: Condition;
+    // Si se define, la recomendación solo aplica en ese contexto.
+    soloContexto?: Contexto;
     resource?: {
       text: string
       url: string
@@ -1574,7 +1576,10 @@ const recommendations: Recommendation[] = [
     questionId: "q31",
     recommendations: [
       {
-        text: "De acuerdo al caso de uso señalado, procede realizar una evaluación de impacto en protección de datos personales (EIPD).  La EIPD es una metodologia para evaluar, identificar y mitigar los riesgos potenciales asociados al tratamiento de los datos, asegurando que se respeten los derechos de los individuos y se cumpla con las normativas de protección de datos vigentes. La EIPD debe analizar la naturaleza, el alcance, el contexto y los fines del tratamiento, así como las posibles consecuencias sobre la privacidad y la seguridad de los datos personales. Además, debe incluir medidas de mitigación de riesgos, como la implementación de técnicas de seudonimización, cifrado, y otras medidas de seguridad apropiadas, con el fin de garantizar que los datos sean tratados de manera legal y segura.",
+        text: {
+          chile: "De acuerdo al caso de uso señalado, procede realizar una evaluación de impacto en protección de datos personales (EIPD).  La EIPD es una metodologia para evaluar, identificar y mitigar los riesgos potenciales asociados al tratamiento de los datos, asegurando que se respeten los derechos de los individuos y se cumpla con las normativas de protección de datos vigentes. La EIPD debe analizar la naturaleza, el alcance, el contexto y los fines del tratamiento, así como las posibles consecuencias sobre la privacidad y la seguridad de los datos personales. Además, debe incluir medidas de mitigación de riesgos, como la implementación de técnicas de seudonimización, cifrado, y otras medidas de seguridad apropiadas, con el fin de garantizar que los datos sean tratados de manera legal y segura.",
+          internacional: "El sistema corresponde a un caso de alto riesgo según el Reglamento General de Protección de Datos de la Unión Europea. Realice una Evaluación de Impacto en Protección de Datos antes de su implementación.",
+        },
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
 
       }
@@ -1584,11 +1589,17 @@ const recommendations: Recommendation[] = [
     questionId: "q32",
     recommendations: [
       {
-        text: "La normativa de protección de datos exige establecer procedimientos claros y accesibles para el ejercicio de los derechos relacionados con la protección de datos, como el derecho de acceso, rectificación, cancelación y oposición. Verifique la procedencia de cada uno de ellos.",
+        text: {
+          chile: "La normativa de protección de datos exige establecer procedimientos claros y accesibles para el ejercicio de los derechos relacionados con la protección de datos, como el derecho de acceso, rectificación, cancelación y oposición. Verifique la procedencia de cada uno de ellos.",
+          internacional: "Establezca procesos formales y accesibles para que los titulares puedan ejercer los seis derechos reconocidos por la norma de protección de datos de su país. Parcialmente: extienda los procesos existentes para cubrir también los derechos de Portabilidad e Impugnación de decisiones automatizadas.",
+        },
         condition: (answer: boolean | string | null) => answer === "Si, pero parcialmente" || answer === "No"
       },
       {
-        text: "La normativa de protección de datos exige establecer procedimientos claros y accesibles para el ejercicio de los derechos relacionados con la protección de datos, como el derecho de acceso, rectificación, cancelación y oposición. Verifique la procedencia de cada uno de ellos.",
+        text: {
+          chile: "La normativa de protección de datos exige establecer procedimientos claros y accesibles para el ejercicio de los derechos relacionados con la protección de datos, como el derecho de acceso, rectificación, cancelación y oposición. Verifique la procedencia de cada uno de ellos.",
+          internacional: "Establezca procesos formales y accesibles para que los titulares puedan ejercer los seis derechos reconocidos por la norma de protección de datos de su país. Parcialmente: extienda los procesos existentes para cubrir también los derechos de Portabilidad e Impugnación de decisiones automatizadas.",
+        },
         condition: (answer: boolean | string | null) => answer === "Si, pero parcialmente"
       }
     ]
@@ -1617,7 +1628,10 @@ const recommendations: Recommendation[] = [
     questionId: "q35",
     recommendations: [
       {
-        text: "De acuerdo a sus respuestas la entidad está calificada como servicio esencial debiendo cumplir los estándares dictados por la ANCI para los servicios esenciales. ",
+        text: {
+          chile: "De acuerdo a sus respuestas la entidad está calificada como servicio esencial debiendo cumplir los estándares dictados por la ANCI para los servicios esenciales. ",
+          internacional: "Su organización es considerada un operador de servicios esenciales según el marco regulatorio de ciberseguridad aplicable. Debe cumplir con los deberes generales aplicables a los operadores de servicios esenciales, incluyendo gestión de riesgos, reporte de incidentes y adopción de estándares de la autoridad nacional de ciberseguridad competente.",
+        },
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       },
     ]
@@ -1761,7 +1775,10 @@ const recommendations: Recommendation[] = [
     questionId: "q47",
     recommendations: [
       {
-        text: "Se recomienda aplicar minimos de transparencia e información relacionados con el hecho de estar interactuando con un sistema de IA.",
+        text: {
+          chile: "Se recomienda aplicar minimos de transparencia e información relacionados con el hecho de estar interactuando con un sistema de IA.",
+          internacional: "Establezca un mecanismo claro para informar a las personas afectadas que un sistema de IA interviene en las decisiones que las involucran.",
+        },
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
       }
     ]
@@ -1894,6 +1911,36 @@ const recommendations: Recommendation[] = [
       {
         text: "Es recomendable que el director del proyecto, sea responsable de  documentar, junto con el equipo técnico, todo el proceso de desarrollo para poder justificar frente a la ciudadanía y otras partes interesadas las decisiones tomadas a lo largo de todo el ciclo de vida de la IA.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === false
+      }
+    ]
+  },
+  {
+    questionId: "q76",
+    recommendations: [
+      {
+        text: "Implemente o actualice el procedimiento de gestión de incidentes para incluir la detección, respuesta y notificación de vulneraciones que afecten datos personales, asegurando coherencia con los protocolos de ciberseguridad institucional. Verifique que el procedimiento defina roles, plazos de notificación y criterios para evaluar el riesgo para las personas respecto a la normativa de protección de datos personales de su país.",
+        condition: (answer: Answer) => typeof answer === 'boolean' && answer === false,
+        soloContexto: 'internacional'
+      }
+    ]
+  },
+  {
+    questionId: "q77",
+    recommendations: [
+      {
+        text: "Elabore un aviso de privacidad específico para el sistema que informe a las personas sobre el tratamiento de sus datos, los fines, los responsables y cómo ejercer sus derechos. El aviso debe estar disponible antes o al momento del tratamiento, ser claro y accesible, e indicar qué datos se recopilan, para qué finalidad, quién los trata y cómo ejercer los derechos reconocidos por la normativa de protección de datos personales vigente en su país.",
+        condition: (answer: Answer) => typeof answer === 'boolean' && answer === false,
+        soloContexto: 'internacional'
+      }
+    ]
+  },
+  {
+    questionId: "q86",
+    recommendations: [
+      {
+        text: "Identifique las normativas sectoriales aplicables y verifique que el sistema cumple con sus exigencias específicas, articulándolas con los deberes generales de la Ley de Ciberseguridad de su país.",
+        condition: (answer: Answer) => typeof answer === 'boolean' && answer === true,
+        soloContexto: 'internacional'
       }
     ]
   }
@@ -2138,6 +2185,8 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
 
       return questionRecommendations.recommendations
         .filter(rec => {
+          // Recomendaciones exclusivas de un contexto: se omiten en el otro.
+          if (rec.soloContexto && rec.soloContexto !== contexto) return false
           if (Array.isArray(answer)) {
             return answer.some(ans => rec.condition(ans))
           }
