@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { trackToolStart } from '@/lib/analytics'
 import Link from 'next/link'
 import { T, SERIF, MONO } from '@/lib/civic'
-import { I, LogoUAIGobLab } from '@/components/civic-icons'
+import { I } from '@/components/civic-icons'
 import { FeedbackPill } from '@/components/FeedbackPill'
 import { CONTEXTOS, CONTEXTO_DEFAULT, type Contexto } from '@/lib/contexto'
 
@@ -196,7 +196,7 @@ export function LandingPage() {
       {/* ── Top bar ── */}
       <header style={{ padding: '14px 40px', background: '#fff', borderBottom: `1px solid ${T.roseLight}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap', minWidth: 0 }}>
-          <LogoUAIGobLab height={36} rose={T.rose} ink={T.ink} mono={MONO} />
+          <img src="/images/logo-goblab-uai.png" alt="GobLab · Universidad Adolfo Ibáñez" style={{ height: 38, width: 'auto', display: 'block', borderRadius: 4 }} />
           <div className="eia-logo-sep" style={{ width: 1, height: 24, background: T.roseLight }} />
           <LogoHerramientas scale={0.7} />
         </div>
@@ -386,6 +386,19 @@ export function LandingPage() {
               <a href="https://algoritmospublicos.cl/quiero_participar" target="_blank" rel="noopener noreferrer" style={{ color: T.burgundy, fontWeight: 600, textDecoration: 'none' }}>algoritmospublicos.cl/quiero_participar</a>.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* ── Agradecimientos ── */}
+      <section style={{ background: '#fff', borderTop: `1px solid ${T.roseLight}`, padding: '30px 40px' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 30, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ fontSize: 11, fontFamily: MONO, letterSpacing: 1.5, color: T.ink60, textTransform: 'uppercase' }}>Agradecimientos</div>
+            <img src="/images/ANID.png" alt="Agencia Nacional de Investigación y Desarrollo (ANID)" style={{ height: 76, width: 'auto', display: 'block' }} />
+          </div>
+          <p style={{ fontSize: 13.5, color: T.ink80, margin: 0, lineHeight: 1.65, maxWidth: 560, flex: '1 1 320px' }}>
+            Esta herramienta es desarrollada por <strong>GobLab UAI</strong> con el apoyo de la <strong>Agencia Nacional de Investigación y Desarrollo (ANID)</strong> — Subdirección de Investigación Aplicada / Concurso IDeA I+D 2023, proyecto <strong>ID23I10357</strong>.
+          </p>
         </div>
       </section>
 
