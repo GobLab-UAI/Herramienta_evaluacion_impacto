@@ -1657,7 +1657,7 @@ const recommendations: Recommendation[] = [
       {
         text: {
           chile: "De acuerdo al caso de uso señalado, procede realizar una evaluación de impacto en protección de datos personales (EIPD).  La EIPD es una metodologia para evaluar, identificar y mitigar los riesgos potenciales asociados al tratamiento de los datos, asegurando que se respeten los derechos de los individuos y se cumpla con las normativas de protección de datos vigentes. La EIPD debe analizar la naturaleza, el alcance, el contexto y los fines del tratamiento, así como las posibles consecuencias sobre la privacidad y la seguridad de los datos personales. Además, debe incluir medidas de mitigación de riesgos, como la implementación de técnicas de seudonimización, cifrado, y otras medidas de seguridad apropiadas, con el fin de garantizar que los datos sean tratados de manera legal y segura.",
-          internacional: "El sistema corresponde a un caso de alto riesgo según el Reglamento General de Protección de Datos de la Unión Europea. Realice una Evaluación de Impacto en Protección de Datos antes de su implementación.",
+          internacional: "El sistema podría corresponder a un caso de alto riesgo según la normativa de protección de datos aplicable en su país. Revise la legislación de protección de datos vigente en su jurisdicción y, si así lo exige, realice una Evaluación de Impacto en Protección de Datos antes de su implementación.",
         },
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
 
@@ -1670,14 +1670,14 @@ const recommendations: Recommendation[] = [
       {
         text: {
           chile: "La normativa de protección de datos exige establecer procedimientos claros y accesibles para el ejercicio de los derechos relacionados con la protección de datos, como el derecho de acceso, rectificación, cancelación y oposición. Verifique la procedencia de cada uno de ellos.",
-          internacional: "Establezca procesos formales y accesibles para que los titulares puedan ejercer los seis derechos reconocidos por la norma de protección de datos de su país. Parcialmente: extienda los procesos existentes para cubrir también los derechos de Portabilidad e Impugnación de decisiones automatizadas.",
+          internacional: "Establezca procesos formales y accesibles para que los titulares puedan ejercer los derechos reconocidos por la normativa de protección de datos vigente en su país (habitualmente acceso, rectificación, supresión y oposición, y cuando corresponda portabilidad e impugnación de decisiones automatizadas). Parcialmente: extienda los procesos existentes para cubrir también esos derechos.",
         },
         condition: (answer: boolean | string | null) => answer === "Si, pero parcialmente" || answer === "No"
       },
       {
         text: {
           chile: "La normativa de protección de datos exige establecer procedimientos claros y accesibles para el ejercicio de los derechos relacionados con la protección de datos, como el derecho de acceso, rectificación, cancelación y oposición. Verifique la procedencia de cada uno de ellos.",
-          internacional: "Establezca procesos formales y accesibles para que los titulares puedan ejercer los seis derechos reconocidos por la norma de protección de datos de su país. Parcialmente: extienda los procesos existentes para cubrir también los derechos de Portabilidad e Impugnación de decisiones automatizadas.",
+          internacional: "Establezca procesos formales y accesibles para que los titulares puedan ejercer los derechos reconocidos por la normativa de protección de datos vigente en su país (habitualmente acceso, rectificación, supresión y oposición, y cuando corresponda portabilidad e impugnación de decisiones automatizadas). Parcialmente: extienda los procesos existentes para cubrir también esos derechos.",
         },
         condition: (answer: boolean | string | null) => answer === "Si, pero parcialmente"
       }
@@ -1709,7 +1709,7 @@ const recommendations: Recommendation[] = [
       {
         text: {
           chile: "De acuerdo a sus respuestas la entidad está calificada como servicio esencial debiendo cumplir los estándares dictados por la ANCI para los servicios esenciales. ",
-          internacional: "Su organización es considerada un operador de servicios esenciales según el marco regulatorio de ciberseguridad aplicable. Debe cumplir con los deberes generales aplicables a los operadores de servicios esenciales, incluyendo gestión de riesgos, reporte de incidentes y adopción de estándares de la autoridad nacional de ciberseguridad competente.",
+          internacional: "Su organización podría ser considerada un operador de servicios esenciales según el marco regulatorio de ciberseguridad de su país. Revise dicha normativa y, si le aplica, cumpla con los deberes correspondientes: gestión de riesgos, reporte de incidentes y adopción de los estándares que defina la autoridad nacional de ciberseguridad competente.",
         },
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true
       },
@@ -2017,7 +2017,7 @@ const recommendations: Recommendation[] = [
     questionId: "q86",
     recommendations: [
       {
-        text: "Identifique las normativas sectoriales aplicables y verifique que el sistema cumple con sus exigencias específicas, articulándolas con los deberes generales de la Ley de Ciberseguridad de su país.",
+        text: "Identifique las normativas sectoriales aplicables y verifique que el sistema cumple con sus exigencias específicas, articulándolas con los deberes generales de la normativa de ciberseguridad vigente en su país.",
         condition: (answer: Answer) => typeof answer === 'boolean' && answer === true,
         soloContexto: 'internacional'
       }
