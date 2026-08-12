@@ -1317,21 +1317,20 @@ const questions: Question[] = [
     stage: "Uso y monitoreo",
     info: "",
     scoreContribution: false
-  }
-];
-
-const recommendations: Recommendation[] = [
-  /*
+  },
   {
-      // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
       id: "q65",
       text: "¿Se ha evaluado el impacto medioambiental (estimación de huella de carbono o consumo energético) asociado al entrenamiento, prueba y operación del modelo algorítmico?",
       type: "yesno",
       dimension: "Sostenibilidad ambiental",
-      stage: "Conceptualización y diseño",
+      stage: "Uso y monitoreo",
       info: "Consulta si se ha medido o estimado el consumo de energía y la huella de carbono generados en alguna de las fases del ciclo de vida del modelo (entrenamiento, prueba u operación en producción). Esto permite dimensionar el costo ambiental asociado al uso del sistema de IA en la o las etapas evaluadas.",
       scoreContribution: false
     },
+];
+
+const recommendations: Recommendation[] = [
+  /*
   { 
     questionId: "q1", 
     text: "Definición clara del problema que se busca resolver", 
