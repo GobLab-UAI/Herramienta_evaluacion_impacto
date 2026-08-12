@@ -283,26 +283,8 @@ const questions: Question[] = [
       track: "iagen",
       scoreContribution: false
     },
-  {
-      // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
-      id: "q64",
-      text: "¿Están documentados los recursos computacionales y de hardware requeridos para el funcionamiento continuo del sistema?",
-      type: "yesno",
-      dimension: "Proporcionalidad",
-      stage: "Conceptualización y diseño",
-      info: "Consulta si existe un registro de la infraestructura técnica necesaria para operar el sistema de manera continua, como servidores, GPU/CPU, capacidad de almacenamiento o servicios en la nube utilizados",
-      scoreContribution: false
-    },
-  {
-      // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
-      id: "q65",
-      text: "¿Se ha evaluado el impacto medioambiental (estimación de huella de carbono o consumo energético) asociado al entrenamiento, prueba y operación del modelo algorítmico?",
-      type: "yesno",
-      dimension: "Proporcionalidad",
-      stage: "Conceptualización y diseño",
-      info: "Consulta si se ha medido o estimado el consumo de energía y la huella de carbono generados en alguna de las fases del ciclo de vida del modelo (entrenamiento, prueba u operación en producción). Esto permite dimensionar el costo ambiental asociado al uso del sistema de IA en la o las etapas evaluadas.",
-      scoreContribution: false
-    },
+  
+  
   { 
     id: "q13", 
     text: "¿Se implementa el algoritmo para la ejecución de una normativa específica?", 
@@ -857,15 +839,6 @@ const questions: Question[] = [
       scoreContribution: false
     },
   {
-      id: "q85",
-      text: "¿La organización ha sido designada como operador de importancia vital por la Agencia Nacional de Ciberseguridad?",
-      type: "yesno",
-      dimension: "Ciberseguridad",
-      stage: "Conceptualización y diseño",
-      info: "Los operadores de importancia vital están sujetos a deberes adicionales según la Ley Marco de Ciberseguridad, como la adopción de estándares específicos, certificación de planes de continuidad y reporte obligatorio de incidentes a la ANCI.",
-      scoreContribution: false
-    },
-  {
       id: "q86",
       text: "¿Existe alguna regulación sectorial en materia de ciberseguridad aplicable a la organización, además de la Ley Marco?",
       type: "yesno",
@@ -1229,6 +1202,16 @@ const questions: Question[] = [
       scoreContribution: false
     },
   {
+      // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
+      id: "q64",
+      text: "¿Están documentados los recursos computacionales y de hardware requeridos para el funcionamiento continuo del sistema?",
+      type: "yesno",
+      dimension: "Rendición de cuentas",
+      stage: "Conceptualización y diseño",
+      info: "Consulta si existe un registro de la infraestructura técnica necesaria para operar el sistema de manera continua, como servidores, GPU/CPU, capacidad de almacenamiento o servicios en la nube utilizados",
+      scoreContribution: false
+    },
+  {
     // ENUNCIADO INFERIDO del tooltip (11,1 no trae Label en el documento) — revisar con Isidora
     id: "q100",
     text: "¿Se ha estimado el consumo energético y computacional del sistema durante su entrenamiento y operación?",
@@ -1252,6 +1235,16 @@ const questions: Question[] = [
 
 const recommendations: Recommendation[] = [
   /*
+  {
+      // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
+      id: "q65",
+      text: "¿Se ha evaluado el impacto medioambiental (estimación de huella de carbono o consumo energético) asociado al entrenamiento, prueba y operación del modelo algorítmico?",
+      type: "yesno",
+      dimension: "Sostenibilidad ambiental",
+      stage: "Conceptualización y diseño",
+      info: "Consulta si se ha medido o estimado el consumo de energía y la huella de carbono generados en alguna de las fases del ciclo de vida del modelo (entrenamiento, prueba u operación en producción). Esto permite dimensionar el costo ambiental asociado al uso del sistema de IA en la o las etapas evaluadas.",
+      scoreContribution: false
+    },
   { 
     questionId: "q1", 
     text: "Definición clara del problema que se busca resolver", 
