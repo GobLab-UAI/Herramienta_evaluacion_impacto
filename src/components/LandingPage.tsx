@@ -172,7 +172,7 @@ export function LandingPage() {
         await fetch('/api/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email }),
+          body: JSON.stringify({ email, origin }),
           signal: controller.signal,
         })
         clearTimeout(timeoutId)

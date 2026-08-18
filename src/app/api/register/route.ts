@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { email } = await req.json();
+    const { email, origin } = await req.json();
 
     if (!email) {
       return NextResponse.json(
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
         "Authorization": `Bearer ${supabaseAnonKey}`,
         "Prefer": "return=minimal",
       },
-      body: JSON.stringify({ email, tool_name: toolName }),
+      body: JSON.stringify({ email, tool_name: toolName, origin: origin || null }),
     });
 
     if (res.status === 201) {

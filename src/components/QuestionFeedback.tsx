@@ -4,16 +4,17 @@
  * Patrón 03 del proyecto de Design: micro-widget de feedback bajo cada
  * pregunta. Un click para levantar la mano, sin interrumpir el flujo.
  *
- * 👍 se registra sólo como evento GA4 — crear una fila en Supabase por cada
- * pulgar arriba llenaría la tabla de filas sin texto accionable. 👎 abre el
- * panel de motivos y sí persiste cuando se envía.
+ * 👍/👎 se registran como evento GA4 y como voto en Supabase
+ * (tool_question_vote, sin datos personales) para los conteos del panel.
+ * Además, 👎 abre el panel de motivos; ese comentario sí persiste en
+ * tool_feedback cuando se envía.
  */
 
 import { useState } from 'react'
 import { toast } from '@/hooks/use-toast'
 import { T, MONO, inputBase } from '@/lib/civic'
 import { I } from '@/components/civic-icons'
-import { sendFeedback, FEEDBACK_TYPES, type FeedbackContext } from '@/lib/feedback'
+import { sendFeedback, sendVote, FEEDBACK_TYPES, type FeedbackContext } from '@/lib/feedback'
 import { trackQuestionFeedback, trackFeedbackSubmit } from '@/lib/analytics'
 
 export type FlagState = 'up' | 'down'
@@ -45,6 +46,7 @@ export function QuestionFeedback({ questionId, context, flag, onFlag, email }: {
     onFlag(cleared ? undefined : next)
     if (!cleared) {
       trackQuestionFeedback(questionId, up)
+      sendVote({ questionId, helpful: up, context })
       if (!up) setOpen(true)
     } else if (!up) {
       setOpen(false)

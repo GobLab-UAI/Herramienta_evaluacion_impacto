@@ -106,3 +106,30 @@ export async function sendSurvey(opts: {
   const data = await res.json().catch(() => ({ success: false, error: 'Respuesta inválida' }))
   if (!data.success) throw new Error(data.error || 'No se pudo enviar la encuesta')
 }
+
+/**
+ * Registra un voto 👍/👎 de claridad de una pregunta en `tool_question_vote`.
+ * Fire-and-forget: nunca lanza ni bloquea la UI. Complementa al evento GA4.
+ * No envía datos personales (sin correo), solo la señal por pregunta/sección.
+ */
+export function sendVote(opts: {
+  questionId: string
+  helpful: boolean
+  context?: FeedbackContext
+}): void {
+  try {
+    void fetch('/api/vote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      keepalive: true,
+      body: JSON.stringify({
+        questionId: opts.questionId,
+        helpful: opts.helpful,
+        pregunta: opts.context?.pregunta,
+        seccion: opts.context?.seccion,
+      }),
+    }).catch(() => {})
+  } catch {
+    // Nunca interrumpir el cuestionario por un voto.
+  }
+}

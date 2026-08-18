@@ -35,9 +35,9 @@ export function trackToolComplete() {
 }
 
 /**
- * Señal de claridad por pregunta. Los 👍 se registran solo aquí y no crean
- * fila en Supabase: son miles de eventos sin texto accionable, y en GA4
- * sirven igual para medir la proporción de preguntas poco claras.
+ * Señal de claridad por pregunta hacia GA4. El voto 👍/👎 además se persiste
+ * en Supabase (tool_question_vote) vía sendVote(), para poder ver los conteos
+ * por herramienta/sección/pregunta en el panel sin depender de GA4.
  */
 export function trackQuestionFeedback(questionId: string, helpful: boolean) {
   gtag("event", "question_feedback", {
