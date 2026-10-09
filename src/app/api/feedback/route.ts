@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { insertarConRespaldo, resolveUserId, sinNulos } from "@/lib/supabase-server";
 
 /**
  * Feedback → tabla `tool_feedback`.
@@ -7,10 +8,17 @@ import { NextResponse } from "next/server";
  * propias para poder consultarlo, y además se conserva incrustado en
  * `description` para no romper lo ya guardado ni los reportes existentes.
  *
+ * Vínculos (migración 004):
+ * - `user_id` → tool_users, solo si la persona aceptó recibir novedades.
+ * - `vote_id` → tool_question_vote, cuando el comentario se escribe desde el
+ *   👍/👎 de una pregunta.
+ *
  * Si esas columnas todavía no existen (migración sin correr), reintenta el
- * insert solo con los campos originales, de modo que nunca se pierda un envío.
- * Ver supabase/migrations/001_tool_survey.sql
+ * insert con menos columnas, de modo que nunca se pierda un envío.
+ * Ver supabase/migrations/001_tool_survey.sql y 004_vinculos_usuario.sql
  */
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export async function POST(req: Request) {
   try {
@@ -21,7 +29,7 @@ export async function POST(req: Request) {
       : Object.fromEntries((await req.formData()).entries());
     /* eslint-enable @typescript-eslint/no-explicit-any */
 
-    const { feedback_type, description, email, organization, context } = body;
+    const { feedback_type, description, email, organization, context, vote_id } = body;
     if (!feedback_type || !description) {
       return NextResponse.json(
         { success: false, error: "Campos obligatorios faltantes" },
@@ -29,16 +37,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const supabaseUrl = process.env.SUPABASE_URL!;
-    const supabaseKey = process.env.SUPABASE_ANON_KEY!;
     const tool = process.env.SUPABASE_TOOL_NAME || "evaluacion de impacto";
-
-    const headers = {
-      apikey: supabaseKey,
-      Authorization: `Bearer ${supabaseKey}`,
-      "Content-Type": "application/json",
-      Prefer: "return=minimal",
-    };
 
     const base = {
       tool,
@@ -65,21 +64,16 @@ export async function POST(req: Request) {
         }
       : base;
 
-    const insertar = (fila: object) =>
-      fetch(`${supabaseUrl}/rest/v1/tool_feedback`, {
-        method: "POST",
-        headers,
-        body: JSON.stringify(fila),
-      });
+    const vinculos = sinNulos({
+      user_id: await resolveUserId(email),
+      vote_id: typeof vote_id === "string" && UUID.test(vote_id) ? vote_id : null,
+    });
 
-    let res = await insertar(conContexto);
-
-    // Las columnas de contexto aún no existen: reintentar sin ellas.
-    if (!res.ok && conContexto !== base) {
-      const detalle = await res.text();
-      console.error("insert con contexto falló, reintentando:", res.status, detalle);
-      res = await insertar(base);
-    }
+    const res = await insertarConRespaldo("tool_feedback", [
+      { ...conContexto, ...vinculos },
+      conContexto,
+      base,
+    ]);
 
     if (!res.ok) throw new Error(await res.text());
 

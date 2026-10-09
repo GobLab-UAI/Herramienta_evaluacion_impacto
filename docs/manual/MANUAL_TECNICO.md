@@ -87,7 +87,7 @@ src/
 │   ├── FeedbackPill.tsx                # Botón flotante + modal de feedback
 │   ├── QuestionFeedback.tsx            # 👍/👎 + comentario por pregunta
 │   ├── SatisfactionSurvey.tsx          # Encuesta de satisfacción (11 preguntas)
-│   ├── Thermometer.tsx                 # Visual del puntaje por dimensión
+│   ├── resultados-graficos.tsx         # Barra de niveles, radar y desglose (pantalla + PDF)
 │   ├── civic-icons.tsx                 # Iconos y logos del sistema de diseño
 │   └── ui/                             # Primitivas shadcn/ui (Radix)
 ├── data/
@@ -102,7 +102,8 @@ src/
 supabase/migrations/
 ├── 001_tool_survey.sql       # tool_survey + columnas de contexto en tool_feedback
 ├── 002_tool_users_origin.sql # columna origin en tool_users
-└── 003_question_votes.sql    # tool_question_vote (votos 👍/👎)
+├── 003_question_votes.sql    # tool_question_vote (votos 👍/👎)
+└── 004_vinculos_usuario.sql  # FK user_id / vote_id + función eia_user_id
 docs/
 ├── manual/                   # Este manual
 └── eia-gen/                  # Notas del desarrollo Hito 1/2 (IA generativa)
@@ -121,14 +122,14 @@ Es el corazón de la herramienta (~3.000 líneas). Contiene, en módulo:
 
 Y dentro del componente React:
 
-- Estado: `answers`, `totalScore`, `scoreByDimension`, `flags` (👍/👎), `surveySent`,
-  `contexto`, etc.
+- Estado: `answers`, `flags` (👍/👎), `surveySent`, `contexto`, etc. `scoreByDimension`
+  y `totalScore` se **derivan** de `answers` en cada render.
 - `forContexto(question)` — aplica los `overrides` del contexto activo.
 - `shouldShowQuestion(question, answers)` — decide si una pregunta es visible (§6).
-- `calculateTotalScore(answers)` / `getScoreByDimension(answers)` — scoring (§7).
-- `getImpactLevel(score)` — mapea el puntaje a nivel (§7).
+- `getScoreByDimension(answers)` / `calculateTotalScore(byDimension)` — scoring (§7).
+- `getImpactLevel(score)` — devuelve el nivel de `IMPACT_LEVELS` (§7).
 - Render de: barra lateral de dimensiones, preguntas de la sección, resultados
-  (puntaje, `Thermometer`, recomendaciones, PDF, `SatisfactionSurvey`).
+  (puntaje, `ImpactLevelBar`, radar, recomendaciones, PDF, `SatisfactionSurvey`).
 
 > Consecuencia práctica: numeración visible, progreso, "sección completa" y scoring
 > **se derivan todos de `shouldShowQuestion`**. Es el único punto a tocar para
@@ -150,7 +151,7 @@ type Question = {
   options?: Option[]         // para select / multiselect
   info?: string              // tooltip (soporta \n y **negrita**)
 
-  // Scoring (opcional): solo las preguntas "clásicas" puntúan
+  // Scoring: qué respuesta indica riesgo (los puntos se normalizan, §7)
   scoreContribution?: boolean
   score?: (answer: Answer) => number
 
@@ -183,8 +184,8 @@ Notas de diseño del modelo:
   (`d04_q35`). Cualquier script debe recorrer con `q[\w.]+`, nunca `q\d+`.
 - El texto por defecto es el del **contexto base (Chile)**; `overrides.internacional`
   reemplaza `text`/`info`/`options` cuando el contexto activo es internacional.
-- Las preguntas nuevas (IA generativa y dimensiones recientes) entran con
-  `scoreContribution: false` — ver §7.
+- Las preguntas sí/no nuevas usan `score: riesgoSi` o `score: riesgoNo` según qué
+  respuesta indique riesgo — ver §7.
 
 ---
 
@@ -236,33 +237,52 @@ para que una pregunta oculta desaparezca de todos los cálculos.
 
 ## 7. Scoring y niveles de impacto
 
-```ts
-const MIN_SCORE = 18.32
+Desde la v5.1.0 el puntaje se **normaliza sobre las preguntas visibles**, de modo que
+la rama de IA generativa, el contexto (Chile/Internacional) y las dependencias no
+penalizan ni favorecen a ningún proyecto.
 
-calculateTotalScore(answers):
-  rawScore = Σ question.score(answers[id])   // solo si question.scoreContribution && question.score
-  return Math.max(rawScore, MIN_SCORE)
+```ts
+questionPoints(q, answer)   // q.score(answer) o, si no hay, el score de la opción elegida
+maxPointsById[q.id]         // máximo alcanzable por pregunta (se precalcula)
 
 getScoreByDimension(answers):
-  // mismo cálculo, agrupado por dimensión
+  para cada dimensión:
+    V = preguntas con scoreContribution, max > 0 y shouldShowQuestion(q) === true
+    si V está vacío → la dimensión se omite (se muestra "—")
+    riesgo = Σ questionPoints(q) / Σ maxPointsById(q) × 100      // 0–100
 
-getImpactLevel(score):
-  score <= 18.32 → "Bajo impacto"
-  score <= 45.54 → "Impacto moderado"
-  score <= 72.77 → "Alto impacto"
-  else           → "Impacto muy alto"
+calculateTotalScore(byDimension):
+  promedio simple de las dimensiones presentes                   // todas pesan igual
+
+getImpactLevel(score):   // sobre Math.round(score)
+  0–18   → "Bajo impacto"
+  19–45  → "Impacto moderado"
+  46–72  → "Alto impacto"
+  73–100 → "Impacto muy alto"
 ```
 
-- La escala es **0–100** (mostrada como `%`), con piso `MIN_SCORE`. El
-  `Thermometer` usa `minScore=18.32`, `maxScore=100`.
-- **Solo las preguntas "clásicas"** llevan `scoreContribution: true` y una función
-  `score`. Las preguntas incorporadas en el desarrollo de IA generativa y las
-  dimensiones nuevas entran con **`scoreContribution: false`** (decisión de producto:
-  el scoring de esas preguntas está pendiente de definición). Documentarlo al
-  usuario evita la sorpresa de "respondí mucho y el puntaje no se movió".
+- Los umbrales (`IMPACT_LEVELS`) son los históricos 18,32 / 45,54 / 72,77 llevados a
+  enteros; todos los porcentajes se muestran **sin decimales**. Ya no hay piso
+  `MIN_SCORE`.
+- Los pesos absolutos de las preguntas clásicas (1,3, 5,55, 1,01…) solo importan
+  **dentro** de su dimensión; entre dimensiones el peso es igual.
+- Una pregunta sin responder cuenta en el denominador y aporta 0.
+- Preguntas sí/no nuevas: `riesgoSi` (Sí = riesgo: q60, q79, q84, q85, q86, q92) y
+  `riesgoNo` (No = riesgo: el resto de las salvaguardas, y `q102`: sin ley de protección
+  de datos la dimensión queda en 100). No puntúan: `qGen`, `q3`, `q4`, `q52` (pendiente de
+  definición) y los campos de texto.
+- Selects con puntaje en las opciones (q9, q32) ahora sí suman.
 
-> Al agregar preguntas nuevas, **déjalas en `scoreContribution: false`** salvo que
-> se defina explícitamente su fórmula de puntaje.
+> Al agregar una pregunta sí/no, define `scoreContribution: true` y
+> `score: riesgoSi | riesgoNo`; queda normalizada automáticamente.
+
+### Gráficos y PDF
+`src/components/resultados-graficos.tsx` exporta `ImpactLevelBar` (barra de 4
+tramos con marcador "Tu proyecto: N"), `RadarDimensiones` y `PuntajeDimensiones`.
+Usan solo estilos en línea para que html2canvas los rasterice igual que en pantalla.
+El PDF replica la pantalla: **01 Resumen** (radar + desglose, puntuación total,
+información general) en la primera página y **02 Recomendaciones** desde una página
+nueva (`.html2pdf__page-break`).
 
 ---
 
@@ -278,7 +298,7 @@ romper la UX.
 | `POST /api/register` | `tool_users` | Registra `{ email, tool_name, origin }`. `201`→ok, `409`→ya existía (también ok). |
 | `POST /api/survey` | `tool_survey` | Guarda la encuesta con **una columna por pregunta** (`p2…p11`). Si la tabla no existe, cae a `tool_feedback` como texto (no pierde la respuesta). |
 | `POST /api/feedback` | `tool_feedback` | Comentario con contexto (`pantalla, seccion, pregunta, question_id, progreso`) en columnas propias **y** embebido en `description`. Si las columnas no existen, reintenta sin ellas. |
-| `POST /api/vote` | `tool_question_vote` | Voto 👍/👎 de claridad `{ questionId, helpful, pregunta, seccion }`. Sin datos personales. Si la tabla no existe, responde `success:false` sin romper el cuestionario. |
+| `POST /api/vote` | `tool_question_vote` | Voto 👍/👎 de claridad `{ questionId, helpful, pregunta, seccion, email }`. Genera y devuelve `voteId`. El correo solo sirve para resolver `user_id`; no se guarda. Si la tabla no existe, responde `success:false` sin romper el cuestionario. |
 
 Ejemplo de contrato (`/api/vote`):
 
@@ -316,6 +336,30 @@ se ejecuta en el **SQL Editor** de Supabase).
 - `001_tool_survey.sql` — crea `tool_survey` y añade columnas de contexto a `tool_feedback`.
 - `002_tool_users_origin.sql` — añade `origin` a `tool_users`.
 - `003_question_votes.sql` — crea `tool_question_vote` con RLS de insert y select anónimo.
+- `004_vinculos_usuario.sql` — vínculos entre tablas (ver abajo).
+
+### Vínculos entre tablas (migración 004)
+
+```
+tool_users (solo quienes marcan "Acepto recibir novedades…")
+   ▲ user_id            ▲ user_id            ▲ user_id
+tool_feedback ──vote_id──▶ tool_question_vote      tool_survey
+```
+
+- **`user_id`** (FK → `tool_users`, nullable) en `tool_feedback`, `tool_survey` y
+  `tool_question_vote`. Lo resuelve el servidor (`resolveUserId` en
+  `src/lib/supabase-server.ts`) con la función `eia_user_id(email, tool)`, que
+  devuelve solo el id: la anon key nunca lee `tool_users`. Sin consentimiento no
+  hay fila en `tool_users`, así que queda `NULL`.
+- **`vote_id`** (FK → `tool_question_vote`) en `tool_feedback`: el comentario por
+  pregunta queda unido al 👍/👎 desde el que se escribió. Si se comenta sin haber
+  votado, se registra un 👎 (el panel es "¿Qué no funcionó?") y se une a él.
+- La PK de `tool_users` se detecta al correr la migración (la tabla es compartida y
+  no se creó desde este repo).
+- Vista **`eia_feedback_completo`**: cada fila de `tool_feedback` con su voto
+  (`voto_claridad`, `voto_at`).
+- Las rutas insertan con `insertarConRespaldo`: si las columnas nuevas no existen,
+  reintentan sin ellas, así que se puede desplegar antes de migrar.
 
 > Las migraciones se corren **manualmente** en Supabase. El código degrada si una
 > tabla/columna aún no existe, así que desplegar antes de migrar no rompe nada.

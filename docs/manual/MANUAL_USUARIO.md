@@ -242,35 +242,38 @@ Cuando pulses **Ver resultados**, verás:
 
 - **Puntaje total** (0–100) en grande, con el **nivel de impacto** (Bajo, Moderado,
   Alto o Muy alto).
-- **Termómetro / gráfico por dimensión**: muestra cómo se reparte el riesgo entre
-  las 11 áreas. Las dimensiones más "calientes" son las que más conviene atender.
+- **Perfil y puntaje por dimensión**: el radar y la lista muestran cómo se reparte el
+  riesgo entre las 11 áreas. Las dimensiones con puntaje más alto son las que más
+  conviene atender.
+- **Barra de niveles**: muestra los cuatro tramos (Bajo, Moderado, Alto, Muy alto) y
+  marca dónde cae tu proyecto ("Tu proyecto: N").
 - **Recomendaciones**: agrupadas y basadas en tus respuestas. Cada una explica qué
   conviene revisar o mejorar.
 - **Descargar informe (PDF)** — ver §14.
 - **Pestaña "Evalúa esta herramienta"** — la encuesta de satisfacción (§15).
 
-> **Importante sobre el puntaje:** las preguntas más nuevas del cuestionario
-> (las incorporadas para IA generativa y las dimensiones recientes) están pensadas
-> como **reflexión guiada** y hoy **no suman al puntaje numérico**. Por eso puedes
-> responder mucho y ver poco movimiento en el número: el valor está tanto en el
-> puntaje como en **las preguntas que te hiciste** y en las recomendaciones.
+> **Importante sobre el puntaje:** todas las preguntas de sí/no del cuestionario,
+> incluidas las de IA generativa, suman al puntaje. Solo cuentan las preguntas que
+> efectivamente se te muestran, así que responder la rama de IA generativa o el
+> contexto internacional no te penaliza.
 
 ---
 
 ## 13. Cómo se calcula e interpreta el puntaje
 
-El puntaje resume el riesgo estimado en una escala de **0 a 100** (nunca baja de un
-piso de ~18,3). A partir de él, la herramienta asigna un **nivel**:
+El puntaje resume el riesgo estimado en una escala de **0 a 100**, siempre en
+números enteros. A partir de él, la herramienta asigna un **nivel**:
 
 | Puntaje | Nivel de impacto | Lectura |
 |---|---|---|
-| hasta **18,32** | **Bajo impacto** | Riesgo acotado; mantén buenas prácticas. |
-| hasta **45,54** | **Impacto moderado** | Hay puntos a reforzar; revisa las recomendaciones. |
-| hasta **72,77** | **Alto impacto** | Riesgos relevantes; conviene mitigar antes de avanzar. |
-| más de **72,77** | **Impacto muy alto** | Riesgos críticos; revisa a fondo antes de desplegar. |
+| **0 – 18** | **Bajo impacto** | Riesgo acotado; mantén buenas prácticas. |
+| **19 – 45** | **Impacto moderado** | Hay puntos a reforzar; revisa las recomendaciones. |
+| **46 – 72** | **Alto impacto** | Riesgos relevantes; conviene mitigar antes de avanzar. |
+| **73 – 100** | **Impacto muy alto** | Riesgos críticos; revisa a fondo antes de desplegar. |
 
-El puntaje se construye sumando la contribución de las preguntas que puntúan
-(principalmente respuestas que **señalan un riesgo**), y el gráfico por dimensión
+Cada dimensión obtiene un puntaje de 0 a 100: la proporción de sus preguntas
+visibles que respondiste en el sentido que **señala un riesgo**. El puntaje total es
+el promedio de las dimensiones (todas pesan igual), y el gráfico por dimensión
 te dice **dónde** están concentrados. Úsalo para **priorizar**, no como una nota
 final: dos proyectos con el mismo puntaje pueden tener perfiles de riesgo muy
 distintos.
@@ -280,10 +283,11 @@ distintos.
 ## 14. Descargar el informe en PDF
 
 Pulsa **Descargar informe / PDF** en la pantalla de resultados. Se genera un
-documento A4 con:
-- El puntaje y el nivel de impacto.
-- El detalle por dimensión.
-- Las recomendaciones.
+documento A4 con la misma estructura que la pantalla:
+- **01 Resumen** (primera página): radar y puntaje por dimensión, la barra de niveles
+  con tu puntaje total y la información general del proyecto.
+- **02 Recomendaciones** (desde una página nueva): la tabla de recomendaciones por
+  etapa, con las preguntas relacionadas y tus respuestas.
 
 Es el material para **compartir dentro de tu institución** y respaldar decisiones.
 El PDF se arma en tu navegador a partir de lo que ves en pantalla.

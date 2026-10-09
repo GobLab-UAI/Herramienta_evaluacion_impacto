@@ -160,7 +160,7 @@ export function LandingPage() {
   const [contexto, setContexto] = useState<Contexto>(CONTEXTO_DEFAULT)
 
   const router = useRouter()
-  const VERSION = process.env.NEXT_PUBLIC_VERSION || '5.0.0'
+  const VERSION = process.env.NEXT_PUBLIC_VERSION || '5.1.0'
 
   const handleStart = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -397,7 +397,7 @@ export function LandingPage() {
             <img src="/images/ANID.png" alt="Agencia Nacional de Investigación y Desarrollo (ANID)" style={{ height: 76, width: 'auto', display: 'block' }} />
           </div>
           <p style={{ fontSize: 13.5, color: T.ink80, margin: 0, lineHeight: 1.65, maxWidth: 560, flex: '1 1 320px' }}>
-            Esta herramienta es desarrollada por <strong>GobLab UAI</strong> con el apoyo de la <strong>Agencia Nacional de Investigación y Desarrollo (ANID)</strong> — Subdirección de Investigación Aplicada / Concurso IDeA I+D 2023, proyecto <strong>ID23I10357</strong>.
+            Esta herramienta es desarrollada por <strong>GobLab UAI</strong> con el apoyo de la <strong>Agencia Nacional de Investigación y Desarrollo (ANID)</strong> — Subdirección de Investigación Aplicada / Concurso IDeA I+D 2023, proyecto <strong>ID23I10357</strong>, y proyecto <strong>Plataforma Algoritmos Públicos: Hacia una IA Generativa Responsable y Ética (ANID IT25I0161)</strong>.
           </p>
         </div>
       </section>
@@ -405,7 +405,7 @@ export function LandingPage() {
       {/* ── Footer ── */}
       <footer style={{ padding: '14px 40px', background: T.ink, color: 'rgba(255,255,255,.75)', fontSize: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
         <span>Desarrollado por <strong style={{ color: '#fff' }}>GobLab UAI</strong> · Escuela de Gobierno UAI</span>
-        <span style={{ fontFamily: MONO, fontSize: 11, opacity: 0.7 }}>ANID IT25I0161</span>
+        <span style={{ fontSize: 11.5, opacity: 0.75 }}>Proyecto Plataforma Algoritmos Públicos: Hacia una IA Generativa Responsable y Ética · <span style={{ fontFamily: MONO, fontSize: 11 }}>ANID IT25I0161</span></span>
       </footer>
 
       <FeedbackPill context={{ pantalla: 'portada' }} defaultEmail={email} />

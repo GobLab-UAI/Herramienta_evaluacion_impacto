@@ -4,10 +4,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { trackSectionComplete, trackToolComplete, trackToolExport } from '@/lib/analytics'
 import { Checkbox } from "@/components/ui/checkbox"
-// Card/Table sólo se usan en el marcado oculto que alimenta el PDF.
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+// Table sólo se usa en el marcado oculto que alimenta el PDF.
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Thermometer } from '@/components/Thermometer'
+import { ImpactLevelBar, RadarDimensiones, PuntajeDimensiones, type PuntajeDimension } from '@/components/resultados-graficos'
 import { ExternalLink } from 'lucide-react'
 import { T, SERIF, MONO, inputBase } from '@/lib/civic'
 import { I, LogoUAIGobLab } from '@/components/civic-icons'
@@ -58,6 +57,12 @@ export type Question = {
 type Answer = string | string[] | boolean | null
 
 type Condition = (answer: boolean | string | null) => boolean;
+
+// Funciones de puntaje de las preguntas sí/no incorporadas en EIA Gen.
+// Solo importa qué respuesta indica riesgo: el puntaje de cada dimensión se
+// normaliza sobre las preguntas visibles (ver getScoreByDimension).
+const riesgoSi = (answer: Answer) => answer === true ? 1 : 0
+const riesgoNo = (answer: Answer) => answer === false ? 1 : 0
 
 type Recommendation = {
   questionId: string;
@@ -183,7 +188,8 @@ const questions: Question[] = [
       stage: "Conceptualización y diseño",
       info: "Un sistema de propósito general está disponible tal como fue desarrollado por un tercero, sin ajustes para el contexto institucional. Un sistema adaptado ha sido configurado, ajustado o entrenado para una tarea específica, como atención ciudadana, clasificación de documentos o apoyo a decisiones administrativas.",
       track: "iagen",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoSi
     },
   {
       // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
@@ -193,7 +199,8 @@ const questions: Question[] = [
       dimension: "General",
       stage: "Conceptualización y diseño",
       info: "Se refiere a indicadores técnicos objetivos (ej. AUC-ROC, matriz de confusión, error cuadrático medio) usados para comparar modelos candidatos y decidir si el rendimiento alcanzado es suficiente para operar en producción.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   { 
     id: "q8", 
@@ -272,7 +279,8 @@ const questions: Question[] = [
       dimension: "Proporcionalidad",
       stage: "Conceptualización y diseño",
       info: "Documentar la situación actual significa describir cómo se realiza hoy el proceso: si es manual, semi-automatizado o apoyado en otras herramientas, y cuáles son sus principales limitaciones. Esto permite comparar el impacto del nuevo sistema frente al enfoque existente.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q63",
@@ -282,7 +290,8 @@ const questions: Question[] = [
       stage: "Conceptualización y diseño",
       info: "Los sistemas determinísticos o analíticos tradicionales producen resultados predecibles a partir de reglas definidas. La IA generativa, en cambio, genera contenido nuevo con mayor variabilidad y menor predictibilidad. Esta pregunta busca verificar que la complejidad adicional de la IA generativa esté justificada por el problema que se quiere resolver.",
       track: "iagen",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   
   
@@ -330,7 +339,8 @@ const questions: Question[] = [
           text: "¿Se han identificado los riesgos de infracción a la propiedad intelectual que puede generar el sistema de acuerdo a la normativa vigente en su país?"
         }
       },
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q67",
@@ -340,7 +350,8 @@ const questions: Question[] = [
       stage: "Conceptualización y diseño",
       info: "El uso de contenidos protegidos es necesario cuando no existen alternativas equivalentes, como datasets abiertos, obras en dominio público o datos sintéticos. Es proporcional cuando el volumen y tipo de contenido usado no excede lo estrictamente requerido para la finalidad del sistema.",
       track: "iagen",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q68",
@@ -350,7 +361,8 @@ const questions: Question[] = [
       stage: "Conceptualización y diseño",
       info: "Las medidas contractuales para mitigar riesgos de PI son cláusulas o acuerdos que establecen obligaciones sobre licitud del uso de contenidos, indemnidad ante reclamos, auditoría de datasets y control sobre la reutilización de los outputs del sistema.",
       track: "iagen",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
@@ -361,7 +373,8 @@ const questions: Question[] = [
       stage: "Uso y monitoreo",
       info: "Un procedimiento de gestión de reclamos de PI define quién recibe las denuncias de titulares de derechos, en qué plazo se evalúan, qué medidas correctivas pueden adoptarse y quién es responsable de ejecutarlas.",
       track: "iagen",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   { 
     id: "q15", 
@@ -416,7 +429,8 @@ const questions: Question[] = [
       dimension: "Licencia Social",
       stage: "Conceptualización y diseño",
       info: "Los grupos afectados directamente son quienes interactúan con el sistema o sobre quienes toma decisiones. Los afectados indirectamente son quienes reciben consecuencias sin interactuar con él. Los grupos en situación de vulnerabilidad incluyen, por ejemplo, niños, personas mayores, personas con discapacidad, pueblos indígenas o migrantes.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q71",
@@ -425,7 +439,8 @@ const questions: Question[] = [
       dimension: "Licencia Social",
       stage: "Conceptualización y diseño",
       info: "Los mecanismos de participación ciudadana son instancias formales para involucrar a actores clave o comunidades afectadas en el desarrollo o evaluación del sistema, como talleres, consultas, encuestas o mesas de trabajo. Sin presupuesto asignado, estas instancias difícilmente pueden ejecutarse.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   { 
     id: "q19",
@@ -435,7 +450,7 @@ const questions: Question[] = [
     stage: "Uso y monitoreo",
     info: "Una unidad de gobernanza es cualquier área, comité o rol formal dentro de la organización con responsabilidad sobre la supervisión del sistema, como su operación, cumplimiento normativo, gestión de riesgos o toma de decisiones relevantes.Por ejemplo: un comité de ética, un equipo de TI, un área legal o cualquier rol formal que supervise cómo opera el sistema, gestione sus riesgos y vele por su cumplimiento normativo.",
     scoreContribution: true,
-    score: (answer) => answer === true ? 2.22 : 2.22
+    score: (answer) => answer === false ? 2.22 : 0
   },
   { 
     id: "q20", 
@@ -489,7 +504,10 @@ const questions: Question[] = [
       stage: "Conceptualización y diseño",
       soloContexto: "internacional",
       info: "Indique si en su país existe una ley de protección de datos personales vigente. Si responde \"No\", puede omitir el resto de esta dimensión y continuar con la siguiente.",
-      scoreContribution: false
+      // No contar con ley de protección de datos es en sí un riesgo: al ocultarse
+      // el resto de la dimensión, q102 = No deja Protección de datos en 100.
+      scoreContribution: true,
+      score: riesgoNo
     },
   { 
     id: "q24", 
@@ -576,7 +594,7 @@ const questions: Question[] = [
       value: true
     },
     scoreContribution: true,
-    score: (answer) => answer === true ? 0 : 0
+    score: (answer) => answer === false ? 1.01 : 0
   },
   { 
     id: "q29", 
@@ -663,7 +681,8 @@ const questions: Question[] = [
           info: "Verifique que cada finalidad del sistema tenga una base jurídica clara: consentimiento, cumplimiento de una obligación legal, ejecución de un contrato, interés legítimo u otra habilitante reconocida por la normativa vigente en su país."
         }
       },
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q73",
@@ -672,7 +691,8 @@ const questions: Question[] = [
       dimension: "Protección de datos",
       stage: "Recolección y procesamiento de datos",
       info: "El período de conservación es el tiempo durante el cual el sistema mantiene los datos antes de eliminarlos o anonimizarlos. Por ejemplo: un sistema puede conservar datos de usuarios durante 12 meses desde el último uso, o hasta que se cumpla la finalidad para la que fueron recopilados.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q74",
@@ -681,7 +701,8 @@ const questions: Question[] = [
       dimension: "Protección de datos",
       stage: "Uso y monitoreo",
       info: "Un mecanismo de oposición permite a una persona solicitar que el sistema deje de tratar sus datos. Un mecanismo de impugnación le permite cuestionar una decisión que el sistema tomó sobre ella y pedir que sea revisada por una persona.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q75",
@@ -690,7 +711,8 @@ const questions: Question[] = [
       dimension: "Protección de datos",
       stage: "Recolección y procesamiento de datos",
       info: "Los plazos de conservación son el tiempo definido durante el cual el sistema puede mantener los datos. Se consideran justificados cuando están vinculados a una finalidad específica y documentados cuando constan por escrito, diferenciando entre datos en uso activo, respaldo, auditoría o entrenamiento.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q76",
@@ -699,7 +721,8 @@ const questions: Question[] = [
       dimension: "Protección de datos",
       stage: "Uso y monitoreo",
       info: "Una vulneración de seguridad ocurre cuando datos personales son accedidos, filtrados, alterados o destruidos sin autorización. Un procedimiento formal define quién actúa, en qué plazo y a quién se notifica cuando esto ocurre.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q77",
@@ -708,7 +731,8 @@ const questions: Question[] = [
       dimension: "Protección de datos",
       stage: "Conceptualización y diseño",
       info: "Un aviso de privacidad es un documento que informa a las personas qué datos se recopilan, para qué finalidad, quién los trata y cómo pueden ejercer sus derechos. Es específico del sistema cuando describe el tratamiento de datos de ese sistema en particular, no de la organización en general.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q78",
@@ -722,7 +746,8 @@ const questions: Question[] = [
           info: "El delegado o responsable de protección de datos es la persona designada dentro de la organización para supervisar que el tratamiento de datos personales cumpla con la normativa vigente y actuar como punto de contacto ante la Agencia de Protección de Datos u organismo similar vigente en su país."
         }
       },
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q79",
@@ -732,7 +757,8 @@ const questions: Question[] = [
       stage: "Uso y monitoreo",
       info: "Los resultados de un sistema de IA generativa pueden incluir datos personales de forma directa (por ejemplo, reproduciendo información de una persona real) o inferida (generando atributos sensibles a partir del contexto, aunque no estuvieran explícitamente en los datos de entrenamiento).",
       track: "iagen",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoSi
     },
   {
       id: "q80",
@@ -742,7 +768,8 @@ const questions: Question[] = [
       stage: "Uso y monitoreo",
       info: "La filtración de datos personales en los resultados ocurre cuando el sistema revela información que no debería ser visible para quien recibe la respuesta, ya sea porque el modelo la memorizó durante el entrenamiento o porque el prompt permitió extraerla. Por ejemplo: filtrado de resultados, redacción automática de datos sensibles, restricciones según perfil de usuario, control de prompts o pruebas de fuga de datos (privacy leakage testing).",
       track: "iagen",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q81",
@@ -752,7 +779,8 @@ const questions: Question[] = [
       stage: "Uso y monitoreo",
       info: "La anonimización elimina de forma irreversible los identificadores que permiten reconocer a una persona en los datos. La seudonimización los reemplaza por un código o seudónimo, reduciendo el riesgo de identificación pero permitiendo revertir el proceso bajo condiciones controladas.",
       track: "iagen",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
@@ -762,7 +790,8 @@ const questions: Question[] = [
       dimension: "Protección de datos",
       stage: "Recolección y procesamiento de datos",
       info: "",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
     id: "q35",
@@ -848,7 +877,8 @@ const questions: Question[] = [
       dimension: "Ciberseguridad",
       stage: "Conceptualización y diseño",
       info: "El CISO (Chief Information Security Officer) es la persona responsable de definir, implementar y supervisar la estrategia de ciberseguridad institucional. En organizaciones que no tienen este cargo formalmente, puede corresponder a un rol equivalente con atribuciones similares dentro del área de TI u otra unidad.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q84",
@@ -857,7 +887,8 @@ const questions: Question[] = [
       dimension: "Ciberseguridad",
       stage: "Conceptualización y diseño",
       info: "Un sistema es crítico si su falla o indisponibilidad afecta la continuidad operacional de la organización, compromete información sensible o impide el ejercicio de derechos fundamentales de las personas.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoSi
     },
   {
       id: "q85",
@@ -867,7 +898,8 @@ const questions: Question[] = [
       stage: "Conceptualización y diseño",
       soloContexto: "chile",
       info: "Los operadores de importancia vital están sujetos a deberes adicionales según la Ley Marco de Ciberseguridad, como la adopción de estándares específicos, certificación de planes de continuidad y reporte obligatorio de incidentes a la ANCI.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoSi
     },
   {
       id: "q86",
@@ -882,7 +914,8 @@ const questions: Question[] = [
           info: "Por ejemplo: normativas del sector financiero, salud, telecomunicaciones o energía. Algunos sectores tienen exigencias propias en materia de seguridad que se suman a la normativa de ciberseguridad vigente en su país."
         }
       },
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoSi
     },
   {
       id: "q103",
@@ -895,7 +928,8 @@ const questions: Question[] = [
         questionId: "q37.1",
         value: true
       },
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q87",
@@ -908,7 +942,8 @@ const questions: Question[] = [
         questionId: "q37.1",
         value: true
       },
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q88",
@@ -921,7 +956,8 @@ const questions: Question[] = [
         questionId: "q37.1",
         value: true
       },
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
@@ -935,7 +971,8 @@ const questions: Question[] = [
         questionId: "q37.1",
         value: true
       },
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q90",
@@ -944,7 +981,8 @@ const questions: Question[] = [
       dimension: "Ciberseguridad",
       stage: "Uso y monitoreo",
       info: "Un plan de continuidad operacional define cómo la organización mantiene o recupera sus servicios ante una falla, ataque o desastre.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q91",
@@ -953,7 +991,8 @@ const questions: Question[] = [
       dimension: "Ciberseguridad",
       stage: "Uso y monitoreo",
       info: "Un protocolo de incidentes define qué hacer cuando se detecta una amenaza: quién actúa, en qué orden, a quién se notifica y en qué plazo.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q92",
@@ -963,7 +1002,8 @@ const questions: Question[] = [
       stage: "Conceptualización y diseño",
       info: "Una dependencia problemática ocurre cuando los términos de uso de un proveedor o modelo impiden auditar cómo funciona el sistema, restringen la reutilización de sus resultados o generan una dependencia estructural que limita el control institucional sobre el sistema.",
       track: "iagen",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoSi
     },
   {
       id: "q104",
@@ -972,7 +1012,8 @@ const questions: Question[] = [
       dimension: "Ciberseguridad",
       stage: "Conceptualización y diseño",
       info: "Se refiere a los efectos, directos o indirectos, que un fallo masivo o error crítico del sistema podría tener sobre las personas afectadas y su entorno (ej. denegación indebida de un beneficio, discriminación, exposición de datos, daño reputacional).",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q105",
@@ -981,7 +1022,8 @@ const questions: Question[] = [
       dimension: "Ciberseguridad",
       stage: "Conceptualización y diseño",
       info: "Un plan de contingencia humana define quién interviene, qué acciones se ejecutan y en qué plazo, cuando el sistema falla o se comporta de forma crítica, permitiendo recuperar el control humano sobre el proceso.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q106",
@@ -990,7 +1032,8 @@ const questions: Question[] = [
       dimension: "Ciberseguridad",
       stage: "Conceptualización y diseño",
       info: "El mal uso previsible corresponde a formas de uso distintas a las previstas en el diseño del sistema, pero que son razonablemente esperables (ej. uso fuera del contexto original, manipulación deliberada de los datos de entrada). La pregunta identifica esos escenarios y las medidas que los previenen.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
     id: "q40",
@@ -1009,7 +1052,7 @@ const questions: Question[] = [
     dimension: "Equidad", 
     stage: "Recolección y procesamiento de datos",
     scoreContribution: true,
-    score: (answer) => answer === true ? 2.22 : 2.22
+    score: (answer) => answer === false ? 2.22 : 0
   },
   {
     id: "q42",
@@ -1044,7 +1087,7 @@ const questions: Question[] = [
     stage: "Recolección y procesamiento de datos",
     info: "Verifique si está planificado revisar los datos antes de usar el sistema, identificando problemas de calidad, inconsistencias, sesgos o posibles daños desde el inicio del proyecto.",
     scoreContribution: true,
-    score: (answer) => answer === true ? 2.22 : 2.22
+    score: (answer) => answer === false ? 2.22 : 0
   },
   {
       id: "q93",
@@ -1057,7 +1100,8 @@ const questions: Question[] = [
         questionId: "q40",
         value: true
       },
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q94",
@@ -1067,7 +1111,8 @@ const questions: Question[] = [
       stage: "Uso y monitoreo",
       info: "El sesgo generativo ocurre cuando un modelo reproduce o amplifica estereotipos en sus respuestas, aunque los datos de entrada no los contengan de forma explícita. Por ejemplo, asociar sistemáticamente ciertos roles o atributos a un género, etnia o grupo social determinado.",
       track: "iagen",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q95",
@@ -1077,7 +1122,8 @@ const questions: Question[] = [
       stage: "Uso y monitoreo",
       info: "La representación sesgada ocurre cuando el modelo subrepresenta, distorsiona o invisibiliza a ciertos grupos en sus respuestas, como mujeres, pueblos indígenas, personas mayores o migrantes, aunque no se les haya mencionado explícitamente en la consulta",
       track: "iagen",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
     id: "q45",
@@ -1127,7 +1173,7 @@ const questions: Question[] = [
       { value: "No Aplica", label: "No Aplica", score: 1.58 }
     ],
     scoreContribution: true,
-    score: (answer) => answer === "Si" ? 1.58 : (answer === "No" ? 0 : 1.58)
+    score: (answer) => answer === "Si" || answer === "No Aplica" ? 1.58 : 0
   },
   {
     id: "q50",
@@ -1146,7 +1192,7 @@ const questions: Question[] = [
     type: "yesno",
     dimension: "Transparencia", 
     stage: "Recolección y procesamiento de datos",
-    info: "Un mecanismo de reporte es cualquier canal formal que permite a usuarios o personas afectadas comunicar problemas, errores o impactos no previstos del sistema, como un formulario, una mesa de ayuda o un correo institucional designado.",
+    info: "",
     scoreContribution: true,
     score: (answer) => answer === false ? 1.58 : 0
   },
@@ -1157,7 +1203,8 @@ const questions: Question[] = [
       dimension: "Transparencia",
       stage: "Recolección y procesamiento de datos",
       info: "Exige que las explicaciones sobre el sistema sean accesibles para audiencias no especializadas, no solo técnicamente correctas. [Ref. ISO/IEC 42005:2025, cl. 6.8.2 (Anexo C, taxonomía de daños y beneficios)]",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
     id: "q52",
@@ -1194,7 +1241,7 @@ const questions: Question[] = [
     stage: "Uso y monitoreo",
     info: "Un sistema completamente automatizado ejecuta todas sus funciones, incluida la toma de decisiones, sin que una persona intervenga en ninguna etapa operativa una vez que está desplegado.",
     scoreContribution: true,
-    score: (answer) => answer === true ? 1.38 : 1.38
+    score: (answer) => answer === true ? 1.38 : 0
   },
   {
     id: "q56",
@@ -1238,7 +1285,7 @@ const questions: Question[] = [
     stage: "Uso y monitoreo",
     info: "La documentación técnica y de gestión incluye registros como minutas, actas, decisiones de diseño, versiones del sistema y evaluaciones realizadas. Resguardarla permite justificar las decisiones del proyecto ante auditorías o fiscalizaciones externas.",
     scoreContribution: true,
-    score: (answer) => answer === true ? 1.38 : 1.38
+    score: (answer) => answer === false ? 1.38 : 0
   },
   {
       id: "q96",
@@ -1247,7 +1294,8 @@ const questions: Question[] = [
       dimension: "Rendición de cuentas",
       stage: "Uso y monitoreo",
       info: "El expediente del sistema es un repositorio centralizado que reúne las evidencias de cumplimiento del proyecto: evaluaciones de impacto, decisiones de diseño, pruebas realizadas, aprobaciones obtenidas, versiones y cambios relevantes. Es el registro que permite demostrar que el sistema fue desarrollado de forma responsable.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
@@ -1258,7 +1306,8 @@ const questions: Question[] = [
       stage: "Uso y monitoreo",
       info: "",
       track: "iagen",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
@@ -1269,7 +1318,8 @@ const questions: Question[] = [
       stage: "Uso y monitoreo",
       info: "",
       track: "iagen",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
@@ -1279,7 +1329,8 @@ const questions: Question[] = [
       dimension: "Rendición de cuentas",
       stage: "Conceptualización y diseño",
       info: "Un Plan de Tratamiento de Riesgos formaliza la decisión de gestión frente a cada riesgo detectado en la evaluación, indicando si será reducido, aceptado, transferido a un tercero o evitado rediseñando el sistema",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
@@ -1289,7 +1340,8 @@ const questions: Question[] = [
       dimension: "Rendición de cuentas",
       stage: "Conceptualización y diseño",
       info: "Consulta si existe un registro de la infraestructura técnica necesaria para operar el sistema de manera continua, como servidores, GPU/CPU, capacidad de almacenamiento o servicios en la nube utilizados",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q108",
@@ -1298,7 +1350,8 @@ const questions: Question[] = [
       dimension: "Rendición de cuentas",
       stage: "Conceptualización y diseño",
       info: "La deriva de datos (data drift) es el cambio progresivo en las características estadísticas de los datos que recibe el sistema en operación, respecto a los datos con que fue entrenado. Los mecanismos de detección monitorean ese cambio; los de corrección ajustan el sistema para mantener su rendimiento.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
       id: "q109",
@@ -1307,7 +1360,8 @@ const questions: Question[] = [
       dimension: "Rendición de cuentas",
       stage: "Conceptualización y diseño",
       info: "Se han definido los cambios en el sistema, los datos o el entorno legal que obligarían a repetir esta evaluación de impacto.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
   {
     // ENUNCIADO INFERIDO del tooltip (11,1 no trae Label en el documento) — revisar con Isidora
@@ -1317,7 +1371,8 @@ const questions: Question[] = [
     dimension: "Sostenibilidad ambiental",
     stage: "Uso y monitoreo",
     info: "Se refiere a la estimación del consumo de recursos energéticos y computacionales generados durante el entrenamiento del modelo y su uso continuo en producción (inferencia). Esto incluye el gasto eléctrico de los servidores o infraestructura en la nube utilizada",
-    scoreContribution: false
+    scoreContribution: true,
+      score: riesgoNo
   },
   {
     id: "q101",
@@ -1327,7 +1382,8 @@ const questions: Question[] = [
     // FASE INFERIDA (sin dato en el documento) — revisar con Isidora
     stage: "Uso y monitoreo",
     info: "",
-    scoreContribution: false
+    scoreContribution: true,
+      score: riesgoNo
   },
   {
       id: "q65",
@@ -1336,7 +1392,8 @@ const questions: Question[] = [
       dimension: "Sostenibilidad ambiental",
       stage: "Uso y monitoreo",
       info: "Consulta si se ha medido o estimado el consumo de energía y la huella de carbono generados en alguna de las fases del ciclo de vida del modelo (entrenamiento, prueba u operación en producción). Esto permite dimensionar el costo ambiental asociado al uso del sistema de IA en la o las etapas evaluadas.",
-      scoreContribution: false
+      scoreContribution: true,
+      score: riesgoNo
     },
 ];
 
@@ -2037,36 +2094,72 @@ const recommendations: Recommendation[] = [
 ]
 
 /**
- * Puntaje máximo alcanzable por dimensión. Se obtiene evaluando la función
- * `score` de cada pregunta sobre todas sus respuestas posibles y quedándose
- * con la mayor. Sirve de denominador para normalizar a 0–100 en el radar y
- * en la tabla de resultados.
+ * Puntos de riesgo que aporta una respuesta. Usa la función `score` de la
+ * pregunta o, si no la tiene, el `score` de la opción elegida (selects como
+ * q9 y q32, que declaran el puntaje en sus opciones).
  */
-const maxScoreByDimension: Record<string, number> = (() => {
+const questionPoints = (q: Question, answer: Answer): number => {
+  if (q.score) return q.score(answer)
+  if (typeof answer === 'string') return q.options?.find(o => o.value === answer)?.score ?? 0
+  return 0
+}
+
+/**
+ * Puntaje máximo alcanzable por pregunta: se evalúa sobre todas sus respuestas
+ * posibles y se queda con el mayor. Es el denominador de la normalización.
+ */
+const maxPointsById: Record<string, number> = (() => {
   const acc: Record<string, number> = {}
-  for (const dim of dimensions) {
-    acc[dim] = questions
-      .filter(q => q.dimension === dim && q.scoreContribution && q.score)
-      .reduce((total, q) => {
-        const candidates: Answer[] = [true, false, null]
-        if (q.options) {
-          for (const o of q.options) candidates.push(o.value)
-          candidates.push(q.options.map(o => o.value))
-        }
-        let best = 0
-        for (const c of candidates) {
-          try {
-            const v = q.score!(c)
-            if (Number.isFinite(v) && v > best) best = v
-          } catch {
-            // Una combinación no soportada por esta pregunta: se ignora.
-          }
-        }
-        return total + best
-      }, 0)
+  for (const q of questions) {
+    if (!q.scoreContribution) continue
+    const candidates: Answer[] = [true, false, null]
+    if (q.options) {
+      for (const o of q.options) candidates.push(o.value)
+      candidates.push(q.options.map(o => o.value))
+    }
+    let best = 0
+    for (const c of candidates) {
+      try {
+        const v = questionPoints(q, c)
+        if (Number.isFinite(v) && v > best) best = v
+      } catch {
+        // Una combinación no soportada por esta pregunta: se ignora.
+      }
+    }
+    acc[q.id] = best
   }
   return acc
 })()
+
+/**
+ * Umbrales de nivel de impacto sobre el puntaje redondeado (0–100).
+ * Equivalen a los históricos 18,32 / 45,54 / 72,77 llevados a enteros.
+ * Los colores son una escala de un solo tono: más intensidad = más profundidad
+ * de revisión, no "mejor" o "peor". Por eso no se usa un semáforo verde→rojo.
+ */
+const IMPACT_LEVELS = [
+  { label: 'Bajo impacto', short: 'Bajo', from: 0, to: 18, color: T.roseLight,
+    summary: 'El proyecto presenta un bajo impacto en términos éticos y sociales. Continúa monitoreando para asegurar que se mantenga.' },
+  { label: 'Impacto moderado', short: 'Moderado', from: 19, to: 45, color: T.rose,
+    summary: 'El proyecto presenta un impacto moderado. Aún existen áreas que podrían fortalecerse. Revisa las recomendaciones.' },
+  { label: 'Alto impacto', short: 'Alto', from: 46, to: 72, color: T.roseDeep,
+    summary: 'El proyecto presenta un alto impacto. Hay varios aspectos críticos por considerar. Revisa las recomendaciones detalladamente.' },
+  { label: 'Impacto muy alto', short: 'Muy alto', from: 73, to: 100, color: T.burgundy,
+    summary: 'El proyecto presenta un impacto muy alto. Es importante abordar los factores críticos identificados para fortalecer tu proyecto.' },
+] as const
+
+/** Título de sección del PDF (Resumen, Recomendaciones). */
+function PdfSectionTitle({ num, title, subtitle }: { num: string; title: string; subtitle?: string }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12, borderBottom: `2px solid ${T.burgundy}`, paddingBottom: 8, marginBottom: 14 }}>
+      <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 700, color: '#fff', background: T.burgundy, borderRadius: 6, padding: '3px 8px' }}>{num}</span>
+      <div>
+        <div style={{ fontSize: 22, fontWeight: 700, color: T.burgundy, lineHeight: 1.1 }}>{title}</div>
+        {subtitle && <div style={{ fontSize: 12, color: T.ink60, marginTop: 3 }}>{subtitle}</div>}
+      </div>
+    </div>
+  )
+}
 
 type EvaluacionImpactoProps = {
   initialEmail?: string
@@ -2083,8 +2176,6 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
   // Contexto normativo bajo el que se responde (Chile / internacional).
   const [contexto] = useState<Contexto>(normalizarContexto(initialContexto))
   const [selectedRecommendations, setSelectedRecommendations] = useState<Record<string, boolean>>({})
-  const [totalScore, setTotalScore] = useState(0)
-  const [scoreByDimension, setScoreByDimension] = useState<Record<string, number>>({});
   const [activeTab, setActiveTab] = useState<'resumen' | 'recomendaciones' | 'feedback'>('resumen')
   // La encuesta se pide una sola vez, al primer intento de descargar el PDF.
   const [surveySent, setSurveySent] = useState(false)
@@ -2098,20 +2189,8 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
   const [navH, setNavH] = useState(68)
   const router = useRouter()
   const tableRef = useRef<HTMLTableElement>(null)
-  const VERSION = process.env.NEXT_PUBLIC_VERSION || "5.0.0"
-  const MIN_SCORE = 18.32
+  const VERSION = process.env.NEXT_PUBLIC_VERSION || "5.1.0"
 
-
-  const calculateTotalScore = (answers: Record<string, string | string[] | boolean | null>): number => {
-    const rawScore = questions.reduce((total, question) => {
-      if (question.scoreContribution && question.score) {
-        return total + question.score(answers[question.id]);
-      }
-      return total;
-    }, 0);
-    
-    return Math.max(rawScore, MIN_SCORE);
-  }
 
   // Aplica las sobrescrituras del contexto activo (texto, tooltip, opciones).
   // Hoy no hay overrides cargados, así que devuelve la pregunta tal cual.
@@ -2159,25 +2238,35 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
     return parentAnswer === condition;
   };
 
-  const getImpactLevel = (score: number): string => {
-    if (score <= 18.32) return "Bajo impacto";
-    if (score <= 45.54) return "Impacto moderado";
-    if (score <= 72.77) return "Alto impacto";
-    return "Impacto muy alto";
+  /**
+   * Riesgo por dimensión en 0–100: puntos obtenidos sobre el máximo posible de
+   * las preguntas puntuables que el usuario ve (contexto, rama IA generativa y
+   * dependencias). Así ninguna ruta del cuestionario queda penalizada por tener
+   * más o menos preguntas. Las dimensiones sin preguntas visibles se omiten.
+   */
+  const getScoreByDimension = (answers: Record<string, Answer>): Record<string, number> => {
+    const acc: Record<string, number> = {}
+    for (const dimension of dimensions) {
+      const visibles = questions.filter(q =>
+        q.dimension === dimension && q.scoreContribution && maxPointsById[q.id] > 0 && shouldShowQuestion(q, answers)
+      )
+      if (!visibles.length) continue
+      const max = visibles.reduce((t, q) => t + maxPointsById[q.id], 0)
+      const pts = visibles.reduce((t, q) => t + questionPoints(q, answers[q.id] ?? null), 0)
+      acc[dimension] = (pts / max) * 100
+    }
+    return acc
   }
 
-  const getScoreByDimension = (answers: Record<string, string | string[] | boolean | null>): Record<string, number> => {
-    return dimensions.reduce((acc, dimension) => {
-      const dimensionQuestions = questions.filter(q => q.dimension === dimension);
-      const dimensionScore = dimensionQuestions.reduce((total, question) => {
-        if (question.scoreContribution && question.score) {
-          return total + question.score(answers[question.id]);
-        }
-        return total;
-      }, 0);
-      acc[dimension] = dimensionScore;
-      return acc;
-    }, {} as Record<string, number>);
+  /** Puntaje total 0–100: promedio simple de las dimensiones (todas pesan igual). */
+  const calculateTotalScore = (byDimension: Record<string, number>): number => {
+    const values = Object.values(byDimension)
+    return values.length ? values.reduce((t, v) => t + v, 0) / values.length : 0
+  }
+
+  const getImpactLevel = (score: number) => {
+    const rounded = Math.round(score)
+    return IMPACT_LEVELS.find(l => rounded <= l.to) ?? IMPACT_LEVELS[IMPACT_LEVELS.length - 1]
   }
 
   useEffect(() => {
@@ -2189,10 +2278,6 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
       if (savedData) {
         const { answers: savedAnswers } = JSON.parse(savedData)
         setAnswers(savedAnswers)
-        const newTotalScore = calculateTotalScore(savedAnswers);
-        const newScoreByDimension = getScoreByDimension(savedAnswers);
-        setTotalScore(newTotalScore);
-        setScoreByDimension(newScoreByDimension);
       }
 
       try {
@@ -2248,10 +2333,6 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
         }
         localStorage.setItem(`evaluationData_${userEmail}`, JSON.stringify(dataToSave))
       }
-      setTotalScore(calculateTotalScore(newAnswers));
-      // También por dimensión: alimenta el termómetro, el radar y la tabla
-      // de resultados, que antes quedaban vacíos en una sesión nueva.
-      setScoreByDimension(getScoreByDimension(newAnswers));
       return newAnswers;
     })
   }
@@ -2382,8 +2463,6 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
       if (savedData) {
         const { answers: savedAnswers } = JSON.parse(savedData)
         setAnswers(savedAnswers)
-        const newTotalScore = calculateTotalScore(savedAnswers);
-        setTotalScore(newTotalScore);
         toast({ title: 'Evaluación cargada', description: 'Recuperamos tus respuestas guardadas.' })
       } else {
         toast({ variant: 'destructive', title: 'Sin datos', description: 'No se encontró ninguna evaluación guardada.' })
@@ -2617,14 +2696,13 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
 
       // Contenido con encabezado
       const headerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 10px 0; border-bottom: 1px solid #ddd;">
-        <img src="/images/logo-goblab-uai.png" alt="Logo Derecho" style="height: 40px; margin-right: 10px;" />
+      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 10px 8px 10px 0; box-sizing: border-box; border-bottom: 1px solid #ddd;">
+        <img src="/images/logo-goblab-uai.png" alt="GobLab UAI" style="width: 168px; height: 35px; flex-shrink: 0; margin-right: 10px;" />
         <div style="flex-grow: 1; text-align: center; font-size: 14px; font-weight: bold;">
           Evaluación de Impacto Algorítmico
           <div style="font-size: 10px; font-weight: normal; color: #7A3B48; margin-top: 2px;">${labelContexto(contexto)}</div>
         </div>
-        <img src="/images/herramientas.png" alt="Logo Izquierdo" style="height: 40px; margin-left: 10px;" />
-        
+        <img src="/images/herramientas.png" alt="Herramientas Algoritmos Éticos" style="width: 96px; height: 37px; flex-shrink: 0; margin-left: 10px;" />
       </div>
     `;
 
@@ -2632,7 +2710,7 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
     const pdfContent = `
       <div>
         ${headerHTML}
-        <div id="pdf-content" style="margin-top: 40px;">${element.innerHTML}</div>
+        <div id="pdf-content" style="margin-top: 18px;">${element.innerHTML}</div>
       </div>
     `;
 
@@ -2654,19 +2732,19 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
       return a !== undefined && a !== '' && !(Array.isArray(a) && a.length === 0)
     }).length
 
-  const impactLevel = getImpactLevel(totalScore)
-  const impactColor =
-    impactLevel === 'Bajo impacto' ? T.success
-      : impactLevel === 'Impacto moderado' ? T.warn
-        : impactLevel === 'Alto impacto' ? T.rose
-          : T.burgundy
+  // Puntajes derivados de las respuestas (y de qué preguntas están visibles).
+  const scoreByDimension = getScoreByDimension(answers)
+  const totalScore = calculateTotalScore(scoreByDimension)
+  const scoreRounded = Math.round(totalScore)
+  const nivel = getImpactLevel(totalScore)
+  const impactLevel = nivel.label
+  const recommendationCount = Object.values(getGroupedRecommendations()).reduce((t, items) => t + items.length, 0)
 
-  // Puntaje normalizado 0–100 por dimensión, para el radar y la tabla.
-  const normalized = dimensions.map(dim => {
-    const max = maxScoreByDimension[dim] || 0
-    const raw = scoreByDimension[dim] || 0
-    return { dim, pct: max > 0 ? Math.min(100, Math.round((raw / max) * 100)) : 0 }
-  })
+  // Puntaje entero 0–100 por dimensión, para el radar y la tabla.
+  const normalized: PuntajeDimension[] = dimensions.map(dim => ({
+    dim,
+    pct: dim in scoreByDimension ? Math.round(scoreByDimension[dim]) : null,
+  }))
 
   const ghostBtn: React.CSSProperties = {
     padding: '8px 14px', border: `1px solid ${T.roseLight}`, borderRadius: 9,
@@ -2920,9 +2998,9 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
             </div>
             <div style={{ textAlign: 'right', color: '#fff' }}>
               <div style={{ fontSize: 11, fontFamily: MONO, letterSpacing: 1.5, opacity: .6 }}>NIVEL DE IMPACTO</div>
-              <div style={{ fontFamily: SERIF, fontSize: 76, fontWeight: 500, lineHeight: 1 }}>{totalScore.toFixed(0)}</div>
+              <div style={{ fontFamily: SERIF, fontSize: 76, fontWeight: 500, lineHeight: 1 }}>{scoreRounded}</div>
               <div style={{ fontSize: 11, opacity: .6, marginBottom: 8 }}>de 100 puntos</div>
-              <div style={{ display: 'inline-block', padding: '5px 16px', borderRadius: 99, background: impactColor, fontSize: 13, fontWeight: 700 }}>{impactLevel}</div>
+              <div style={{ display: 'inline-block', padding: '5px 16px', borderRadius: 99, background: 'rgba(255,255,255,.14)', border: '1px solid rgba(255,255,255,.35)', fontSize: 13, fontWeight: 700 }}>{impactLevel}</div>
             </div>
           </div>
 
@@ -2939,85 +3017,21 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
 
               <div style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '20px 22px' }}>
                 <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 10 }}>Perfil por dimensión</div>
-                <svg viewBox="0 0 380 340" style={{ width: '100%', height: 260 }}>
-                  {(() => {
-                    const CX = 190, CY = 165, R = 118, n = dimensions.length
-                    const at = (pct: number, i: number) => {
-                      const a = (i / n) * Math.PI * 2 - Math.PI / 2
-                      const r = (pct / 100) * R
-                      return `${(CX + Math.cos(a) * r).toFixed(1)},${(CY + Math.sin(a) * r).toFixed(1)}`
-                    }
-                    return (
-                      <>
-                        {[25, 50, 75, 100].map((sc, i) => (
-                          <polygon key={i} points={dimensions.map((_, j) => at(sc, j)).join(' ')} fill={i === 3 ? T.rosePaper : 'none'} stroke={T.roseLight} strokeWidth="1" />
-                        ))}
-                        {dimensions.map((_, i) => {
-                          const a = (i / n) * Math.PI * 2 - Math.PI / 2
-                          return <line key={i} x1={CX} y1={CY} x2={CX + Math.cos(a) * R} y2={CY + Math.sin(a) * R} stroke={T.roseLight} strokeWidth="1" />
-                        })}
-                        <polygon points={normalized.map((d, i) => at(d.pct, i)).join(' ')} fill={T.rose} fillOpacity="0.32" stroke={T.burgundy} strokeWidth="2" />
-                        {normalized.map((d, i) => {
-                          const [x, y] = at(d.pct, i).split(',')
-                          return <circle key={i} cx={x} cy={y} r="4" fill={T.burgundy} />
-                        })}
-                        {dimensions.map((_, i) => {
-                          const a = (i / n) * Math.PI * 2 - Math.PI / 2
-                          const r = R + 22
-                          return (
-                            <text key={i} x={CX + Math.cos(a) * r} y={CY + Math.sin(a) * r} textAnchor="middle" dominantBaseline="middle" fill={T.ink60} fontFamily={MONO} fontSize="11" fontWeight="600">
-                              {String(i + 1).padStart(2, '0')}
-                            </text>
-                          )
-                        })}
-                      </>
-                    )
-                  })()}
-                </svg>
+                <RadarDimensiones data={normalized} />
               </div>
 
               <div style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '20px 22px' }}>
                 <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>Puntaje por dimensión</div>
-                {normalized.map((d, i) => (
-                  <div key={d.dim} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 0', borderBottom: i < normalized.length - 1 ? `1px dashed ${T.roseLight}` : 'none' }}>
-                    <span style={{ fontFamily: MONO, fontSize: 11.5, color: T.burgundy, width: 22, flexShrink: 0 }}>{String(i + 1).padStart(2, '0')}</span>
-                    <span style={{ flex: 1, fontSize: 14.5, fontWeight: 500, minWidth: 0 }}>{d.dim}</span>
-                    <div style={{ width: 70, height: 6, background: T.paperDeep, borderRadius: 3, overflow: 'hidden', flexShrink: 0 }}>
-                      <div style={{ width: `${d.pct}%`, height: '100%', background: d.pct > 60 ? T.burgundy : T.rose, transition: 'width .5s' }} />
-                    </div>
-                    <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 700, color: d.pct > 60 ? T.burgundy : T.rose, width: 28, textAlign: 'right', flexShrink: 0 }}>{d.pct}</span>
-                  </div>
-                ))}
+                <PuntajeDimensiones data={normalized} />
               </div>
 
-              {/* Termómetro + interpretación */}
-              <div style={{ gridColumn: '1/-1', background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '22px 26px', display: 'flex', gap: 28, alignItems: 'center', flexWrap: 'wrap' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
-                  <Thermometer score={totalScore} minScore={18.32} maxScore={100} dimensions={scoreByDimension} />
-                  <div style={{ fontSize: 14.5, marginTop: 8, color: T.ink60 }}>
-                    Puntuación total: <strong style={{ color: T.burgundy }}>{totalScore.toFixed(2)}%</strong>
-                  </div>
-                </div>
-                <div style={{ flex: 1, minWidth: 260 }}>
-                  <div style={{ fontFamily: SERIF, fontSize: 22, color: impactColor, marginBottom: 10 }}>{impactLevel}</div>
-                  <p style={{ fontSize: 14.5, color: T.ink80, lineHeight: 1.65, margin: '0 0 12px' }}>
-                    Un nivel de impacto alto o muy alto <strong>NO</strong> implica que el proyecto deba descartarse, sino que es importante analizar con mayor <strong>profundidad</strong> las áreas identificadas. La evaluación señala aspectos que aún no están suficientemente considerados, lo que representa oportunidades para <strong>fortalecer tu proyecto</strong> y minimizar posibles riesgos.
-                  </p>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                    {([
-                      ['Bajo impacto', '0 – 18,32%', T.success],
-                      ['Impacto moderado', '18,33 – 45,54%', T.warn],
-                      ['Alto impacto', '45,55 – 72,77%', T.rose],
-                      ['Impacto muy alto', '72,78 – 100%', T.burgundy],
-                    ] as const).map(([label, range, color]) => (
-                      <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 13.5, color: label === impactLevel ? T.ink : T.ink60, fontWeight: label === impactLevel ? 600 : 400 }}>
-                        <span style={{ width: 9, height: 9, borderRadius: 99, background: color, flexShrink: 0 }} />
-                        <span style={{ flex: 1 }}>{label}</span>
-                        <span style={{ fontFamily: MONO, fontSize: 12.5 }}>{range}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              {/* Puntuación total: barra de niveles + interpretación */}
+              <div style={{ gridColumn: '1/-1', background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '22px 26px' }}>
+                <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 6 }}>Puntuación total</div>
+                <ImpactLevelBar score={totalScore} levels={IMPACT_LEVELS} recommendationCount={recommendationCount} />
+                <p style={{ fontSize: 14, color: T.ink80, lineHeight: 1.65, margin: '16px 0 0', paddingTop: 14, borderTop: `1px dashed ${T.roseLight}` }}>
+                  Un nivel de impacto alto o muy alto <strong>NO</strong> implica que el proyecto deba descartarse, sino que es importante analizar con mayor <strong>profundidad</strong> las áreas identificadas. La evaluación señala aspectos que aún no están suficientemente considerados, lo que representa oportunidades para <strong>fortalecer tu proyecto</strong> y minimizar posibles riesgos.
+                </p>
               </div>
 
               {/* Información general */}
@@ -3162,7 +3176,7 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
                 <div style={{ background: '#fff', border: `1px solid ${T.roseLight}`, borderRadius: 14, padding: '18px 22px' }}>
                   <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: 1.5, color: T.burgundy, marginBottom: 8 }}>FINANCIAMIENTO</div>
                   <p style={{ fontSize: 12, color: T.ink60, margin: 0, lineHeight: 1.6 }}>
-                    Esta investigación es realizada por GobLab UAI con el apoyo de ANID/Subdirección de Investigación Aplicada IT25I0161.
+                    Esta investigación es realizada por GobLab UAI con el apoyo de ANID/Subdirección de Investigación Aplicada, proyecto Plataforma Algoritmos Públicos: Hacia una IA Generativa Responsable y Ética (ANID IT25I0161).
                   </p>
                 </div>
               </div>
@@ -3170,76 +3184,47 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
           )}
 
           {/* Contenido del PDF — oculto en pantalla, se serializa vía innerHTML.
-              Se mantiene el marcado original para no alterar el informe generado. */}
+              Sigue la misma estructura que la pantalla: Resumen y luego
+              Recomendaciones, cada una con su título de sección. */}
           <div ref={tableRef} style={{ display: 'none' }}>
-            <Card className="mb-6">
-              <div className="flex-grow">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Información General</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Table>
-                      <TableBody>
-                        {getGeneralInfo().map((info, index) => (
-                          <TableRow key={index}>
-                            <TableCell className="font-medium">{info.question}</TableCell>
-                            <TableCell>{info.answer}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </CardContent>
-                </Card>
-              </div>
-            </Card>
+              <PdfSectionTitle num="01" title="Resumen" subtitle={`${projectName} · ${impactLevel} (${scoreRounded} de 100 puntos)`} />
 
-            <Card className="mb-6 p-4">
-              <CardHeader className=" mb-2">
-                <CardTitle>Descripciones para cada nivel de impacto</CardTitle>
-              </CardHeader>
-              <div className="flex items-center gap-4">
-                <div className="flex flex-col items-center">
-                  <Thermometer
-                    score={totalScore}
-                    minScore={18.32}
-                    maxScore={100}
-                    dimensions={scoreByDimension}
-                  />
-                  <CardDescription className="text-center text-sm mt-2">
-                    Puntuación total: <strong>{totalScore.toFixed(2)} %</strong>
-                  </CardDescription>
+              <div style={{ display: 'flex', gap: 14, marginBottom: 14, pageBreakInside: 'avoid' }}>
+                <div style={{ flex: 1, border: `1px solid ${T.roseLight}`, borderRadius: 12, padding: '14px 16px' }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 6 }}>Perfil por dimensión</div>
+                  <RadarDimensiones data={normalized} height={215} />
                 </div>
-                <div className="flex-grow">
-                  <CardContent>
-                    <CardDescription className="text-center text-lg font-semibold mb-4 text-gray-700">
-                      {getImpactLevel(totalScore)}
-                    </CardDescription>
-                    <CardDescription className="text-sm leading-relaxed text-gray-600">
-                      Un nivel de impacto alto o muy alto <strong>NO</strong> implica que el proyecto deba descartarse, sino que es importante analizar con mayor <strong>profundidad</strong> las áreas identificadas. La evaluación señala aspectos que aún no están suficientemente considerados, lo que representa oportunidades para <strong>fortalecer tu proyecto</strong> y minimizar posibles riesgos.
-                    </CardDescription>
-                    <CardDescription className="text-center text-xs mt-4 text-gray-600">
-                      <strong>
-                        {(() => {
-                          switch (getImpactLevel(totalScore)) {
-                            case "Bajo impacto":
-                              return "El proyecto presenta un bajo impacto en términos éticos y sociales. Continúa monitoreando para asegurar que se mantenga.";
-                            case "Impacto moderado":
-                              return "El proyecto presenta un impacto moderado. Aún existen áreas que podrían fortalecerse. Revisa las recomendaciones.";
-                            case "Alto impacto":
-                              return "El proyecto presenta un alto impacto. Hay varios aspectos críticos por considerar. Revisa las recomendaciones detalladamente.";
-                            case "Impacto muy alto":
-                              return "El proyecto presenta un impacto muy alto. Es importante abordar los factores críticos identificados para fortalecer tu proyecto.";
-                            default:
-                              return "";
-                          }
-                        })()}
-                      </strong>
-                    </CardDescription>
-                  </CardContent>
+                <div style={{ flex: 1, border: `1px solid ${T.roseLight}`, borderRadius: 12, padding: '14px 16px' }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>Puntaje por dimensión</div>
+                  <PuntajeDimensiones data={normalized} compact />
                 </div>
               </div>
-            </Card>
+
+              <div style={{ border: `1px solid ${T.roseLight}`, borderRadius: 12, padding: '14px 20px', marginBottom: 14, pageBreakInside: 'avoid' }}>
+                <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>Puntuación total</div>
+                <ImpactLevelBar score={totalScore} levels={IMPACT_LEVELS} recommendationCount={recommendationCount} compact />
+                <p style={{ fontSize: 12, color: T.ink80, lineHeight: 1.55, margin: '10px 0 0', textAlign: 'justify' }}>
+                  Un nivel de impacto alto o muy alto <strong>NO</strong> implica que el proyecto deba descartarse, sino que es importante analizar con mayor <strong>profundidad</strong> las áreas identificadas. La evaluación señala aspectos que aún no están suficientemente considerados, lo que representa oportunidades para <strong>fortalecer tu proyecto</strong> y minimizar posibles riesgos.
+                </p>
+              </div>
+
+              <div style={{ border: `1px solid ${T.roseLight}`, borderRadius: 12, padding: '14px 20px', pageBreakInside: 'avoid' }}>
+                <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 6 }}>Información general</div>
+                {getGeneralInfo().map((info, i, arr) => (
+                  <div key={i} style={{ display: 'flex', gap: 16, padding: '5px 0', borderBottom: i < arr.length - 1 ? `1px dashed ${T.roseLight}` : 'none', fontSize: 12.5 }}>
+                    <span style={{ width: '38%', color: T.ink60, flexShrink: 0 }}>{info.question}</span>
+                    <span style={{ flex: 1 }}>{info.answer || '—'}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="html2pdf__page-break" />
+
+              <PdfSectionTitle
+                num="02"
+                title="Recomendaciones"
+                subtitle="Elaboradas a partir de tus respuestas y organizadas según la etapa del proyecto en la que conviene implementarlas."
+              />
 
             <Table>
               <TableHeader>

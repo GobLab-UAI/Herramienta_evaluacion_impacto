@@ -16,6 +16,7 @@ export const T = {
   rose: '#C08A93',
   roseLight: '#E8D1D5',
   roseTint: '#F4E4E7',
+  roseDeep: '#9C5A66',
   burgundy: '#7A3B48',
   rosePaper: '#FBF3F4',
 

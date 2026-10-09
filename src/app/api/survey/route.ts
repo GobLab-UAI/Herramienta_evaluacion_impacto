@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
+import { insertarConRespaldo, resolveUserId, supabaseConfig } from "@/lib/supabase-server";
 
 /**
  * Encuesta de satisfacción → tabla `tool_survey` (una columna por pregunta).
  *
  * Si la tabla todavía no existe (migración sin correr), cae de vuelta a
  * `tool_feedback` guardando la encuesta como texto, para no perder respuestas.
- * Ver supabase/migrations/001_tool_survey.sql
+ * Si la persona aceptó recibir novedades al ingresar, la fila queda unida a
+ * tool_users por `user_id` (migración 004).
+ * Ver supabase/migrations/001_tool_survey.sql y 004_vinculos_usuario.sql
  */
 
 type Payload = {
@@ -27,23 +30,14 @@ export async function POST(req: Request) {
     const body: Payload = await req.json();
     const r = body.respuestas ?? {};
 
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_ANON_KEY;
     const tool = process.env.SUPABASE_TOOL_NAME || "evaluacion de impacto";
 
-    if (!supabaseUrl || !supabaseKey) {
+    if (!supabaseConfig()) {
       return NextResponse.json(
         { success: false, error: "Configuración de base de datos incompleta" },
         { status: 500 }
       );
     }
-
-    const headers = {
-      apikey: supabaseKey,
-      Authorization: `Bearer ${supabaseKey}`,
-      "Content-Type": "application/json",
-      Prefer: "return=minimal",
-    };
 
     const fila = {
       tool,
@@ -65,11 +59,11 @@ export async function POST(req: Request) {
       p11_correo: txt(r["11_correo"]),
     };
 
-    const res = await fetch(`${supabaseUrl}/rest/v1/tool_survey`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(fila),
-    });
+    const userId = await resolveUserId(body.email);
+    const res = await insertarConRespaldo(
+      "tool_survey",
+      userId ? [{ ...fila, user_id: userId }, fila] : [fila],
+    );
 
     if (res.status === 201) {
       return NextResponse.json({ success: true, structured: true });
@@ -79,16 +73,16 @@ export async function POST(req: Request) {
     const detalle = await res.text();
     console.error("tool_survey insert falló:", res.status, detalle);
 
-    const fbRes = await fetch(`${supabaseUrl}/rest/v1/tool_feedback`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        tool,
-        feedback_type: "Comentario general",
-        description: body.texto || JSON.stringify(fila),
-        ...(txt(body.email) ? { email: body.email } : {}),
-      }),
-    });
+    const respaldo = {
+      tool,
+      feedback_type: "Comentario general",
+      description: body.texto || JSON.stringify(fila),
+      ...(txt(body.email) ? { email: body.email } : {}),
+    };
+    const fbRes = await insertarConRespaldo(
+      "tool_feedback",
+      userId ? [{ ...respaldo, user_id: userId }, respaldo] : [respaldo],
+    );
 
     if (fbRes.status === 201) {
       return NextResponse.json({ success: true, structured: false });

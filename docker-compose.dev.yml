@@ -1,0 +1,25 @@
+# Entorno local de desarrollo
+#   docker compose -f docker-compose.dev.yml up --build
+# Credenciales de Supabase (opcionales) en .env.local: SUPABASE_URL, SUPABASE_ANON_KEY
+services:
+  eia-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    env_file:
+      - path: .env
+        required: false
+      - path: .env.local
+        required: false
+    environment:
+      - WATCHPACK_POLLING=true
+    volumes:
+      - .:/app
+      - eia_node_modules:/app/node_modules
+      - eia_next:/app/.next
+
+volumes:
+  eia_node_modules:
+  eia_next:
