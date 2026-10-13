@@ -18,6 +18,8 @@ import { insertarConRespaldo, resolveUserId, sinNulos } from "@/lib/supabase-ser
  * Ver supabase/migrations/001_tool_survey.sql y 004_vinculos_usuario.sql
  */
 
+const ANONIMO = "anonimo@goblab.cl";
+
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export async function POST(req: Request) {
@@ -39,11 +41,15 @@ export async function POST(req: Request) {
 
     const tool = process.env.SUPABASE_TOOL_NAME || "evaluacion de impacto";
 
+    // Consentimiento: el correo solo se conserva si la persona marcó la casilla
+    // de novedades (está en tool_users). Si no, el comentario se guarda anónimo;
+    // `email` es obligatorio en la tabla, por eso va un valor genérico.
+    const userId = await resolveUserId(email);
     const base = {
       tool,
       feedback_type,
       description,
-      ...(email ? { email } : {}),
+      email: userId ? email : ANONIMO,
       ...(organization ? { organization } : {}),
     };
 
@@ -65,7 +71,7 @@ export async function POST(req: Request) {
       : base;
 
     const vinculos = sinNulos({
-      user_id: await resolveUserId(email),
+      user_id: userId,
       vote_id: typeof vote_id === "string" && UUID.test(vote_id) ? vote_id : null,
     });
 

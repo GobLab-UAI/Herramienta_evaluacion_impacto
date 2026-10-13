@@ -39,9 +39,13 @@ export async function POST(req: Request) {
       );
     }
 
+    // Consentimiento: el correo de ingreso solo se conserva si la persona marcó
+    // la casilla de novedades. Los datos de contacto p11_* sí se guardan: la
+    // persona los escribe explícitamente para pedir acompañamiento.
+    const userId = await resolveUserId(body.email);
     const fila = {
       tool,
-      email: txt(body.email),
+      email: userId ? txt(body.email) : null,
       progreso: typeof body.progreso === "number" ? Math.round(body.progreso) : null,
       p2_facilidad_uso: num(r["2"]),
       p3_orientacion: num(r["3"]),
@@ -59,7 +63,6 @@ export async function POST(req: Request) {
       p11_correo: txt(r["11_correo"]),
     };
 
-    const userId = await resolveUserId(body.email);
     const res = await insertarConRespaldo(
       "tool_survey",
       userId ? [{ ...fila, user_id: userId }, fila] : [fila],
@@ -77,7 +80,7 @@ export async function POST(req: Request) {
       tool,
       feedback_type: "Comentario general",
       description: body.texto || JSON.stringify(fila),
-      ...(txt(body.email) ? { email: body.email } : {}),
+      email: userId && txt(body.email) ? body.email : "anonimo@goblab.cl",
     };
     const fbRes = await insertarConRespaldo(
       "tool_feedback",

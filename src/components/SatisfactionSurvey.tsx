@@ -114,6 +114,10 @@ export function SatisfactionSurvey({ email, progreso, onSent, embedded = false }
       >
         {sending ? 'Enviando…' : <>Enviar evaluación <I.arrow /></>}
       </button>
+      <p style={{ fontSize: 11.5, color: T.ink60, margin: '10px 0 0', lineHeight: 1.5 }}>
+        Tus respuestas se usan solo para mejorar la herramienta.{' '}
+        <a href="/privacidad" target="_blank" rel="noopener noreferrer" style={{ color: T.burgundy, fontWeight: 600 }}>Cómo tratamos tus datos</a>
+      </p>
     </div>
   )
 }

@@ -29,7 +29,6 @@ export function FeedbackPill({ context, defaultEmail = '', bottom = 20 }: {
   const [open, setOpen] = useState(false)
   const [category, setCategory] = useState<string>(FEEDBACK_TYPES.comentario)
   const [text, setText] = useState('')
-  const [email, setEmail] = useState('')
   const [organization, setOrganization] = useState('')
   const [sending, setSending] = useState(false)
 
@@ -47,7 +46,8 @@ export function FeedbackPill({ context, defaultEmail = '', bottom = 20 }: {
       await sendFeedback({
         category,
         text: text.trim(),
-        email: email.trim() || defaultEmail,
+        // El servidor solo conserva el correo si la persona marcó la casilla de novedades.
+        email: defaultEmail,
         organization: organization.trim(),
         context,
       })
@@ -55,7 +55,6 @@ export function FeedbackPill({ context, defaultEmail = '', bottom = 20 }: {
       toast({ title: 'Feedback enviado', description: '¡Gracias! Lo revisaremos.' })
       setOpen(false)
       setText('')
-      setEmail('')
       setOrganization('')
       setCategory(FEEDBACK_TYPES.comentario)
     } catch (err) {
@@ -153,24 +152,18 @@ export function FeedbackPill({ context, defaultEmail = '', bottom = 20 }: {
               style={{ ...inputBase, minHeight: 88, resize: 'vertical', marginBottom: 14 }}
             />
 
-            <div style={{ fontSize: 11, color: T.ink60, marginBottom: 10, lineHeight: 1.5 }}>
-              Opcional: <strong>correo</strong> si quieres que te respondamos. No lo usaremos para otro fin.
-            </div>
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder={defaultEmail || 'correo@ejemplo.cl'}
-              maxLength={150}
-              style={{ ...inputBase, marginBottom: 10 }}
-            />
             <input
               value={organization}
               onChange={e => setOrganization(e.target.value)}
               placeholder="Organización (opcional)"
               maxLength={150}
-              style={{ ...inputBase, marginBottom: 16 }}
+              style={{ ...inputBase, marginBottom: 10 }}
             />
+
+            <p style={{ fontSize: 11, color: T.ink60, margin: '0 0 14px', lineHeight: 1.5 }}>
+              Usamos tu comentario solo para entender y resolver lo que reportas.{' '}
+              <a href="/privacidad" target="_blank" rel="noopener noreferrer" style={{ color: T.burgundy, fontWeight: 600 }}>Cómo tratamos tus datos</a>
+            </p>
 
             <button
               type="submit"

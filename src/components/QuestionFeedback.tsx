@@ -180,7 +180,8 @@ export function QuestionFeedback({ questionId, context, flag, onFlag, email }: {
 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
             <span style={{ fontSize: 11, color: T.ink60, display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-              <I.lock width={11} height={11} /> Se guarda con el ID de la pregunta, sin tus respuestas.
+              <I.lock width={11} height={11} /> Se guarda con el ID de la pregunta, sin tus respuestas.{' '}
+              <a href="/privacidad" target="_blank" rel="noopener noreferrer" style={{ color: T.burgundy, fontWeight: 600 }}>Privacidad</a>
             </span>
             <button
               type="button"

@@ -2189,7 +2189,7 @@ export default function EvaluacionImpacto({ initialEmail, initialContexto }: Eva
   const [navH, setNavH] = useState(68)
   const router = useRouter()
   const tableRef = useRef<HTMLTableElement>(null)
-  const VERSION = process.env.NEXT_PUBLIC_VERSION || "5.1.0"
+  const VERSION = process.env.NEXT_PUBLIC_VERSION || "5.2.0"
 
 
   // Aplica las sobrescrituras del contexto activo (texto, tooltip, opciones).

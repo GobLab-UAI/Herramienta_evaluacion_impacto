@@ -160,7 +160,7 @@ export function LandingPage() {
   const [contexto, setContexto] = useState<Contexto>(CONTEXTO_DEFAULT)
 
   const router = useRouter()
-  const VERSION = process.env.NEXT_PUBLIC_VERSION || '5.1.0'
+  const VERSION = process.env.NEXT_PUBLIC_VERSION || '5.2.0'
 
   const handleStart = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -333,7 +333,7 @@ export function LandingPage() {
             </div>
           </div>
 
-          <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 18, cursor: 'pointer', fontSize: 12.5, color: T.ink60, lineHeight: 1.5 }}>
+          <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 8, cursor: 'pointer', fontSize: 12.5, color: T.ink60, lineHeight: 1.5 }}>
             <input
               type="checkbox"
               checked={subscribe}
@@ -345,6 +345,10 @@ export function LandingPage() {
             </span>
             Acepto recibir novedades del proyecto y de la herramienta.
           </label>
+          <p style={{ fontSize: 11.5, color: T.ink60, lineHeight: 1.5, margin: '0 0 18px 26px' }}>
+            Tus respuestas se quedan en tu dispositivo. Solo guardamos tu correo si marcas esta casilla.{' '}
+            <Link href="/privacidad" style={{ color: T.burgundy, fontWeight: 600 }}>Cómo tratamos tus datos</Link>
+          </p>
 
           <button
             type="submit"
